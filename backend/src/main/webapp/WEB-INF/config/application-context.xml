@@ -12,13 +12,13 @@
       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
 	<!-- Scan for transaction-based resources -->
-	<context:component-scan base-package="lk.dimuthu.spring.nibm.domain" />
-	<context:component-scan base-package="lk.dimuthu.spring.nibm.service" />
-	<context:component-scan base-package="lk.dimuthu.spring.nibm.repository" />
+	<context:component-scan base-package="lk.ucsc.projects.explore.entity" />
+	<context:component-scan base-package="lk.ucsc.projects.explore.service" />
+	<context:component-scan base-package="lk.ucsc.projects.explore.repository" />
 
 	<!-- The jpa:repositories scans for all interfaces that extend Repository 
 		and creates implementations for use at runtime. -->
-	<jpa:repositories base-package="lk.dimuthu.spring.nibm.repository" />
+	<jpa:repositories base-package="lk.ucsc.projects.explore.repository" />
 
 	<!-- Transaction Configuration: make transaction works and also to inject 
 		the @PersistenceContext in @Repository -->
@@ -34,7 +34,7 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" value="lk.dimuthu.spring.nibm.domain" />
+		<property name="packagesToScan" value="lk.ucsc.projects.explore.entity" />
 
 		<!-- provider-specific initialization,etc. -->
 		<property name="jpaVendorAdapter">
