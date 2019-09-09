@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="baseLayout" template="/WEB-INF/tiles/template/baseLayout.jsp">
+		<put-attribute name="title" value="Family Doctor" />
+		<put-attribute name="header" value="/WEB-INF/tiles/template/header.jsp" />
+		<put-attribute name="tagline" value="" />
+		<put-attribute name="navigation" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/template/footer.jsp" />
+	</definition>
+
+	<definition name="home" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
+	</definition>
+
+	<!-- Patient -->
+	<definition name="patient-registration" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/patient-registration.jsp" />
+	</definition>
+
+	<definition name="patient-registration-successful" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/patient-registration-successful.jsp" />
+	</definition>
+
+	<definition name="patient-home" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/patient-home.jsp" />
+	</definition>
+
+	<definition name="appointment-creation" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/appointment-creation.jsp" />
+	</definition>
+
+	<definition name="appointment-reschedule" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/appointment-reschedule.jsp" />
+	</definition>
+
+	<definition name="appointment-detail" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/appointment-detail.jsp" />
+	</definition>
+
+	<!-- Doctor -->
+	<definition name="doctor-home" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/doctor-home.jsp" />
+	</definition>
+
+	<definition name="doctor-appointment-detail" extends="baseLayout">
+		<put-attribute name="body"
+			value="/WEB-INF/views/doctor-appointment-detail.jsp" />
+	</definition>
+
+	<!-- Login -->
+	<definition name="login" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/login.jsp" />
+	</definition>
+
+	<!-- Error -->
+	<definition name="404" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/error/404.jsp" />
+	</definition>
+	<definition name="403" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/error/403.jsp" />
+	</definition>
+
+	<!-- Admin -->
+	<definition name="adminLayout" extends="baseLayout">
+		<put-attribute name="header"
+			value="/WEB-INF/tiles/template/header-admin.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/template/footer.jsp" />
+	</definition>
+
+	<definition name="admin-dashboard" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/admin/dashboard.jsp" />
+	</definition>
+
+	<definition name="admin-add-doctor" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/admin/add-doctor.jsp" />
+	</definition>
+
+	<definition name="admin-doctor-account" extends="baseLayout">
+		<put-attribute name="body" value="/WEB-INF/views/admin/doctor-account.jsp" />
+	</definition>
+
+</tiles-definitions>

@@ -1,0 +1,284 @@
+* {
+	margin: 0px;
+}
+
+body {
+	height: 100%;
+	font-family: Helvetica;
+	font-size: 12px;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:visited {
+	color: inherit;
+}
+
+.container {
+	width: 970px;
+	margin: 0 auto;
+}
+
+.title {
+	color: #008166;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.title-orange {
+	color: orange;
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.text-bold {
+	font-weight: bold;
+}
+
+.gray-text {
+	color: #868686 !important;
+}
+
+.text-first-capital {
+	text-transform: capitalize !important;
+}
+
+.font-size-huge {
+	font-size: 22px;
+}
+
+.font-size-large {
+	font-size: 18px;
+}
+
+.font-size-middle {
+	font-size: 16px;
+}
+
+.font-size-small {
+	font-size: 14px;
+}
+
+.oblique {
+	font-style: oblique;
+}
+
+.margin-left {
+	margin-left: 40px;
+}
+
+.margin-left-large {
+	margin-left: 80px;
+}
+
+.margin-left-huge {
+	margin-left: 250px;
+}
+
+.margin-top-large {
+	margin-top: 60px;
+}
+
+.margin-top-middle {
+	margin-top: 30px;
+}
+
+.margin-top-small {
+	margin-top: 10px;
+}
+
+.separator-content {
+	background-color: #008166;
+}
+
+.hr-separator {
+	width: 400px;
+	border-bottom: inset #008166 1px;
+}
+
+input[type=button] {
+	color: white;
+	background-color: #1AB292;
+	font-size: 14px;
+	height: 30px;
+	width: 90px;
+	white-space: nowrap;
+}
+
+input[type=submit], button {
+	color: white;
+	background-color: #1AB292;
+	font-size: 12px;
+	height: 25px;
+	width: 90px;
+	white-space: nowrap;
+}
+
+input[type=submit]:disabled, button:disabled {
+	color: white;
+	background-color: #d3d3d3;
+	font-size: 12px;
+	height: 25px;
+	width: 90px;
+}
+
+.text-underline {
+	text-decoration: underline !important;
+}
+
+input[type=reset], .btn-white {
+	color: black;
+	background-color: white;
+	font-size: 12px;
+	height: 25px;
+	width: 90px;
+	white-space: nowrap;
+}
+
+.default-height {
+	height: 300px;
+}
+
+.full-width {
+	width: 100%;
+}
+
+.data-table {
+	padding: 5px;
+	border-spacing: 15px 15px;
+}
+
+.text-align-left {
+	text-align: left;
+}
+
+.text-align-right {
+	text-align: right;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.text-align-top {
+	vertical-align: top;
+}
+
+.text-align-bottom {
+	vertical-align: bottom;
+}
+
+.red {
+	color: red !important;
+}
+
+.green {
+	color: #008166 !important;
+	font-weight: bold;
+}
+
+.inner-content {
+	height: 220px;
+}
+
+.inner-left-content {
+	float: left;
+	width: 48%;
+}
+
+.inner-middle-content {
+	float: left;
+	width: 3px;
+}
+
+.inner-right-content {
+	display: inline-block;
+	width: 42%;
+}
+
+/* LOGIN PAGE */
+.height-300 {
+	height: 300px;
+}
+
+.height-220 {
+	height: 220px;
+}
+
+.login-background {
+	height: 300px;
+	width: 500px;
+	background-image: url('../images/mom_daughter_small.jpg');
+	background-position: center;
+}
+
+/* PATIENT HOME */
+.appointments table tr:nth-child(even) td {
+	background-color: #868686;
+	color: white;
+}
+
+.appointments table {
+	border-collapse: collapse;
+}
+
+.appointments table td {
+	padding: 8px;
+}
+
+/* HOME PAGE */
+.slogan {
+	padding-top: 50px;
+}
+
+.slogan-additional {
+	padding-top: 20px;
+}
+
+.background-content {
+	height: 450px;
+	background-image: url('../images/mom_daughter.jpg');
+	background-position: center;
+}
+
+.success-message {
+	padding: 10px;
+	background-color: #F5FFFF;
+	color: #008166;
+	font-weight: bold;
+}
+
+.error-message {
+	padding: 10px;
+	background-color: #FFEFFF;
+	color: #CC3300;
+	font-weight: bold;
+}
+
+.admin-dashboard-content{
+	padding-top: 25px;
+}
+
+.admin-dashboard-content table th {
+	background-color: #868686;
+	color: white;
+	padding: 8px;
+}
+
+.admin-dashboard-content table tr:nth-child(even) td {
+	background-color: #FAFFFF;
+}
+
+.admin-dashboard-content table {
+	border-collapse: collapse;
+}
+
+.admin-dashboard-content table td {
+	padding: 8px;
+}

@@ -1,0 +1,51 @@
+.header-footer {
+	background-color: #1AB292;
+	height: 50px;
+	color: white;
+	font-weight: bold;
+}
+
+.logo {
+	float: left;
+	margin-left: 10px;
+	width: 20%;
+	margin-top: 2px;
+}
+
+.menu {
+	display: inline-block;
+	text-align: center;
+	margin-top: 17px;
+	margin-left: 10px;
+}
+
+.menu div {
+	display: inline-block;
+	padding-right: 10px;
+	margin-left: 10px;
+}
+
+.menu-text a, .menu-text a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.menu-text a:hover {
+	text-decoration: underline;
+}
+
+.separator {
+	border-right: #A5FAE9 1px solid;
+}
+
+.pull-right {
+	float: right;
+	margin-right: 10px;
+	margin-top: 13px;
+}
+
+.copyright {
+	margin-top: 5px;
+	display: inline-block;
+	margin-left: 10px;
+}
