@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "Company")
 public class Company {
-    private int id;
+    private String id;
     private String name;
     private List<String> locationList;
     private Media mediaList;
@@ -15,7 +15,7 @@ public class Company {
     private String email;
     private List<User> userList;
 
-    public Company(int id, String name, List<String> locationList, Media mediaList, Payment payment, String email, List<User> userList) {
+    public Company(String id, String name, List<String> locationList, Media mediaList, Payment payment, String email, List<User> userList) {
         this.id = id;
         this.name = name;
         this.locationList = locationList;
@@ -28,11 +28,11 @@ public class Company {
     public Company() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
