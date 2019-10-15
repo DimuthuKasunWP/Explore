@@ -1,0 +1,44 @@
+api:
+  name: @project.name@
+  description: @project.description@
+  version: @project.version@
+
+spring:
+
+  profiles:
+    active: dev
+
+  datasource:
+    platform: h2
+    data: classpath*:db/h2/data.sql
+    schema: classpath*:db/h2/schema.sql
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  resources:
+    static-locations: "file:webapp/src/,file:webapp/bower_components/"
+
+  thymeleaf:
+    cache: false
+
+  social:
+    # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
+    google:
+      client-id: ${GOOGLE_APPLICATION_ID:}
+      client-secret: ${GOOGLE_APPLICATION_SECRET:}
+
+    # see https://developers.facebook.com/docs/facebook-login/v2.2
+    facebook:
+      client-id: ${FACEBOOK_APPLICATION_ID:}
+      client-secret: ${FACEBOOK_APPLICATION_SECRET:}
+
+resources:
+  avatar-folder: images/avatars/
+  api-url: ${SOCIAL_NETWORK_API_URL:http://localhost:8080}
+  web-url: ${SOCIAL_NETWORK_WEB_URL:http://localhost:8080}
+
+remember-me:
+  token: SN_REMEMBER_TOKEN
+  cookie: SN_REMEMBER_ME_COOKIE

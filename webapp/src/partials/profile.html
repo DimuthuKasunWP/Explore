@@ -1,0 +1,61 @@
+<div class="container-fluid col-sm-12 view-container" ng-show="authenticated">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>{{profile.fullName}}</strong>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="row">
+                        <h4>General information</h4>
+                        <div class="col-lg-6 text-muted">
+                            <p>First name:</p>
+                            <p>Last name:</p>
+                            <p>Gender:</p>
+                            <p>Date of birth:</p>
+                        </div>
+                        <div class="col-lg-3">
+                            <p>{{profile.firstName}}</p>
+                            <p>{{profile.lastName}}</p>
+                            <p>{{profile.gender}}</p>
+                            <p>{{profile.birthDate | date: "dd.MM.yyyy"}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h4>Contacts</h4>
+                        <div class="col-lg-4 text-muted">
+                            <p>Email:</p>
+                            <p>Phone:</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <p ng-show="profile.friendOfMine || profileId === profile.id">
+                                {{profile.email}}</p>
+                            <p ng-show="profile.friendOfMine || profileId === profile.id">
+                                {{profile.phone}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4>Hobbies</h4>
+                    <p>Lock</p>
+                    <p>Stock</p>
+                    <p>Two smoking barrels</p>
+                </div>
+                <div class="col-lg-3" ng-hide="profileId === profile.id" align="center">
+                    <img class="img-rounded img-responsive center-block" alt="user_pic" width="150" height="150"
+                         ng-src="{{profile.pageAvatar}}">
+                    <br>
+                    <p>
+                        <button-send-message profile="profile"></button-send-message>
+                        <button-remove-friend account="account" profile="profile" remove="removeFriend(profile.id)"></button-remove-friend>
+                        <button-add-friend account="account" profile="profile" add="addFriend(profile.id)"></button-add-friend>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

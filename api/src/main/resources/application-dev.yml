@@ -1,0 +1,18 @@
+logging:
+  level:
+    org.springframework.web: debug
+    org.apache.http: debug
+
+spring:
+
+  h2:
+    console:
+      enabled: true
+      path: /console
+
+  devtools:
+    restart:
+      additional-paths: "webapp/src/,webapp/bower_components/"
+      additional-exclude: "**/*.html,**/*.js,**/*.css"
+
+#debug: true
