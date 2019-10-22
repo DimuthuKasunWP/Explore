@@ -1,7 +1,5 @@
 
 
-![Spring Boot version of the Social Network Application](https://cloud.githubusercontent.com/assets/19559375/23728361/73745b58-046d-11e7-8849-c8e9140d3e6e.png)
-
 ## Stack of technologies
 
 **Spring:** Boot, MVC, Data, Security
