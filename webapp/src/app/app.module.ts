@@ -6,10 +6,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Third party
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFireModule } from 'angularfire2';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 
