@@ -6,26 +6,13 @@
 
 **Spring:** Boot, MVC, Data, Security
 
-**Web:** AngularJS, Bootstrap, Bower, Gulp
+**Web:** Angular Framework, Bootstrap, Bower, Gulp
 
 **Tests:** JUnit, Mockito, AssertJ
 
 **CI:** Travis
 
 **Third-party libraries:** [Letter avatar](https://agentejo.com/blog/tired-of-gravatar-try-letter-avatar) (by Artur Heinze)
-
-## Functionality
-
-- Sign-In / Sign-Up
-- Send messages
-- Add / remove friends
-- Update contact information / Change password
-- View person & friend lists
-- View person's contact information
-- View last messages
-- Profile images / avatars
-- Pagination
-- Search
 
 ## How to Build & Run application from Intellij IDEA
 
@@ -38,14 +25,6 @@ Start Spring boot application from the main class: `org.asaunin.socialnetwork.So
 
 Open [http://localhost:8080](http://localhost:8080) in your browser
 
-## Credentials
-
-- E-mail:   m_korleone@mail.ru
-- Password: 12345
-
-## Swagger support
-
-Use [Swagger-UI endpoint](http://localhost:8080/swagger-ui.html) to get a server-side API description
 
 ## Social sign-in feature
 
@@ -58,12 +37,6 @@ The links below to get an application ids and secrets:
 
 ## Deployment
 
-Clone repository
-
-```
-git clone https://github.com/ASaunin/social-network-spring.git
-cd social-network-spring
-```
 
 Configure `${SOCIAL_NETWORK_API_URL}` and `${SOCIAL_NETWORK_WEB_URL}` system variables according to your deployment urls
 
