@@ -2,7 +2,7 @@
 
 ## Stack of technologies
 
-**Spring:** Boot, MVC, Data, Security
+**Firebase:**
 
 **Web:** Angular Framework, Bootstrap, Bower, Gulp
 
@@ -12,16 +12,7 @@
 
 **Third-party libraries:** [Letter avatar](https://agentejo.com/blog/tired-of-gravatar-try-letter-avatar) (by Artur Heinze)
 
-## How to Build & Run application from Intellij IDEA
 
-```
-git clone https://github.com/ASaunin/social-network-spring.git
-cd social-network-spring
-./mvnw clean install
-```
-Start Spring boot application from the main class: `org.asaunin.socialnetwork.SocialNetworkApplication`
-
-Open [http://localhost:8080](http://localhost:8080) in your browser
 
 
 ## Social sign-in feature
