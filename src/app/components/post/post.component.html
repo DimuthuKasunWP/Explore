@@ -1,0 +1,106 @@
+<div *ngIf="!isSingle; else SinglePost" class="container-fluid">
+  <div id="post-container" class="px-0 py-1 row" *ngIf="body && userName; else Loading">
+    <div id="img-container" class="ml-1 col-1 p-0 mr-1 mr-md-2 mr-lg-1">
+      <img [src]="photoURL" height="50px" width="50px" class="circle">
+    </div>
+    <div id="post-content" class="col-10">
+      <div id="user-info" class="row justify-content-between">
+        <div class="col-11 col-md-10 col-lg-11 row align-self-center pl-5 pl-sm-4 pl-md-4">
+          <div id="user-text" class="col-9 col-sm-auto col-md-8 col-lg-auto pl-0" (click)="sendTo('profile')">
+            <span class="font-weight-bold"><h6 class="p-0 m-0 d-inline-block">{{displayName}}</h6></span>
+            <small>@{{userName}}</small>
+          </div>
+          <span id="post-date" class="ml-1 col-2 col-sm-3 col-lg-2 p-0 align-self-start">{{retrieveDate(this.date)}}</span>
+        </div>
+        <div ngbDropdown class="col-1 d-inline-block align-self-start" placement="bottom-right">
+          <button class="btn" id="dropdownBasic1" ngbDropdownToggle></button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button class="dropdown-item" (click)="delete()" *ngIf="isCurrentUser">Delete</button>
+            <button class="dropdown-item" (click)="report()" *ngIf="!isCurrentUser">Report</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span *ngIf="showContext">
+          <p class="text-primary my-0" *ngIf="type =='group'" (click)="sendTo('group', gid)">Posted in {{gname}}</p>
+        </span>
+        <p class="text-primary my-0" *ngIf="type =='comment'" (click)="sendTo('post', parentPid)">Replying to @{{parentUsername}}</p>
+        <div id="post-body" class="pb-2" (click)="open(SinglePost)" [innerHTML]="body | linkify | slice:0:200">
+          <span *ngIf="inputPost.body.length > 200"><a id="more-anchor">...more</a></span>
+          <br>
+        </div>
+        <img *ngIf="this.postPhotoURL" [src]="this.postPhotoURL" class="post-image mb-2 post-small-image" (click)="open(SinglePost)">
+        <div class="col-12 text-left pt-1 mx-0 px-0" id="post-info">
+          <span class="pr-3 py-2"><i class="fa fa-comments-o" aria-hidden="true"></i> <span>{{commentLen}}</span></span>
+          <span class="py-2" (click)="clickLike()"><i [class]="likeStyle" aria-hidden="true"></i> <span>{{likeLen}}</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #SinglePost>
+  <div class="container pt-2">
+    <div id="single-post-container" *ngIf="body && userName">
+      <div *ngIf="parentPid" id="parentPostContainer" class="mx-2 py-1 pb-4 row">
+        <h4 class="col-12 px-0 my-1 mb-2">Replying to...</h4><hr>
+        <div id="parentPost" class="col-12 px-0 border border-primary">
+         <app-post [inputPostID]="parentPid" [ParentModalRef]="this.modalRef"></app-post>
+        </div>
+      </div>
+      <div class="mx-1 py-1 pb-4 row">
+        <div id="img-container" class="ml-1 col-1 p-0 mr-1 mr-md-2 mr-lg-1">
+          <img [src]="photoURL" height="55px" width="55px" class="circle">
+        </div>
+        <div id="post-content" class="col-10 ml-1">
+          <div id="user-info" class="row justify-content-between">
+            <div class="col-11 row align-self-center">
+              <div id="user-text" class="col-9 col-sm-auto col-md-auto col-lg-auto pr-0" (click)="sendTo('profile')">
+                <span class="font-weight-bold"><h5 class="p-0 m-0 d-inline-block">{{displayName}}</h5></span>
+                <small>@{{userName}}</small>
+              </div>
+            </div>
+            <div ngbDropdown class="col-1 d-inline-block align-self-start" placement="bottom-right">
+                <button class="btn" id="dropdownBasic1" ngbDropdownToggle></button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="delete()" *ngIf="isCurrentUser">Delete</button>
+                  <button class="dropdown-item" (click)="delete()" *ngIf="!isCurrentUser">Report</button>
+                </div>
+              </div>
+          </div>
+          <span *ngIf="showContext">
+            <p class="text-primary my-0" *ngIf="type =='group'" (click)="sendTo('group', gid)">Posted in {{gname}}</p>
+          </span>
+          <div id="post-body" class="py-2" [innerHTML]="body | linkify">
+          </div>
+          <img *ngIf="this.postPhotoURL" [src]="this.postPhotoURL" class="post-image">
+          <div id="post-date" class="mt-3 align-self-center">{{retrieveDate(this.date, 'long')}}</div>
+          <div class="col-12 text-left pt-3 pb-2 mx-0 px-0" id="post-info">
+            <span class="pr-3 py-2"><i class="fa fa-comments-o" aria-hidden="true"></i> <span>{{commentLen}}</span></span>
+            <span class="py-2" (click)="clickLike()"><i [class]="likeStyle" aria-hidden="true"></i> <span>{{likeLen}}</span></span>
+          </div>
+          <div id="add-comment" class="mb-1">
+            <app-add-comment [parentpid]="pid" *ngIf="isLoggedIn"></app-add-comment>
+            <p class="text-primary" *ngIf="!isLoggedIn" (click)="sendTo('landing')">Login to post a comment.</p>
+          </div>
+          <div id="comments" *ngIf="commentLen >= 1">
+            <h4>Comments</h4><hr class="my-1">
+            <div *ngFor="let comment of comments">
+              <app-post [inputPostID]="comment.pid" [ParentModalRef]="this.modalRef" [parentPid]="this.inputPostID"></app-post>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #Loading>
+  <div class="text-center pt-5 text-primary" *ngIf="!isInvalid; else Invalid">
+    <i class="fa fa-spinner fa-4x fa-spin" aria-hidden="true" *ngIf="showLoader"></i>
+  </div>
+</ng-template>
+
+<ng-template #Invalid>
+  <app-error error="nopost" *ngIf="checkShowError()"></app-error>
+</ng-template>

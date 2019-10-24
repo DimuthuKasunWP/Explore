@@ -1,0 +1,53 @@
+.container-fluid {
+  max-width: 1000px;
+}
+#side-nav {
+  word-wrap: break-word;
+}
+#banner-image {
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-color: #E83F6F;
+}
+.user-block {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+}
+#joinPanel {
+  width: 100%;
+}
+.btn:hover {
+ cursor: pointer;
+}
+@media (max-width: 768px) {
+  #banner-image {
+    height: 100px;
+  }
+}
+@media (max-width: 970px) {
+  .user-block {
+    margin-right: 11px;
+  }
+}
+small {
+  cursor: pointer;
+}
+#edit-btn {
+  position: relative;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+}
+#user-banner {
+  z-index: -1;
+}
+.btn-banner {
+  background: transparent;
+  border: 2px solid white;
+  color: white;
+}
+.btn-banner:hover {
+  background: #E83F6F!important;
+}
