@@ -1,0 +1,14 @@
+.footer {
+  height: 60px;
+}
+.nav-text > a {
+  text-decoration: none;
+  color: #E83F6F!important;
+  font-weight: 450;
+  margin-right: 10px;
+}
+@media (max-width: 420px) {
+  #footer-brand {
+    display: none;
+  }
+}
