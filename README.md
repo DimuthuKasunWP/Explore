@@ -1,4 +1,4 @@
-# Scribe
+# Explore
 
 A social networking app built with Angular and AngularFire using Firebase as backend and the new Cloud Firestore database.
 
