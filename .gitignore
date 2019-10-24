@@ -1,14 +1,50 @@
-# Maven
-target/
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Eclipse
-.settings/
-.classpath
+# map and js files
+*.map
+*.js
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+/node_modules
+/functions/node_modules
+
+# IDEs and editors
+/.idea
 .project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# IntelliJ IDEA
-.idea
-*.iml
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# Branch switching
-generated/
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/typings
+firebase-debug.log
+
+# e2e
+/e2e/*.js
+/e2e/*.map
+
+# System Files
+.DS_Store
+Thumbs.db
+firebase-debug.log
+node_modules
