@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
-import { MessageService } from './../../services/message.service';
+import { MessageService } from '../../../services/message.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { UserService } from '../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-chatroom',
