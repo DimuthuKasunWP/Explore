@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { UploadService } from '../services/upload.service';
+import { UploadService } from '../../services/upload.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UsernameValidators } from '../validators/username.validators';
+import { UsernameValidators } from '../../validators/username.validators';
 import { AngularFirestore } from 'angularfire2/firestore';
 
 @Component({
