@@ -1,9 +1,11 @@
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
+import 'rxjs-compat/add/operator/combineLatest';
+import { timer, combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
 
-  @ViewChild('myDrop') searchDrop;
+  @ViewChild('myDrop', {static: false}) searchDrop;
 
   searchterm;
   users;
@@ -32,10 +34,11 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // tslint:disable-next-line:only-arrow-functions
     this.router.routeReuseStrategy.shouldReuseRoute = function() {
       return false;
     };
-    Observable.combineLatest(this.startObs, this.endAtObs).subscribe(
+    combineLatest(this.startObs, this.endAtObs).subscribe(
       value => {
         this.doQuery(value[0], value[1]).subscribe(
           users => {
@@ -44,7 +47,7 @@ export class SearchComponent implements OnInit {
               this.searchDrop.open();
             }
           });
-          this.doGroupQuery(value[0], value[1]).subscribe(
+        this.doGroupQuery(value[0], value[1]).subscribe(
             groups => {
               if (groups) {
                 this.groups = groups;
