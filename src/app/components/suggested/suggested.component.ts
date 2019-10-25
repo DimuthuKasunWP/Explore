@@ -1,6 +1,6 @@
-import { UserService } from './../services/user.service';
+import { UserService } from '../../services/user.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-suggested',
