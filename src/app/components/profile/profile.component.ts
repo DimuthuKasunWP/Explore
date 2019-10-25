@@ -1,18 +1,18 @@
-import { UploadService } from './../services/upload.service';
-import { DateFormatPipe } from './../services/date.pipe';
+import { UploadService } from '../../services/upload.service';
+import { DateFormatPipe } from '../../services/date.pipe';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { FollowService } from './../services/follow.service';
-import { PostsService } from './../services/posts.service';
-import { UserService } from './../services/user.service';
+import { FollowService } from '../../services/follow.service';
+import { PostsService } from '../../services/posts.service';
+import { UserService } from '../../services/user.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { AddPostComponent } from '../add-post/add-post.component';
-import { LikesService } from '../services/likes.service';
-import { MessageService } from '../services/message.service';
+import { LikesService } from '../../services/likes.service';
+import { MessageService } from '../../services/message.service';
 import { PlatformLocation } from '@angular/common';
-import { CheckType } from '@angular/core/src/view';
+// import { CheckType } from '@angular/core/src/view';
 
 @Component({
   selector: 'app-profile',
