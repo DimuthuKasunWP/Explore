@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from '../services/message.service';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+import { MessageService } from '../../services/message.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
