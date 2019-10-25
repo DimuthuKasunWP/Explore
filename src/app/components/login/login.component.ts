@@ -12,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class LoginComponent implements OnInit {
 
-  @ViewChild('content',{static: false}) modalContent: ElementRef;
+  @ViewChild('content', {static: false}) modalContent: ElementRef;
 
   error: string;
 

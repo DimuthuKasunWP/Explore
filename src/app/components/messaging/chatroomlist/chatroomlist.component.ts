@@ -1,11 +1,11 @@
-import { UserService } from './../../services/user.service';
+import { UserService } from '../../../services/user.service';
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { MessagingComponent } from '../messaging.component';
 import { ChatroomComponent } from '../chatroom/chatroom.component';
 import { PlatformLocation } from '@angular/common';
-import { MessageService } from '../../services/message.service';
-import { AuthService } from '../../services/auth.service';
+import { MessageService } from '../../../services/message.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-chatroomlist',
@@ -15,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class ChatroomlistComponent implements OnInit {
 
   @Input() room;
-  @ViewChild('modalContainer') modalContent: ElementRef;
+  @ViewChild('modalContainer', {static: false}) modalContent: ElementRef;
 
   roomName;
   photoURL;
