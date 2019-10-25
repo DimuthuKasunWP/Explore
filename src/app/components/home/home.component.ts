@@ -1,9 +1,9 @@
 import { PlatformLocation } from '@angular/common';
-import { GroupService } from './../services/group.service';
-import { PostsService } from './../services/posts.service';
+import { GroupService } from '../../services/group.service';
+import { PostsService } from '../../services/posts.service';
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { DomSanitizer } from '@angular/platform-browser';
