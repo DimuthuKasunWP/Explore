@@ -1,7 +1,7 @@
-import { FollowService } from './../../services/follow.service';
-import { UserService } from './../../services/user.service';
+import { FollowService } from '../../../services/follow.service';
+import { UserService } from '../../../services/user.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-user',
