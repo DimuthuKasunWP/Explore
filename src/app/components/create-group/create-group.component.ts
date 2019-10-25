@@ -1,7 +1,7 @@
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GroupService } from './../services/group.service';
-import { Component, OnInit, Input, group } from '@angular/core';
+import { GroupService } from '../../services/group.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
