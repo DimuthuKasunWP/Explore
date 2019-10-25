@@ -1,6 +1,6 @@
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
 
