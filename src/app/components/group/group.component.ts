@@ -1,13 +1,13 @@
 import { DomSanitizer, Title } from '@angular/platform-browser';
-import { UploadService } from './../services/upload.service';
+import { UploadService } from '../../services/upload.service';
 import { CreateGroupComponent } from './../create-group/create-group.component';
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { Component, OnInit } from '@angular/core';
-import { PostsService } from '../services/posts.service';
+import { PostsService } from '../../services/posts.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GroupService } from '../services/group.service';
-import { DateFormatPipe } from '../services/date.pipe';
+import { GroupService } from '../../services/group.service';
+import { DateFormatPipe } from '../../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 
@@ -81,11 +81,11 @@ export class GroupComponent implements OnInit {
               this.isLoaded = true;
             }
           });
-      this.groupService.getFeed(this.gid).subscribe(
+        this.groupService.getFeed(this.gid).subscribe(
         feed => {
           this.posts = feed;
         });
-      this.groupService.getMembers(this.gid).subscribe(
+        this.groupService.getMembers(this.gid).subscribe(
         memberList => {
           this.members = memberList;
         });
