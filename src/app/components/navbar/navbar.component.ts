@@ -1,11 +1,11 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-import { NotificationService } from '../services/notification.service';
-import { MessageService } from '../services/message.service';
+import { NotificationService } from '../../services/notification.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-navbar',
@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
     private msgService: MessageService
   ) { }
 
-  @ViewChild('popover') popoverRef;
+  @ViewChild('popover', {static : false}) popoverRef;
 
   isUser: boolean;
   displayName;
