@@ -1,5 +1,5 @@
-import { UploadService } from './../services/upload.service';
-import { PostsService } from './../services/posts.service';
+import { UploadService } from '../../services/upload.service';
+import { PostsService } from '../../services/posts.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AngularFirestore } from 'angularfire2/firestore';
