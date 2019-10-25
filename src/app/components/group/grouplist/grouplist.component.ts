@@ -1,8 +1,8 @@
 import { Title } from '@angular/platform-browser';
-import { GroupService } from './../../services/group.service';
+import { GroupService } from '../../../services/group.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-grouplist',
