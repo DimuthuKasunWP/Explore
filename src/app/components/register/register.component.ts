@@ -1,11 +1,11 @@
 import { AngularFirestore } from 'angularfire2/firestore';
-import { AuthService } from './../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UsernameValidators } from '../validators/username.validators';
+import { UsernameValidators } from '../../validators/username.validators';
 import { Title } from '@angular/platform-browser';
-import { AbstractControl } from '@angular/forms/src/model';
-import { ValidationErrors } from '@angular/forms/src/directives/validators';
+// import { AbstractControl } from '@angular/forms/src/model';
+// import { ValidationErrors } from '@angular/forms/src/directives/validators';
 
 @Component({
   selector: 'app-register',
@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
   passwordMatchValidator(g: FormGroup) {
     if (g.get('password').value && g.get('passwordConfirm').value) {
       return g.get('passwordConfirm').value === g.get('password').value
-       ? null : {'mismatch': true};
+       ? null : {mismatch: true};
     }
  }
 

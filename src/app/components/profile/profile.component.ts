@@ -21,7 +21,7 @@ import { PlatformLocation } from '@angular/common';
 })
 export class ProfileComponent implements OnInit {
 
-  @ViewChild('modalContainer') modalContent: ElementRef;
+  @ViewChild('modalContainer', {static : false}) modalContent: ElementRef;
   modalRef;
   closeResult;
   room;
