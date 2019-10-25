@@ -1,12 +1,12 @@
 import { AngularFirestore } from 'angularfire2/firestore';
-import { GroupService } from './../services/group.service';
-import { LikesService } from './../services/likes.service';
-import { PostsService } from './../services/posts.service';
-import { DateFormatPipe } from './../services/date.pipe';
-import { UserService } from './../services/user.service';
+import { GroupService } from '../../services/group.service';
+import { LikesService } from '../../services/likes.service';
+import { PostsService } from '../../services/posts.service';
+import { DateFormatPipe } from '../../services/date.pipe';
+import { UserService } from '../../services/user.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 import { ViewEncapsulation } from '@angular/core';
@@ -145,8 +145,8 @@ export class PostComponent implements OnInit {
             }
           }
         });
-        this.getLikes(this.inputPost.pid);
-        this.getComments(this.inputPost.pid);
+      this.getLikes(this.inputPost.pid);
+      this.getComments(this.inputPost.pid);
     }
     // If the postID comes from the parent component
     if (this.inputPostID) {
