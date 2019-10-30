@@ -24,32 +24,36 @@ export class UploadService {
   // Execute file upload to firebase storage
   pushUpload(file, type?: string, id?: string) {
     if (type === 'user') {
-      const downloadURL = this.storage.upload('user-uploads/' + id + '/dp', file).downloadURL();
-      downloadURL.subscribe(url => {
+      const downloadURL = this.storage.upload('user-uploads/' + id + '/dp', file);
+      const ref = this.storage.ref('user-uploads/' + id + '/dp').getDownloadURL();
+      ref.subscribe(url => {
         if (url) {
           this.auth.updatePhotoURL(url);
         }
       });
     }
     if (type === 'post') {
-      const downloadURL = this.storage.upload('post-uploads/' + id + '/post-image', file).downloadURL();
-      downloadURL.subscribe(url => {
+      const downloadURL = this.storage.upload('post-uploads/' + id + '/post-image', file);
+      const ref = this.storage.ref('post-uploads/' + id + '/post-image').getDownloadURL();
+      ref.subscribe(url => {
         if (url) {
           this.postService.updatePhotoURL(url, id);
         }
       });
     }
     if (type === 'banner') {
-      const downloadURL = this.storage.upload('user-uploads/' + id + '/banner', file).downloadURL();
-      downloadURL.subscribe(url => {
+      const downloadURL = this.storage.upload('user-uploads/' + id + '/banner', file);
+      const ref = this.storage.ref('user-uploads/' + id + '/banner').getDownloadURL();
+      ref.subscribe(url => {
         if (url) {
           this.postService.updateBannerURL(url, id);
         }
       });
     }
     if (type === 'group') {
-      const downloadURL = this.storage.upload('group-uploads/' + id + '/banner', file).downloadURL();
-      downloadURL.subscribe(url => {
+      const downloadURL = this.storage.upload('group-uploads/' + id + '/banner', file);
+      const ref = this.storage.ref('group-uploads/' + id + '/banner').getDownloadURL();
+      ref.subscribe(url => {
         if (url) {
           this.groupService.updateBannerURL(url, id);
         }
