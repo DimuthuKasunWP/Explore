@@ -5,8 +5,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs-compat/add/operator/switchMap';
-import { of } from 'rxjs/Observable/of';
 
 interface User {
   uid?: string;
@@ -35,8 +33,8 @@ export class AuthService {
   private status: string;
 
   constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFirestore,
-              private router: Router) {
+      private afs: AngularFirestore,
+      private router: Router) {
 
     /// Get User and Auth data
     this.authState = this.afAuth.authState;
@@ -54,7 +52,7 @@ export class AuthService {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
-          return of(null);
+          return Observable.of(null);
         }
       });
   }
@@ -180,7 +178,7 @@ export class AuthService {
     const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
     this.updateData = {
       userName: username,
-      status,
+      status: status,
       displayName: displayname,
     };
     return updateRef.update(this.updateData);

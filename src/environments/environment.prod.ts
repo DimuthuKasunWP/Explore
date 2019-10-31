@@ -1,6 +1,6 @@
 export const environment = {
-  production: true,
-  firebase : {
+  production: false,
+   firebase : {
     apiKey: 'AIzaSyDjOzHVxpB92O3xrmKXYxWfbtklo3jZqio',
     authDomain: 'xplore-1.firebaseapp.com',
     databaseURL: 'https://xplore-1.firebaseio.com',

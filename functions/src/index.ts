@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as firebase from '@firebase/app';
+import * as firebase from 'firebase/app';
 
 admin.initializeApp(functions.config().firebase);
 const afs = admin.firestore();
@@ -19,11 +19,11 @@ exports.onMessage = functions.firestore
     .catch(err => console.log(err));
   });
 
-function msgNotif(msg, rid) {
+  function msgNotif(msg, rid) {
     const msguser = msg.uid;
   }
 
-function updateUserLastUpdate(rid, update, msg) {
+  function updateUserLastUpdate(rid, update, msg) {
     afs.collection('messaging/' + rid + '/users').get()
     .then(users => {
       const userList = users;
@@ -59,7 +59,7 @@ exports.onCreateRoom = functions.firestore
           if (otheruser.uid !== uid) {
             const time = admin.firestore.FieldValue.serverTimestamp();
             const roomData = {
-              rid,
+              rid: rid,
               uid: otheruser.uid,
               lastUpdate: time
             };
@@ -78,14 +78,14 @@ exports.onSub = functions.firestore
     const userid = event.params.uid;
     const date = admin.firestore.FieldValue.serverTimestamp();
     const gdata = {
-      gid,
+      gid: gid,
       last: date
     };
     afs.doc('users/' + userid + '/groups/' + gid).set(gdata).catch(err => console.log(err));
     updateGroupTotalMembers(gid);
   });
 
-exports.onUnSub = functions.firestore
+  exports.onUnSub = functions.firestore
   .document('groups/{gid}/members/{uid}')
   .onDelete(event => {
     const gid = event.params.gid;
@@ -94,7 +94,7 @@ exports.onUnSub = functions.firestore
     updateGroupTotalMembers(gid);
   });
 
-function updateGroupTotalMembers(gid) {
+  function updateGroupTotalMembers(gid) {
     afs.collection('groups/' + gid + '/members').get()
     .then(members => {
       const groupDoc = {
@@ -159,8 +159,8 @@ function updateUserGroup(gid, uid) {
 function updateGroupFeed(pid, gid) {
   const date = admin.firestore.FieldValue.serverTimestamp();
   const data = {
-    pid,
-    date,
+    pid: pid,
+    date: date,
     totalLikes: 0
   };
   afs.doc('groups/' + gid + '/feed/' + pid).set(data)
@@ -171,12 +171,12 @@ function updateGroupFeed(pid, gid) {
 
 function updateSubFeed(pid, gid, date) {
   afs.collection('groups/' + gid + '/members').get()
-  .then(memberList => {
+  .then(memberList =>{
     if (memberList) {
       memberList.forEach(member => {
         const feeddata = {
-          pid,
-          date
+          pid: pid,
+          date: date
         };
         afs.doc('/users/' + member.data().uid + '/feed/' + pid).set(feeddata)
         .catch(err => console.log(err));
@@ -194,7 +194,7 @@ exports.onLike = functions.firestore
         .then(postData => {
             const postDate = postData.data().date;
             const data = {
-                pid,
+                pid: pid,
                 date: postDate
             };
             afs.doc('users/' + uid + '/likes/' + pid).set(data)
@@ -216,7 +216,7 @@ exports.onLike = functions.firestore
 
     });
 
-function notifyLike(data, likerid) {
+    function notifyLike(data, likerid) {
         const parentpost = data;
         if (likerid !== parentpost.uid) {
           const notif = {
@@ -234,7 +234,7 @@ function notifyLike(data, likerid) {
         }
     }
 
-function updatePostTotalLikes(pid) {
+    function updatePostTotalLikes(pid) {
       afs.collection('posts/' + pid + '/likes').get()
       .then(likes => {
         const postDoc = {
@@ -271,7 +271,6 @@ exports.onDelete = functions.firestore
   .document('posts/{postId}')
   .onDelete(event => {
     const deletedPost = event.data.previous.data();
-    // tslint:disable-next-line:no-conditional-assignment
     if (deletedPost.type = 'comment') {
       const parentid = deletedPost.to;
       afs.doc('/posts/' + parentid + '/comments/' + deletedPost.pid).delete()
@@ -279,9 +278,9 @@ exports.onDelete = functions.firestore
       .catch((err) => console.log(err));
     }
     deleteFeedPosts(deletedPost.uid, deletedPost.pid);
-  });
+  })
 
-function updatePostTotalComments(pid) {
+  function updatePostTotalComments(pid) {
     afs.collection('posts/' + pid + '/comments').get()
     .then(comments => {
       const postDoc = {
@@ -292,7 +291,7 @@ function updatePostTotalComments(pid) {
     .catch(err => console.log(err));
   }
 
-exports.onFollow = functions.firestore
+  exports.onFollow = functions.firestore
   .document('users/{userID}/followers/{followerID}')
   .onCreate(event => {
     const personuid = event.params.userID;
@@ -303,7 +302,7 @@ exports.onFollow = functions.firestore
     updateFollowing(personuid);
   });
 
-exports.onUnFollow = functions.firestore
+  exports.onUnFollow = functions.firestore
   .document('users/{userID}/followers/{followerID}')
   .onDelete(event => {
     const personuid = event.params.userID;
@@ -379,9 +378,9 @@ function updateFollowerFeeds(currentuid, pid, date) {
     .then((snapshot) => {
         snapshot.forEach((doc) => {
             const feed = {
-                pid,
-                date,
-            };
+                pid: pid,
+                date: date,
+            }
             afs.collection('users/' + doc.id + '/feed').doc(pid).set(feed)
             .catch((err) => {
                 console.log(err);
@@ -390,7 +389,7 @@ function updateFollowerFeeds(currentuid, pid, date) {
             .catch((err) => {
                 console.log(err);
             });
-        });
+        })
     }).catch((err) => {
         console.log('Error updating feeds', err);
     });
@@ -403,7 +402,7 @@ function updateTotalScribes(uid) {
             const scribes = posts.size;
             const data = {
                 totalScribes: scribes
-            };
+            }
             afs.doc('users/' + uid).update(data)
             .then(() => {
                 console.log('totalScribes updated for user- ', uid);
