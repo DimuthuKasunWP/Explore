@@ -24,7 +24,7 @@ export class NavbarComponent implements OnInit {
     private msgService: MessageService
   ) { }
 
-  @ViewChild('popover', {static : false}) popoverRef;
+    @ViewChild('popover', {static : true}) popoverRef;
 
   isUser: boolean;
   displayName;
