@@ -108,7 +108,7 @@ export class AuthService {
               uid: user.uid,
               email: user.email,
               displayName: formdata.displayname,
-              status: 'Hi, I am using Scribe',
+              status: 'Hi, I am using Explore',
               userName: formdata.username
             };
             this.updateUserData(userData);
@@ -126,7 +126,9 @@ export class AuthService {
           email: user.email,
           displayName: user.displayName,
           photoURL: user.photoURL,
-          status: 'Hi, I am using Scribe',
+          status: 'Hi, I am using Explore' +
+            '' +
+            '',
           userName: formdata.username
         };
         this.updateUserData(userData);
@@ -156,7 +158,7 @@ export class AuthService {
             email: user.email,
             displayName: user.displayName,
             photoURL: user.photoURL ? user.photoURL : 'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg',
-            status: 'Hi, I am using Scribe',
+            status: 'Hi, I am using Explore',
             userName: user.userName,
             joinDate: firebase.firestore.FieldValue.serverTimestamp()
           };

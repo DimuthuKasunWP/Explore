@@ -1,6 +1,9 @@
 import { Title } from '@angular/platform-browser';
+// eslint-disable-next-line no-unused-vars
 import { Router } from '@angular/router';
+// eslint-disable-next-line no-unused-vars
 import { Component, OnInit } from '@angular/core';
+// eslint-disable-next-line no-unused-vars
 import { AngularFirestore } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 

@@ -1,5 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import { Component, OnInit } from '@angular/core';
+// eslint-disable-next-line no-unused-vars
 import { AuthService } from '../services/auth.service';
+// eslint-disable-next-line no-unused-vars
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -18,7 +21,7 @@ export class LandingComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.titleService.setTitle('Scribe | Get started!');
+    this.titleService.setTitle('Explore | Get started!');
   }
 
 

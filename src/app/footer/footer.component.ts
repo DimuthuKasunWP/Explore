@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Component, OnInit } from '@angular/core';
 
 @Component({
