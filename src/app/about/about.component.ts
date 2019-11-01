@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
   ) { }
 
   ngOnInit () {
-    this.title.setTitle('Scribe | About');
+    this.title.setTitle('Explore | About');
     this.postService.getMostLikedPosts().subscribe(posts => this.mostLiked = posts);
     this.postService.getMostCommentedPosts().subscribe(posts => this.mostCommented = posts);
     this.userService.getSuggestedUsers().subscribe(users => this.mostFollowed = users);
