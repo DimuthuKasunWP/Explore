@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';

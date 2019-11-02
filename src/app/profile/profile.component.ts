@@ -1,4 +1,5 @@
 import { UploadService } from './../services/upload.service';
+// eslint-disable-next-line no-unused-vars
 import { DateFormatPipe } from './../services/date.pipe';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FollowService } from './../services/follow.service';
@@ -30,7 +31,7 @@ export class ProfileComponent implements OnInit {
   userName;
   photoURL = '../../assets/images/default-profile.jpg';
   status;
-  joinDate = 'May 2009';
+  joinDate = 'Oct 2019';
   userid = null;
   bannerURL;
   userFollowers;

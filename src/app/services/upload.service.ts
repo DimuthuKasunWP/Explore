@@ -1,6 +1,8 @@
 import { PostsService } from './posts.service';
 import { Router } from '@angular/router';
+// eslint-disable-next-line no-unused-vars
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+// eslint-disable-next-line no-unused-vars
 import { AngularFireStorage } from 'angularfire2/storage';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
