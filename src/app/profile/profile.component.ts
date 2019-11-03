@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit {
           this.status = uservar.status;
           this.photoURL = uservar.photoURL;
           this.userid = uservar.uid;
-          this.joinDate = uservar.joinDate ? uservar.joinDate : this.joinDate;
+          this.joinDate = uservar.joinDate ? uservar.joinDate.toDate() : this.joinDate;
           this.totalScribes = uservar.totalScribes ? uservar.totalScribes : 0;
           this.totalFollowing = uservar.totalFollowing ? uservar.totalFollowing : 0;
           this.totalFollowers = uservar.totalFollowers ? uservar.totalFollowers : 0;
@@ -255,7 +255,8 @@ export class ProfileComponent implements OnInit {
     }
 
     getJoinDate() {
-      return this.datePipe.transform(this.joinDate, 'month');
+    console.log(this.joinDate);
+      return this.datePipe.transform((this.joinDate), 'month');
     }
 
     open() {
