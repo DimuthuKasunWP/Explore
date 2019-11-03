@@ -1,6 +1,14 @@
 
 <mat-tab-group>
-  <mat-tab label="Explore">  1</mat-tab>
+  <mat-tab label="Explore">
+      <form class="form-inline md-form form-sm mt-0">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+            aria-label="Search">
+      </form>
+      <br><br><br>
+      
+  </mat-tab>
   <mat-tab label="Calender">  2</mat-tab>
   <mat-tab label="Create new event">
 
@@ -11,16 +19,16 @@
           </mat-form-field>
 
           <mat-form-field>
-              <input matInput placeholder="Date">
-            </mat-form-field>
+            <input matInput placeholder="Date">
+          </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Time">
-              </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Time">
+          </mat-form-field>
 
-            <mat-form-field>
-                <input matInput placeholder="Vanue">
-            </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Vanue">
+          </mat-form-field>
 
           <mat-form-field>
             <textarea matInput placeholder="Decreption"></textarea>
