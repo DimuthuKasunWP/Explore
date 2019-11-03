@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { PlatformLocation } from '@angular/common';
+import {DatePipe, PlatformLocation} from '@angular/common';
 import { ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -252,7 +252,10 @@ export class PostComponent implements OnInit {
       } else {
         const prevDate = date;
         const newDate = new Date();
-        const ms = newDate.getTime() - prevDate.getTime();
+        // const datePipe = new DatePipe('en-US');
+        // String value = datePipe.transform(prevDate, 'MMM yyy');
+        console.log(newDate.getTime());
+        const ms = newDate.getTime() - prevDate.toDate();
         const min = Math.trunc(ms / 60000);
         let hours;
         if (min < 59) {
