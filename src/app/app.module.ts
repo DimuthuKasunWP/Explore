@@ -61,7 +61,10 @@ import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
 import { EventComponent } from './event/event.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
 
 firebase.initializeApp(environment.firebase);
 
@@ -181,7 +184,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ChartsModule,
     ReactiveFormsModule,
-    NgxAutoScrollModule
+    NgxAutoScrollModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatTabsModule,
   ],
   providers: [
     AuthService,
