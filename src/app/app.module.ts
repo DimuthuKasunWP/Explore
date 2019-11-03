@@ -66,6 +66,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
 
 
 firebase.initializeApp(environment.firebase);
@@ -190,7 +191,8 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatTabsModule,
-    MatInputModule
+    MatInputModule,
+    MatCardModule
   ],
   providers: [
     AuthService,

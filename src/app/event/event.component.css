@@ -4,8 +4,31 @@
 }
 
 .example-container > * {
-  width: 50%;
+  width: 200px;
 }
 
 border-bottom: 1px solid #f48fb1;
 box-shadow: 0 1px 0 0 #f48fb1;
+
+.example-card {
+  max-width: 400px;
+}
+
+.card {
+  text-align: center;
+  display: inline-block;
+  padding: 5px;
+} 
+
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.myImg {
+  width: 300px;
+  height: 200px;
+  padding: 0px;
+  border: 0px;
+}
