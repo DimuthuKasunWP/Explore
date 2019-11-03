@@ -60,6 +60,7 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+import { EventComponent } from './event/event.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -73,6 +74,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'event',
+    component: EventComponent
   },
   {
     path: 'user/:username',
@@ -162,7 +167,8 @@ const routes: Routes = [
     FeedbackComponent,
     AdminComponent,
     GrouplistComponent,
-    NotificationComponent
+    NotificationComponent,
+    EventComponent
     ],
   imports: [
     BrowserModule,
