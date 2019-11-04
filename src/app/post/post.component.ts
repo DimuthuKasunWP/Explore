@@ -268,7 +268,7 @@ export class PostComponent implements OnInit {
           if (hours >= 1 && hours < 24) {
             return hours + 'h';
           } else {
-            return this.dateFormat.transform(prevDate);
+            return this.dateFormat.transform(prevDate.toDate());
           }
         }
       }

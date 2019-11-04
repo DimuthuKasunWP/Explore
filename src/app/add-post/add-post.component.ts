@@ -128,6 +128,7 @@ export class AddPostComponent implements OnInit {
       if (this.filename.length > 25) {
         this.filename = this.filename.slice(0, 10) + '...' + this.filename.slice(this.filename.length - 3);
       }
+      this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
     }
   }
 }
