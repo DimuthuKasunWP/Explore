@@ -248,7 +248,7 @@ export class PostComponent implements OnInit {
   retrieveDate(date, type?) {
     if (date) {
       if (type === 'long') {
-        return this.dateFormat.transform(date, type);
+        return this.dateFormat.transform(date.toDate(), type);
       } else {
         const prevDate = date;
         const newDate = new Date();
