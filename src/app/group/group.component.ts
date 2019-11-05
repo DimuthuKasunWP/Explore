@@ -148,7 +148,7 @@ export class GroupComponent implements OnInit {
   }
 
   getDate() {
-    return this.datePipe.transform(this.createDate, 'month');
+    return this.datePipe.transform(this.createDate.toDate(), 'month');
   }
 
   open(content) {
