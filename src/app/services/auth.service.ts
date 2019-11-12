@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+// eslint-disable-next-line no-unused-vars
 import { Router } from '@angular/router';
 
+// eslint-disable-next-line no-unused-vars
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+// eslint-disable-next-line no-unused-vars
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs-compat/add/operator/switchMap';
-import { of } from 'rxjs/Observable/of';
 
 interface User {
   uid?: string;
@@ -20,7 +21,6 @@ interface User {
 
 @Injectable()
 export class AuthService {
-
   private updateData: User;
 
   user: Observable<User>;
@@ -34,10 +34,9 @@ export class AuthService {
   private profileusername: string;
   private status: string;
 
-  constructor(private afAuth: AngularFireAuth,
-              private afs: AngularFirestore,
-              private router: Router) {
-
+  constructor (private afAuth: AngularFireAuth,
+      private afs: AngularFirestore,
+      private router: Router) {
     /// Get User and Auth data
     this.authState = this.afAuth.authState;
     this.authState.subscribe(user => {
@@ -54,42 +53,44 @@ export class AuthService {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
-          return of(null);
+          return Observable.of(null);
         }
       });
   }
 
-  getAuth() {
+  getAuth () {
     return this.afAuth.auth;
   }
 
-
-  getAuthState() {
+  getAuthState () {
     return this.afAuth.authState;
   }
-  emailLogin(email, password) {
+
+  emailLogin (email, password) {
     this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
-  googleLogin() {
+
+  googleLogin () {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
-  private oAuthLogin(provider) {
+
+  private oAuthLogin (provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.afs.doc('users/' + credential.user.uid).valueChanges().subscribe(
           user => {
-          if (user) {
-            this.router.navigateByUrl('/home');
-          } else {
-            this.afAuth.auth.signOut()
-            .then(() => this.router.navigateByUrl('/signup'));
-          }
-        });
+            if (user) {
+              this.router.navigateByUrl('/home');
+            } else {
+              this.afAuth.auth.signOut()
+                .then(() => this.router.navigateByUrl('/signup'));
+            }
+          });
       });
   }
 
-  register(userdata) {
+  register (userdata) {
     if (userdata.type === 'google') {
       this.googleRegister(userdata);
     }
@@ -98,54 +99,56 @@ export class AuthService {
     }
   }
 
-  private emailRegister(formdata) {
+  private emailRegister (formdata) {
     this.afAuth.auth.createUserWithEmailAndPassword(formdata.email, formdata.password)
-    .then(() => {
-      this.getAuthState().subscribe(user => {
-        if (user) {
-          const userData = {
-            uid: user.uid,
-            email: user.email,
-            displayName: formdata.displayname,
-            status: 'Hi, I am using Scribe',
-            userName: formdata.username,
-          };
-          this.updateUserData(userData);
-        }
+      .then(() => {
+        this.getAuthState().subscribe(user => {
+          if (user) {
+            const userData = {
+              uid: user.uid,
+              email: user.email,
+              displayName: formdata.displayname,
+              status: 'Hi, I am using Explore',
+              userName: formdata.username
+            };
+            this.updateUserData(userData);
+          }
+        });
       });
-    });
   }
 
-  private googleRegister(formdata) {
+  private googleRegister (formdata) {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-    .then(credential => {
-      const user = credential.user;
-      const userData = {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        status: 'Hi, I am using Scribe',
-        userName: formdata.username,
-      };
-      this.updateUserData(userData);
-    });
+      .then(credential => {
+        const user = credential.user;
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName,
+          photoURL: user.photoURL,
+          status: 'Hi, I am using Explore' +
+            '' +
+            '',
+          userName: formdata.username
+        };
+        this.updateUserData(userData);
+      });
   }
 
-  private updateUserData(user) {
-
+  private updateUserData (user) {
     // check if user already exists
     this.userCollection = this.afs.collection('users', ref => ref.where('uid', '==', user.uid));
     this.userObs = this.userCollection.valueChanges();
-    this.userObs.forEach( userobj => {
+    this.userObs.forEach(userobj => {
       console.log('Existing User logged in- ', userobj[0].userName);
     })
-    .then(
-      (success) => {
-        this.router.navigateByUrl('/home');
-      })
-    .catch (
-      (err) => {
+      .then(
+        (success) => {
+          this.router.navigateByUrl('/home');
+        })
+      .catch(
+        // eslint-disable-next-line handle-callback-err
+        (err) => {
         // setup user data in firestore on login
           console.log('New User login.\nSetting up user in database.');
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
@@ -154,8 +157,8 @@ export class AuthService {
             uid: user.uid,
             email: user.email,
             displayName: user.displayName,
-            photoURL: user.photoURL ? user.photoURL : 'https://scribe-angular.firebaseapp.com/assets/images/default-profile.jpg',
-            status: 'Hi, I am using Scribe',
+            photoURL: user.photoURL ? user.photoURL : 'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg',
+            status: 'Hi, I am using Explore',
             userName: user.userName,
             joinDate: firebase.firestore.FieldValue.serverTimestamp()
           };
@@ -168,34 +171,35 @@ export class AuthService {
         });
   }
 
-  logout() {
+  logout () {
     this.afAuth.auth.signOut().then(
       () => {
-      console.log('User logged out successfully.');
-      this.router.navigateByUrl('/login');
-    });
+        console.log('User logged out successfully.');
+        this.router.navigateByUrl('/login');
+      });
   }
 
-  updateUser(displayname, username, status) {
+  updateUser (displayname, username, status) {
     const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
     this.updateData = {
       userName: username,
-      status,
-      displayName: displayname,
+      status: status,
+      displayName: displayname
     };
     return updateRef.update(this.updateData);
   }
 
-  updatePhotoURL(photourl) {
+  updatePhotoURL (photourl) {
     const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
     this.updateData = {
-      photoURL : photourl
+      photoURL: photourl
     };
     return updateRef.update(this.updateData);
   }
 
+
   // Check if user is logged in or not
-  checkNotLogin() {
+  checkNotLogin () {
     this.afAuth.authState.subscribe(
       user => {
         if (user) {
@@ -204,7 +208,7 @@ export class AuthService {
       });
   }
 
-  checkLogin() {
+  checkLogin () {
     this.afAuth.authState.subscribe(
       user => {
         if (!user) {

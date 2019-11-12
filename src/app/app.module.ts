@@ -32,34 +32,34 @@ import { NotificationService } from './services/notification.service';
 
 // Components
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
-import { FooterComponent } from './components/footer/footer.component';
-import { LandingComponent } from './components/landing/landing.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ErrorComponent } from './components/error/error.component';
-import { AccountComponent } from './components/account/account.component';
-import { PostComponent } from './components/post/post.component';
-import { SearchComponent } from './components/search/search.component';
-import { AboutComponent } from './components/about/about.component';
-import { AddPostComponent } from './components/add-post/add-post.component';
-import { UserListComponent } from './components/user-list/user-list.component';
-import { UserComponent } from './components/user-list/user/user.component';
-import { GroupComponent } from './components/group/group.component';
-import { AddCommentComponent } from './components/add-comment/add-comment.component';
-import { CreateGroupComponent } from './components/create-group/create-group.component';
-import { MessagingComponent } from './components/messaging/messaging.component';
-import { ChatroomComponent } from './components/messaging/chatroom/chatroom.component';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { LandingComponent } from './landing/landing.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ErrorComponent } from './error/error.component';
+import { AccountComponent } from './account/account.component';
+import { PostComponent } from './post/post.component';
+import { SearchComponent } from './search/search.component';
+import { AboutComponent } from './about/about.component';
+import { AddPostComponent } from './add-post/add-post.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserComponent } from './user-list/user/user.component';
+import { GroupComponent } from './group/group.component';
+import { AddCommentComponent } from './add-comment/add-comment.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
+import { MessagingComponent } from './messaging/messaging.component';
+import { ChatroomComponent } from './messaging/chatroom/chatroom.component';
 import { MessageService } from './services/message.service';
-import { ChatroomlistComponent } from './components/messaging/chatroomlist/chatroomlist.component';
-import { MessageComponent } from './components/messaging/chatroom/message/message.component';
-import { SuggestedComponent } from './components/suggested/suggested.component';
-import { FeedbackComponent } from './components/feedback/feedback.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { GrouplistComponent } from './components/group/grouplist/grouplist.component';
-import { NotificationComponent } from './components/notification/notification.component';
+import { ChatroomlistComponent } from './messaging/chatroomlist/chatroomlist.component';
+import { MessageComponent } from './messaging/chatroom/message/message.component';
+import { SuggestedComponent } from './suggested/suggested.component';
+import { FeedbackComponent } from './feedback/feedback.component';
+import { AdminComponent } from './admin/admin.component';
+import { GrouplistComponent } from './group/grouplist/grouplist.component';
+import { NotificationComponent } from './notification/notification.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -163,12 +163,12 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     NgbModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase, 'Scribe'),
+    AngularFireModule.initializeApp(environment.firebase, 'Explore'),
     AngularFirestoreModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
