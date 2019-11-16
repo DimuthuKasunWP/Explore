@@ -67,6 +67,11 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatInputModule} from '@angular/material';
 import {MatCardModule} from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMenuModule} from '@angular/material';
+import {MatCheckboxModule} from '@angular/material';
+import {MatIconModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material';
 
 
 firebase.initializeApp(environment.firebase);
@@ -192,7 +197,13 @@ const routes: Routes = [
     MatFormFieldModule,
     MatTabsModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    MatDatepickerModule,
+
+    MatMenuModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatNativeDateModule
   ],
   providers: [
     AuthService,
@@ -205,7 +216,8 @@ const routes: Routes = [
     NotificationService,
     DateFormatPipe,
     LinkifyPipe,
-    MessageService
+    MessageService,
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [

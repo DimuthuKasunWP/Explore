@@ -5,6 +5,7 @@
 
 .example-container > * {
   width: 200px;
+  margin: 50px;
 }
 
 border-bottom: 1px solid #f48fb1;
@@ -18,7 +19,7 @@ box-shadow: 0 1px 0 0 #f48fb1;
   text-align: center;
   display: inline-block;
   padding: 5px;
-} 
+}
 
 
 .example-header-image {
