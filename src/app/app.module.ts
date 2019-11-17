@@ -72,7 +72,8 @@ import {MatMenuModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material';
 import {MatIconModule} from '@angular/material';
 import {MatNativeDateModule} from '@angular/material';
-
+import { PopupWindowComponent } from './popup-window/popup-window.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 firebase.initializeApp(environment.firebase);
 
@@ -139,6 +140,10 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
+    path: 'popup-window',
+    component: PopupWindowComponent
+  },
+  {
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full'
@@ -179,7 +184,8 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent,
-    EventComponent
+    EventComponent,
+    PopupWindowComponent
     ],
   imports: [
     BrowserModule,
@@ -199,11 +205,11 @@ const routes: Routes = [
     MatInputModule,
     MatCardModule,
     MatDatepickerModule,
-
     MatMenuModule,
     MatCheckboxModule,
     MatIconModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDialogModule
   ],
   providers: [
     AuthService,
