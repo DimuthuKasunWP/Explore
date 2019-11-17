@@ -6,6 +6,7 @@
           <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
             aria-label="Search">
       </form>
+  
       <br><br><br>
       <h2>Your events</h2>
       <div class="card" >
@@ -208,17 +209,23 @@
             </div>
           </div>
           Start date
-          <input matInput [matDatepicker]="picker" placeholder="start date" disabled>
-          <mat-datepicker #picker disabled="false"></mat-datepicker>
-          <br>
-          <br><br><br>
-          <button type="button" class="btn btn-danger">Reset</button>
-          <button type="button" class="btn btn-primary">Submit</button>
-
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <br>
+        End date
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker1" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
       </form>
 
-
+      <button type="button" class="btn btn-danger">Reset</button>
+      <button type="button" class="btn btn-primary">Submit</button>
   </mat-tab>
 </mat-tab-group>
 
