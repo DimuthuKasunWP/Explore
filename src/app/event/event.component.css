@@ -34,4 +34,23 @@ box-shadow: 0 1px 0 0 #f48fb1;
   border: 0px;
 }
 
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: relative;
+  margin: 1em;
+}
 
+.mat-card {
+  padding: 0;
+  max-width: 600px;
+  margin: 3rem auto;
+}
