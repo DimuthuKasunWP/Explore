@@ -3,8 +3,9 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private titleService: Title,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) { }
 
   emailform = new FormGroup({
