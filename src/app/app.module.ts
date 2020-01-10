@@ -61,6 +61,8 @@ import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
 import { PasswdresetComponent } from './passwdreset/passwdreset.component';
+import { AddMembersComponent } from './add-members/add-members.component';
+import { GroupsearchComponent } from './groupsearch/groupsearch.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -168,7 +170,9 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent,
-    PasswdresetComponent
+    PasswdresetComponent,
+    AddMembersComponent,
+    GroupsearchComponent
     ],
   imports: [
     BrowserModule,
