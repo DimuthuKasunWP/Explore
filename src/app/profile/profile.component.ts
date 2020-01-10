@@ -246,15 +246,15 @@ export class ProfileComponent implements OnInit {
   openChatroom() {
     console.log("entered"+this.currentuid);
       this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
-        console.log("chat room id"+chatroom[0]);
+        console.log("chat room id"+chatroom[0].rid);
         if (chatroom[0]) {
-
+          console.log("exsisting");
           this.room = chatroom[0];
           this.open();
         } else {
           console.log("first");
           this.msgService.createChatroom(this.userid);
-
+          this.room=this.msgService.room;
           console.log("opening");
           this.open();
         }
