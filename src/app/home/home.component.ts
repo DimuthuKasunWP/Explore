@@ -83,9 +83,11 @@ export class HomeComponent implements OnInit {
     this.auth.getAuthState().subscribe(
       user => {
         if (user) {
+          console.log("user id is"+user.uid);
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
+                console.log("entered");
                 this.displayName = userDoc.displayName;
                 this.userName = userDoc.userName;
                 this.photoURL = userDoc.photoURL;

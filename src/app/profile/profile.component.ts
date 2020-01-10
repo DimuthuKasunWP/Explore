@@ -102,6 +102,7 @@ export class ProfileComponent implements OnInit {
           this.status = uservar.status;
           this.photoURL = uservar.photoURL;
           this.userid = uservar.uid;
+          console.log("profile user id"+this.userid);
           this.joinDate = uservar.joinDate ? uservar.joinDate.toDate() : this.joinDate;
           this.totalScribes = uservar.totalScribes ? uservar.totalScribes : 0;
           this.totalFollowing = uservar.totalFollowing ? uservar.totalFollowing : 0;
@@ -243,12 +244,18 @@ export class ProfileComponent implements OnInit {
   }
 
   openChatroom() {
+    console.log("entered"+this.currentuid);
       this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
+        console.log("chat room id"+chatroom[0]);
         if (chatroom[0]) {
+
           this.room = chatroom[0];
           this.open();
         } else {
+          console.log("first");
           this.msgService.createChatroom(this.userid);
+
+          console.log("opening");
           this.open();
         }
       });
@@ -260,11 +267,14 @@ export class ProfileComponent implements OnInit {
     }
 
     open() {
+
       this.modalRef = this.modalService.open(this.modalContent, {
         size: 'lg',
         windowClass: 'modal-style'
       });
+      console.log("this is the room"+this.room);
       if (this.room) {
+        console.log("enter to the chat room;");
         history.pushState(null, null, 'chatroom/' + this.room.rid);
       }
       this.modalRef.result.then((result) => {

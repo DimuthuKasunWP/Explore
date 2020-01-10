@@ -45,6 +45,7 @@ export class MessageService {
     this.auth.getAuthState().subscribe(
       curruser => {
         const rid = this.afs.createId();
+        console.log("room id created");
         const roomData = {
           rid: rid,
           lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
@@ -54,11 +55,11 @@ export class MessageService {
           let data = {
             uid: profileuid
           };
-          this.afs.doc('messaging/' + rid + '/users/' + profileuid).set(data);
+          this.afs.doc('messaging/' + curruser.uid + '/users/' + profileuid).set(data);
           data = {
             uid: curruser.uid
           };
-          this.afs.doc('messaging/' + rid + '/users/' + curruser.uid).set(data);
+          this.afs.doc('messaging/' + profileuid + '/users/' + curruser.uid).set(data);
         });
       });
   }
@@ -81,11 +82,13 @@ export class MessageService {
         text: msgData.text,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       };
-      this.afs.doc('messaging/' + msgData.rid + '/messages/' + mid).set(msg);
+      this.afs.doc('messaging/' + msgData.uid + '/messages/' + mid).set(msg);
+      this.afs.doc('messaging/' + mid+ '/messages/' + msgData.uid).set(msg);
     });
   }
 
   getChatroom(profileuid, currentuid) {
-    return this.afs.collection('users/' + currentuid + '/messaging', ref => ref.where('uid', '==', profileuid)).valueChanges();
+    //console.log("profile uid and current uid"+profileuid+"helloo"+currentuid);
+    return this.afs.collection('messaging/' + currentuid + '/users', ref => ref.where('uid', '==', profileuid)).valueChanges();
   }
 }
