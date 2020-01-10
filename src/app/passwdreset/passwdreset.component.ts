@@ -45,10 +45,12 @@ export class PasswdresetComponent implements OnInit {
   reset(email: string) {
     console.log(email);
     var auth = firebase.auth();
+  
     return auth.sendPasswordResetEmail(email)
-      .then(() => console.log("email sent"))
-      .catch((error) => console.log(error))
+      .then(() => this.open("Please check your email "));
+
   }
+ 
 
 
 

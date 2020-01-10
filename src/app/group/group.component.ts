@@ -3,7 +3,7 @@ import { UploadService } from './../services/upload.service';
 import { CreateGroupComponent } from './../create-group/create-group.component';
 import { AuthService } from './../services/auth.service';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { PostsService } from '../services/posts.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GroupService } from '../services/group.service';
@@ -17,6 +17,9 @@ import { PlatformLocation } from '@angular/common';
   styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
+  
+  @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+
 
   gid;
   gname;
@@ -160,6 +163,18 @@ export class GroupComponent implements OnInit {
     });
   }
 
+  see(){
+    this.modalRef = this.modalService.open(this.modalContent, {
+      size: 'lg',
+      windowClass: 'modal-style'
+    });
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -179,4 +194,9 @@ export class GroupComponent implements OnInit {
       this.uploadService.pushUpload(file, 'group', this.gid);
     }
   }
+
+addMembers(){
+  this.see();
+}
+
 }
