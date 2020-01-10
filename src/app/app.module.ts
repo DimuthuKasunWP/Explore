@@ -60,6 +60,7 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -123,10 +124,14 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
-    path: '**',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    path:'passwdreset',
+    component:PasswdresetComponent
   }
+  // {
+  //   path: '**',
+  //   redirectTo: '/home',
+  //   pathMatch: 'full'
+  // }
 ];
 
 
@@ -162,7 +167,8 @@ const routes: Routes = [
     FeedbackComponent,
     AdminComponent,
     GrouplistComponent,
-    NotificationComponent
+    NotificationComponent,
+    PasswdresetComponent
     ],
   imports: [
     BrowserModule,
