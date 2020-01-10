@@ -5,7 +5,7 @@ import * as firebase from 'firebase';
 
 @Injectable()
 export class MessageService {
-
+room;
   constructor(
     private afs: AngularFirestore,
     private auth: AuthService
@@ -45,11 +45,13 @@ export class MessageService {
     this.auth.getAuthState().subscribe(
       curruser => {
         const rid = this.afs.createId();
+
         console.log("room id created");
         const roomData = {
           rid: rid,
           lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
         };
+        this.room=roomData;
         this.afs.doc('messaging/' + rid).set(roomData)
         .then(() => {
           let data = {
