@@ -251,13 +251,12 @@ export class ProfileComponent implements OnInit {
       this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
         if (chatroom[0]) {
           console.log("exsisting");
-          this.room = chatroom[0];
+          this.rid = chatroom[0];
           this.open();
         } else {
           console.log("first");
-          const rid = this.afs.createId();
-          this.rid=rid;
-          this.room=rid;
+          this.rid= this.afs.createId();
+          this.room=this.rid;
           this.room=this.msgService.createChatroom(this.userid,this.rid);
           console.log("opening"+this.room);
           this.open();
@@ -277,7 +276,7 @@ export class ProfileComponent implements OnInit {
         windowClass: 'modal-style'
       });
       console.log("this is the room"+this.rid);
-      if (this.room) {
+      if (this.rid) {
         console.log("enter to the chat room;");
         history.pushState(null, null, 'chatroom/' + this.rid);
       }
