@@ -12,22 +12,22 @@ room;
   ) { }
 
   getChatrooms(uid) {
-    return this.afs.collection('/users/' + uid + '/messaging', ref => ref.orderBy('lastUpdate', 'desc')).valueChanges();
+    return this.afs.collection('/messaging/' + uid + '/users', ref => ref.orderBy('lastUpdate', 'desc')).valueChanges();
   }
 
-  checkChatroom(profileuid) {
-    this.auth.getAuthState().subscribe(curruser => {
-      const currentuid = curruser.uid;
-      this.afs.collection('users/' + curruser.uid + '/messaging', ref => ref.where('uid', '==', profileuid)).valueChanges()
-      .subscribe(chatroom => {
-        if (chatroom.length === 1) {
-          console.log('open chatroom modal');
-        } else {
-          this.createChatroom(profileuid);
-        }
-      });
-    });
-  }
+  // checkChatroom(profileuid) {
+  //   this.auth.getAuthState().subscribe(curruser => {
+  //     const currentuid = curruser.uid;
+  //     this.afs.collection('messaging/' + curruser.uid + '/users', ref => ref.where('uid', '==', profileuid)).valueChanges()
+  //     .subscribe(chatroom => {
+  //       if (chatroom.length === 1) {
+  //         console.log('open chatroom modal');
+  //       } else {
+  //         this.createChatroom(profileuid);
+  //       }
+  //     });
+  //   });
+  // }
 
   clearUnread(rid) {
     this.auth.getAuthState().subscribe(curruser => {
@@ -41,12 +41,11 @@ room;
     return this.afs.doc('users/' + uid + '/messaging/' + rid).valueChanges();
   }
 
-  createChatroom(profileuid) {
+  createChatroom(profileuid,rid) {
     this.auth.getAuthState().subscribe(
       curruser => {
-        const rid = this.afs.createId();
 
-        console.log("room id created");
+
         const roomData = {
           rid: rid,
           lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
@@ -57,17 +56,20 @@ room;
           let data = {
             uid: profileuid
           };
-          this.afs.doc('messaging/' + curruser.uid + '/users/' + profileuid).set(data);
+          this.afs.doc('messaging/' + rid + '/users/' + profileuid).set(data);
           data = {
             uid: curruser.uid
           };
-          this.afs.doc('messaging/' + profileuid + '/users/' + curruser.uid).set(data);
+          this.afs.doc('messaging/' + rid + '/users/' + curruser.uid).set(data);
         });
+
+        return rid;
       });
+
   }
 
   getUnread(uid) {
-    return this.afs.collection('users/' + uid + '/messaging', ref => ref.where('unread', '==', true)).valueChanges();
+    return this.afs.collection('messaging/' + uid + '/users', ref => ref.where('unread', '==', true)).valueChanges();
   }
 
   getMessages(rid) {
@@ -84,8 +86,8 @@ room;
         text: msgData.text,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       };
-      this.afs.doc('messaging/' + msgData.uid + '/messages/' + mid).set(msg);
-      this.afs.doc('messaging/' + mid+ '/messages/' + msgData.uid).set(msg);
+      this.afs.doc('messaging/' + msgData.rid + '/messages/' + mid).set(msg);
+
     });
   }
 

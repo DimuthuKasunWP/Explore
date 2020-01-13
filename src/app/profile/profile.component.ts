@@ -13,6 +13,7 @@ import { AddPostComponent } from '../add-post/add-post.component';
 import { LikesService } from '../services/likes.service';
 import { MessageService } from '../services/message.service';
 import { PlatformLocation } from '@angular/common';
+import {AngularFirestore} from 'angularfire2/firestore';
 // import { CheckType } from '@angular/core/src/view';
 
 @Component({
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   modalRef;
   closeResult;
   room;
+  rid;
 
   displayName;
   userName;
@@ -76,7 +78,8 @@ export class ProfileComponent implements OnInit {
     private modalService: NgbModal,
     private location: PlatformLocation,
     private datePipe: DateFormatPipe,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private afs: AngularFirestore
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -246,16 +249,17 @@ export class ProfileComponent implements OnInit {
   openChatroom() {
     console.log("entered"+this.currentuid);
       this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
-        console.log("chat room id"+chatroom[0].rid);
         if (chatroom[0]) {
           console.log("exsisting");
           this.room = chatroom[0];
           this.open();
         } else {
           console.log("first");
-          this.msgService.createChatroom(this.userid);
-          this.room=this.msgService.room;
-          console.log("opening");
+          const rid = this.afs.createId();
+          this.rid=rid;
+          this.room=rid;
+          this.room=this.msgService.createChatroom(this.userid,this.rid);
+          console.log("opening"+this.room);
           this.open();
         }
       });
@@ -272,10 +276,10 @@ export class ProfileComponent implements OnInit {
         size: 'lg',
         windowClass: 'modal-style'
       });
-      console.log("this is the room"+this.room);
+      console.log("this is the room"+this.rid);
       if (this.room) {
         console.log("enter to the chat room;");
-        history.pushState(null, null, 'chatroom/' + this.room.rid);
+        history.pushState(null, null, 'chatroom/' + this.rid);
       }
       this.modalRef.result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
