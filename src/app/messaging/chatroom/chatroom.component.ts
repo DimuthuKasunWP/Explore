@@ -30,6 +30,7 @@ export class ChatroomComponent implements OnInit {
       this.auth.getAuthState().subscribe(curruser => {
         if (curruser) {
           this.userService.retrieveUserDocumentFromID(this.room.uid).subscribe(user => {
+            console.log("entered to the  ngoninit");
             this.room = {
               displayName: user.displayName,
               userName: user.userName,

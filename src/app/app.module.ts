@@ -13,6 +13,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 import * as firebase from 'firebase';
+import {AgmCoreModule} from '@agm/core';
 
 
 // Pipes and Directives
@@ -202,8 +203,7 @@ const routes: Routes = [
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent
-
-    ],
+  ],
   imports: [
     BrowserModule,
     NgbModule,
@@ -226,7 +226,10 @@ const routes: Routes = [
     MatCheckboxModule,
     MatIconModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsKey
+    })
   ],
   providers: [
     AuthService,
