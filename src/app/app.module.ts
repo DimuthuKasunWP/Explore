@@ -60,10 +60,26 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+
+import { EventComponent } from './event/event.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
 
+
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatInputModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMenuModule} from '@angular/material';
+import {MatCheckboxModule} from '@angular/material';
+import {MatIconModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material';
+import { PopupWindowComponent } from './popup-window/popup-window.component';
+import {MatDialogModule} from '@angular/material/dialog';
 
 firebase.initializeApp(environment.firebase);
 
@@ -76,6 +92,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'event',
+    component: EventComponent
   },
   {
     path: 'user/:username',
@@ -126,8 +146,17 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
+
+    path: 'popup-window',
+    component: PopupWindowComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/home',
+    pathMatch: 'full',
     path:'passwdreset',
     component:PasswdresetComponent
+
   }
   // {
   //   path: '**',
@@ -170,9 +199,12 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent,
+    EventComponent,
+    PopupWindowComponent,
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent
+
     ],
   imports: [
     BrowserModule,
@@ -185,7 +217,18 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ChartsModule,
     ReactiveFormsModule,
-    NgxAutoScrollModule
+    NgxAutoScrollModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatTabsModule,
+    MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatDialogModule
   ],
   providers: [
     AuthService,
@@ -198,7 +241,8 @@ const routes: Routes = [
     NotificationService,
     DateFormatPipe,
     LinkifyPipe,
-    MessageService
+    MessageService,
+    MatDatepickerModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [
