@@ -72,4 +72,11 @@ export class SearchComponent implements OnInit {
     this.router.navigateByUrl('user/' + username);
   }
 
+  addGroup(val){
+    localStorage.setItem('gid',val);
+
+    // console.log(val);
+    console.log("inside add group");
+  }
+
 }

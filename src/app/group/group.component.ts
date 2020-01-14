@@ -64,6 +64,7 @@ export class GroupComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(localStorage.getItem("gid"));
     this.route.params.subscribe(
       routeurl => {
         this.gid = routeurl.gid;
