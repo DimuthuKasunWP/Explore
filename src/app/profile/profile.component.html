@@ -91,5 +91,5 @@
 </ng-template>
 
 <ng-template #modalContainer>
-  <app-chatroom [room]="room" [modalRef]="modalRef" *ngIf="room; else Loading"></app-chatroom>
+  <app-chatroom [room]="room" [modalRef]="modalRef" *ngIf="rid; else Loading"></app-chatroom>
 </ng-template>

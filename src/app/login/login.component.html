@@ -22,9 +22,14 @@
       <button id="login-btn" class="btn btn-dark py-2" (click)="login('email')">Login</button>
 <!--      <h6 class="align-self-center my-1">or</h6>-->
 <!--      <button id="google-btn" class="btn btn-dark py-2" (click)="login('google')">Google</button>-->
+       <!-- <[routerLink]="['/passwsreset']" routerLinkActive="router-link-active" > -->
+       <a href="" [routerLink]="['/passwdreset']" routerLinkActive="router-link-active">Forgot Password?</a>
     </div>
   </div>
 </div>
+
+
+ 
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="p-5">

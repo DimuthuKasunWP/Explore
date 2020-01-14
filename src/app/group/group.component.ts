@@ -19,7 +19,6 @@ import { PlatformLocation } from '@angular/common';
 export class GroupComponent implements OnInit {
   
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
-  
 
 
   gid;
@@ -131,7 +130,7 @@ export class GroupComponent implements OnInit {
     this.auth.getAuthState().subscribe(currentuser => {
       if (currentuser) {
         this.afs.doc('groups/' + this.gid + '/members/' + currentuser.uid)
-        .valueChanges()
+          .valueChanges()
         .subscribe(user => {
           if (user) {
             this.isSubbed = true;
