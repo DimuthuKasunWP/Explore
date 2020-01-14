@@ -6,12 +6,12 @@
           <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
             aria-label="Search">
       </form>
-  
+
       <br><br><br>
       <h2>Your events</h2>
       <div class="card" >
       <mat-card class="example-card">
-          <img routerLink="../popup-window" class="myImg" mat-card-image src="../../assets/images/event1.jpg" alt="Photo of a Shiba Inu">
+          <img (click)="openDialog()" class="myImg" mat-card-image src="../../assets/images/event1.jpg" alt="Photo of a Shiba Inu">
           <mat-card-content>
             <p>
               This is Fijian event.
@@ -141,8 +141,8 @@
         <button type="button" class="btn btn-outline-danger">Social awareness programs</button>
         <button type="button" class="btn btn-outline-danger">Exhibitions</button>
       </mat-tab>
-  <mat-tab label="Calender"> 
-    
+  <mat-tab label="Calender">
+
     <div class="row">
       <div class="col-4">
         <div class="list-group" id="list-tab" role="tablist">
@@ -227,7 +227,7 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
-       
+
 
       </form>
 
