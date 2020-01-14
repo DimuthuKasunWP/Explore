@@ -197,6 +197,7 @@ export class AuthService {
     return updateRef.update(this.updateData);
   }
 
+
   // Check if user is logged in or not
   checkNotLogin () {
     this.afAuth.authState.subscribe(

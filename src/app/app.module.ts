@@ -60,8 +60,14 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+
 import { EventComponent } from './event/event.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { PasswdresetComponent } from './passwdreset/passwdreset.component';
+import { AddMembersComponent } from './add-members/add-members.component';
+import { GroupsearchComponent } from './groupsearch/groupsearch.component';
+
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -140,14 +146,23 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
+
     path: 'popup-window',
     component: PopupWindowComponent
   },
   {
     path: '**',
     redirectTo: '/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    path:'passwdreset',
+    component:PasswdresetComponent
+
   }
+  // {
+  //   path: '**',
+  //   redirectTo: '/home',
+  //   pathMatch: 'full'
+  // }
 ];
 
 
@@ -185,7 +200,11 @@ const routes: Routes = [
     GrouplistComponent,
     NotificationComponent,
     EventComponent,
-    PopupWindowComponent
+    PopupWindowComponent,
+    PasswdresetComponent,
+    AddMembersComponent,
+    GroupsearchComponent
+
     ],
   imports: [
     BrowserModule,

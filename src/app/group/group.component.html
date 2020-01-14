@@ -43,6 +43,7 @@
                 </div>
               </div>
               <small (click)="open(MemberList)" class="text-primary">All Members</small>
+              <small (click)="addMembers()" class="text-primary">Add Members</small>
           </div>
         </div>
       </div>
@@ -66,11 +67,7 @@
   <app-error error="nogroup"></app-error>
 </ng-template>
 
-<ng-template #Loading>
-  <div class="text-center pt-5">
-    <i class="fa fa-spinner fa-3x fa-spin text-primary" aria-hidden="true"></i>
-  </div>
-</ng-template>
+
 
 <ng-template #MemberList let-c="close" let-d="dismiss">
   <div class="p-2">
@@ -88,3 +85,14 @@
 <ng-template #EditGroup>
   <app-create-group [groupDetails]="{gid: gid, desc: desc, gname: gname}" [modalRef]="modalRef"></app-create-group>
 </ng-template>
+
+<ng-template #addmembers>
+  <app-add-members  [modalRef]="modalRef" ></app-add-members>
+</ng-template>
+
+<ng-template #Loading>
+  <div class="text-center py-5">
+    <i class="fa fa-spinner fa-3x fa-spin text-primary" aria-hidden="true"></i>
+  </div>
+</ng-template>
+

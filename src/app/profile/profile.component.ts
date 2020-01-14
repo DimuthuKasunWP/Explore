@@ -13,6 +13,7 @@ import { AddPostComponent } from '../add-post/add-post.component';
 import { LikesService } from '../services/likes.service';
 import { MessageService } from '../services/message.service';
 import { PlatformLocation } from '@angular/common';
+import {AngularFirestore} from 'angularfire2/firestore';
 // import { CheckType } from '@angular/core/src/view';
 
 @Component({
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
   modalRef;
   closeResult;
   room;
+  rid;
 
   displayName;
   userName;
@@ -76,7 +78,8 @@ export class ProfileComponent implements OnInit {
     private modalService: NgbModal,
     private location: PlatformLocation,
     private datePipe: DateFormatPipe,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private afs: AngularFirestore
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -102,7 +105,8 @@ export class ProfileComponent implements OnInit {
           this.status = uservar.status;
           this.photoURL = uservar.photoURL;
           this.userid = uservar.uid;
-          this.joinDate = uservar.joinDate ? uservar.joinDate : this.joinDate;
+          console.log("profile user id"+this.userid);
+          this.joinDate = uservar.joinDate ? uservar.joinDate.toDate() : this.joinDate;
           this.totalScribes = uservar.totalScribes ? uservar.totalScribes : 0;
           this.totalFollowing = uservar.totalFollowing ? uservar.totalFollowing : 0;
           this.totalFollowers = uservar.totalFollowers ? uservar.totalFollowers : 0;
@@ -243,28 +247,38 @@ export class ProfileComponent implements OnInit {
   }
 
   openChatroom() {
+    console.log("entered"+this.currentuid);
       this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
         if (chatroom[0]) {
-          this.room = chatroom[0];
+          console.log("exsisting");
+          this.rid = chatroom[0];
           this.open();
         } else {
-          this.msgService.createChatroom(this.userid);
+          console.log("first");
+          this.rid= this.afs.createId();
+          this.room=this.rid;
+          this.room=this.msgService.createChatroom(this.userid,this.rid);
+          console.log("opening"+this.room);
           this.open();
         }
       });
     }
 
     getJoinDate() {
-      return this.datePipe.transform(this.joinDate, 'month');
+    console.log(this.joinDate);
+      return this.datePipe.transform((this.joinDate), 'month');
     }
 
     open() {
+
       this.modalRef = this.modalService.open(this.modalContent, {
         size: 'lg',
         windowClass: 'modal-style'
       });
-      if (this.room) {
-        history.pushState(null, null, 'chatroom/' + this.room.rid);
+      console.log("this is the room"+this.rid);
+      if (this.rid) {
+        console.log("enter to the chat room;");
+        history.pushState(null, null, 'chatroom/' + this.rid);
       }
       this.modalRef.result.then((result) => {
         this.closeResult = `Closed with: ${result}`;

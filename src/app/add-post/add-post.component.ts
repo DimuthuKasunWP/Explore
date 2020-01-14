@@ -51,6 +51,7 @@ export class AddPostComponent implements OnInit {
   ) { }
 
   ngOnInit () {
+    this.pid = this.afs.createId();
     this.route = this.router.url.slice(1, 5);
     if (this.route === 'user') {
       this.textareaClass = 'form-control col-12 mx-1 my-2';
@@ -89,7 +90,6 @@ export class AddPostComponent implements OnInit {
     this.contract();
     if (!this.type) {
       if (this.postBody || this.inputFile.size < 2000000) {
-        this.pid = this.afs.createId();
         const newPost = {
           body: this.postBody,
           imgURL: this.imgURL ? this.imgURL : null,
@@ -120,6 +120,7 @@ export class AddPostComponent implements OnInit {
   }
 
   processImage(event) {
+    console.log("this is process image");
     this.inputFile = event.target.files[0];
     this.filename = this.inputFile.name;
     if (this.inputFile.size > 2000000) {
@@ -128,6 +129,8 @@ export class AddPostComponent implements OnInit {
       if (this.filename.length > 25) {
         this.filename = this.filename.slice(0, 10) + '...' + this.filename.slice(this.filename.length - 3);
       }
+      console.log('pid is the ' + this.pid);
+      this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
     }
   }
 }
