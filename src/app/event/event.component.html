@@ -209,9 +209,8 @@
 
           <div class="mb-3">
             <label for="validationTextarea">Description</label>
-            <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required description" required></textarea>
-            <div class="invalid-feedback">
-            </div>
+            <textarea class="form-control" id="validationTextarea" placeholder=" description" required></textarea>
+
           </div>
           Start date
         <mat-form-field>
@@ -227,12 +226,14 @@
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
 
-
+        <br>
+        <br>
+        <button type="button" class="btn btn-danger">Reset</button>
+        <button type="button" class="btn btn-primary">Submit</button>
 
       </form>
 
-      <button type="button" class="btn btn-danger">Reset</button>
-      <button type="button" class="btn btn-primary">Submit</button>
+
   </mat-tab>
 </mat-tab-group>
 
