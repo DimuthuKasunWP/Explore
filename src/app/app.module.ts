@@ -151,9 +151,7 @@ const routes: Routes = [
     component: PopupWindowComponent
   },
   {
-    path: '**',
-    redirectTo: '/home',
-    pathMatch: 'full',
+
     path:'passwdreset',
     component:PasswdresetComponent
 
