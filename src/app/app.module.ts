@@ -228,7 +228,8 @@ const routes: Routes = [
     MatNativeDateModule,
     MatDialogModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.googleMapsKey
+      apiKey: environment.googleMapsKey,
+      libraries: ['places']
     })
   ],
   providers: [
