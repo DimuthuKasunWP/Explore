@@ -13,5 +13,6 @@ export const environment = {
     storageBucket: 'xplore-1.appspot.com',
     messagingSenderId: '333841015232',
     appId: '1:333841015232:web:791ce71c25e29aedfba825'
-  }
+  },
+  googleMapsKey: 'AIzaSyD_gQGzi-IDe-KM69qlbUsOmKTvhuIscjg'
 };

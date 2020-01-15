@@ -19,7 +19,7 @@
     <div id="group-section">
       <h6 class="p-1 mb-0 align-self-center">Groups</h6><hr class="my-0">
       <div *ngFor="let group of groups">
-        <div id="search-result" class="p-1" *ngIf="group" routerLink="/group/{{group.gid}}">
+        <div id="search-result" class="p-1" *ngIf="group" routerLink="/group/{{group.gid}}" (click)="addGroup(group.gid)">
           <div id="text-wrapper" class="align-self-center ml-1">
             <span class="font-weight-bold align-self-center">{{group.gname}}</span>
           </div>

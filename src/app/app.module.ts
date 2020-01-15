@@ -13,6 +13,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 import * as firebase from 'firebase';
+import {AgmCoreModule} from '@agm/core';
 
 
 // Pipes and Directives
@@ -60,6 +61,10 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+import { PasswdresetComponent } from './passwdreset/passwdreset.component';
+import { AddMembersComponent } from './add-members/add-members.component';
+import { GroupsearchComponent } from './groupsearch/groupsearch.component';
+import { GmapsComponent } from './gmaps/gmaps.component';
 
 import { EventComponent } from './event/event.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -146,14 +151,11 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
-
     path: 'popup-window',
     component: PopupWindowComponent
   },
   {
-    path: '**',
-    redirectTo: '/home',
-    pathMatch: 'full',
+
     path:'passwdreset',
     component:PasswdresetComponent
 
@@ -199,13 +201,14 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent,
+    GmapsComponent,
     EventComponent,
     PopupWindowComponent,
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent
+  ],
 
-    ],
   imports: [
     BrowserModule,
     NgbModule,
@@ -228,7 +231,11 @@ const routes: Routes = [
     MatCheckboxModule,
     MatIconModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsKey,
+      libraries: ['places']
+    })
   ],
   providers: [
     AuthService,

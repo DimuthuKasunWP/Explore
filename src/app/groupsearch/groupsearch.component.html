@@ -4,7 +4,9 @@
       <div id="user-section">
         <h6 class="p-1 mb-0 align-self-center">Users</h6><hr class="my-0">
         <div *ngFor="let user of users">
-          <div id="search-result" class="p-1 row" *ngIf="user" (click)="sendRequest(user.userName)">
+
+          <div id="search-result" class="p-1 row" *ngIf="user" (click)="sendRequest(user.userName,user.uid)">
+
             <div id="img-wrapper" class="col-1 align-self-center">
               <img [src]="user.photoURL" width="32px" height="32px" class="circle">
             </div>

@@ -203,15 +203,14 @@
         <div class="form-group row">
           <label for="inputlocation" class="col-sm-2 col-form-label">Location</label>
           <div class="col-sm-10">
-            <input type="location" class="form-control" id="inputlocation" placeholder="Include a place or address">
+            <input type="location" class="form-control" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
           </div>
         </div>
 
           <div class="mb-3">
             <label for="validationTextarea">Description</label>
-            <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required description" required></textarea>
-            <div class="invalid-feedback">
-            </div>
+            <textarea class="form-control" id="validationTextarea" placeholder=" description" required></textarea>
+
           </div>
           Start date
         <mat-form-field>
@@ -223,16 +222,18 @@
         End date
         <mat-form-field>
           <input matInput [matDatepicker]="picker1" placeholder="Choose a date">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
 
-
+        <br>
+        <br>
+        <button type="button" class="btn btn-danger">Reset</button>
+        <button type="button" class="btn btn-primary">Submit</button>
 
       </form>
 
-      <button type="button" class="btn btn-danger">Reset</button>
-      <button type="button" class="btn btn-primary">Submit</button>
+
   </mat-tab>
 </mat-tab-group>
 

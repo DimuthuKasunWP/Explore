@@ -74,6 +74,7 @@ export class HomeComponent implements OnInit {
     }
     if (path === 'group' && location) {
       this.router.navigateByUrl('group/' + location);
+      localStorage.setItem('gid',location);
     }
     if (path === 'custom' && location) {
       this.router.navigateByUrl(location);
