@@ -61,9 +61,6 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
-import { PasswdresetComponent } from './passwdreset/passwdreset.component';
-import { AddMembersComponent } from './add-members/add-members.component';
-import { GroupsearchComponent } from './groupsearch/groupsearch.component';
 import { GmapsComponent } from './gmaps/gmaps.component';
 
 import { EventComponent } from './event/event.component';
