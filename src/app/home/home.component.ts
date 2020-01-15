@@ -10,6 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CreateGroupComponent } from '../create-group/create-group.component';
+import {FollowService} from '../services/follow.service';
 
 @Component({
   selector: 'app-home',
@@ -41,6 +42,7 @@ export class HomeComponent implements OnInit {
     private afs: AngularFirestore,
     private titleService: Title,
     private userService: UserService,
+    private follow: FollowService,
     private sanitizer: DomSanitizer,
     private modalService: NgbModal,
     private groupService: GroupService,
@@ -64,6 +66,11 @@ export class HomeComponent implements OnInit {
     this.auth.checkLogin();
     this.titleService.setTitle('Home');
     this.getCurrentUser();
+    this.loadPosts();
+  }
+  loadPosts(){
+
+
   }
   sendTo(path, location?) {
     if (path === 'profile') {
@@ -93,6 +100,7 @@ export class HomeComponent implements OnInit {
                 this.userName = userDoc.userName;
                 this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
+                this.getFollowData();
                 this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
                 this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
                 this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
@@ -124,7 +132,18 @@ export class HomeComponent implements OnInit {
         }
     });
   }
+  getFollowData() {
+    this.follow.getFollowers(this.userid).subscribe(
+      followers => {
+        this.totalFollowers=Object.keys(followers).length;
 
+      });
+    this.follow.getFollowing(this.userid).subscribe(
+      following => {
+        this.totalFollowing=Object.keys(following).length;
+
+      });
+  }
   createGroup(content) {
     this.modalRef = this.modalService.open(content, {
       size: 'lg',
