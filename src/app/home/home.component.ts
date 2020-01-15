@@ -66,12 +66,9 @@ export class HomeComponent implements OnInit {
     this.auth.checkLogin();
     this.titleService.setTitle('Home');
     this.getCurrentUser();
-    this.loadPosts();
-  }
-  loadPosts(){
-
 
   }
+
   sendTo(path, location?) {
     if (path === 'profile') {
       this.router.navigateByUrl('user/' + this.userName);
@@ -101,6 +98,7 @@ export class HomeComponent implements OnInit {
                 this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
                 this.getFollowData();
+                this.postsService.setUserFeedPosts(this.userid);
                 this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
                 this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
                 this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
@@ -108,7 +106,10 @@ export class HomeComponent implements OnInit {
 
                 // Get pids from user feed
                 this.postsService.getFeed(this.userid).subscribe(
-                  feedPosts => this.feedPosts = feedPosts
+                  feedPosts => {
+                    this.feedPosts = feedPosts;
+
+                  }
                 );
 
                 // Get user's groups
