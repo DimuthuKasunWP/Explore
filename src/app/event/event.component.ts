@@ -9,6 +9,12 @@ import {MapsAPILoader} from '@agm/core';
   styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
+  name;
+  description;
+  startdate;
+  enddate;
+  starttime;
+  endtime;
 
   latitude: number;
   longitude: number;
@@ -101,6 +107,11 @@ export class EventComponent implements OnInit {
       }
 
     });
+  }
+
+  saveEvent(){
+
+
   }
 
 
