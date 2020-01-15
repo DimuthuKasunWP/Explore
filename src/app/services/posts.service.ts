@@ -25,6 +25,7 @@ count=0;
 postcount=0;
 userpostcount=0;
 uid;
+date;
   constructor(
     private afs: AngularFirestore,
     private auth: AuthService,
@@ -41,14 +42,17 @@ uid;
                 posts=>{
                   // console.log("postes"+posts);
                   while (this.postcount<Object.keys(posts).length){
-                    console.log("post"+posts[this.postcount].pid);
+                    // console.log("post"+posts[this.postcount].pid);
                     var pid=posts[(this.postcount++)].pid;
 
                     // console.log("pid"+pid);
-                    
+                    this.getPost(pid).subscribe(data=>{
+                      this.date=data.date;
+
+                    });
                     let data=  {
-                      pid : uid,
-                      date :
+                      pid : pid,
+                      date :this.date
                     };
                     this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
                       .then(() => console.log('user ', uid, ' posts ', pid));
@@ -70,9 +74,12 @@ uid;
           var pid=userposts[(this.userpostcount++)].pid;
           // this.afs.collection('users/'+uid+'/feed/').doc(pid);
           // console.log("pid"+pid);
+          this.getPost(pid).subscribe(data=>{
+            this.date=data.date;
+          });
           let data=  {
-            pid : uid,
-            date : new Date()
+            pid : pid,
+            date :this.date
           };
           this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
             .then(() => console.log('user ', uid, ' posts ', pid));
