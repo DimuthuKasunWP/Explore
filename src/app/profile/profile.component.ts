@@ -162,11 +162,13 @@ export class ProfileComponent implements OnInit {
   getFollowData() {
     this.follow.getFollowers(this.userid).subscribe(
       followers => {
+        this.totalFollowers=Object.keys(followers).length;
         this.followers = followers;
         this.userFollowers = followers;
       });
     this.follow.getFollowing(this.userid).subscribe(
       following => {
+        this.totalFollowing=Object.keys(following).length;
         this.following = following;
         this.userFollowing = following;
       });
