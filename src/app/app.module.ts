@@ -85,7 +85,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import { EventlistComponent } from './eventlist/eventlist.component';
+import { EventlistComponent } from './event/eventlist/eventlist.component';
+import {EventsService} from './services/events.service';
 
 firebase.initializeApp(environment.firebase);
 
@@ -242,6 +243,7 @@ const routes: Routes = [
   ],
   providers: [
     AuthService,
+    EventsService,
     UploadService,
     UserService,
     PostsService,
