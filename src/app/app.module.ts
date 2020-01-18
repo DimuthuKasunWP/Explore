@@ -83,6 +83,9 @@ import {MatNativeDateModule} from '@angular/material';
 import { PopupWindowComponent } from './popup-window/popup-window.component';
 import {MatDialogModule} from '@angular/material/dialog';
 
+
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+
 firebase.initializeApp(environment.firebase);
 
 const routes: Routes = [
@@ -229,6 +232,7 @@ const routes: Routes = [
     MatIconModule,
     MatNativeDateModule,
     MatDialogModule,
+    NgxMaterialTimepickerModule,
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsKey,
       libraries: ['places']
