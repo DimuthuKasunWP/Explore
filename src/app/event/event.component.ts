@@ -111,6 +111,7 @@ export class EventComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          // console.log("place"+place.geometry.location);
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -120,6 +121,7 @@ export class EventComponent implements OnInit {
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
+          this.getAddress(this.latitude,this.longitude);
           this.zoom = 12;
         });
       });
@@ -156,8 +158,10 @@ export class EventComponent implements OnInit {
           if(this.address=''){
             this.address='';
           }else{
-            console.log("entered");
+
             this.address = results[0].formatted_address;
+            this.enteraddress=this.address;
+            console.log("entered new address"+this.enteraddress);
           }
 
         } else {
@@ -169,12 +173,31 @@ export class EventComponent implements OnInit {
 
     });
   }
+  async getLatLngByAddress(loc){
+    this.geoCoder.geocode({ 'address': loc }, (results, status) => {
+      console.log(results);
+      console.log(status);
+      if (status === 'OK') {
+        if (results[0]) {
+          this.zoom = 12;
+          this.latitude=results[0].geometry.location.latitude;
+          this.longitude=results[0].geometry.location.longitude;
+            this.address = results[0].formatted_address;
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+
+    });
+  }
 
   saveEvent(){
-
-  console.log("start date"+this.startdate);
-  console.log("end date"+this.enddate);
-  console.log("address"+this.address);
+this.getLatLngByAddress(this.enteraddress);
+  console.log("start date"+this.longitude);
+  console.log("end date"+this.latitude);
+  console.log("address"+this.enteraddress);
 
 
   }
