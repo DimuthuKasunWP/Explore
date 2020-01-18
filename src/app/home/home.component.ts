@@ -183,4 +183,8 @@ export class HomeComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
+
+  sendToEvent(){
+    this.router.navigateByUrl('event' );
+  }
 }
