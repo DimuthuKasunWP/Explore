@@ -73,7 +73,7 @@ export class EventComponent implements OnInit {
 
 
   constructor (
-    private eventService,EventService,
+    private eventsService:EventsService,
     private userService:UserService,
     private auth: AuthService,
     private mapsAPILoader: MapsAPILoader,
@@ -175,7 +175,7 @@ export class EventComponent implements OnInit {
 
     });
   }
-  async getLatLngByAddress(loc){
+   getLatLngByAddress(loc){
     this.geoCoder.geocode({ 'address': loc }, (results, status) => {
       console.log(results);
       console.log(status);
@@ -229,7 +229,7 @@ export class EventComponent implements OnInit {
           enddate:this.enddate,
           starttime:this.starttime
       };
-      this.eventService.createEvent(data);
+      this.eventsService.createEvent(data);
     }
 
 
