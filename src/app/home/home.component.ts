@@ -30,10 +30,13 @@ export class HomeComponent implements OnInit {
 
   modalRef;
   closeResult;
+  eventModalRef;
+
 
   feedPosts;
 
   groups = [];
+  events= [];
 
   constructor(
     private auth: AuthService,
@@ -179,5 +182,9 @@ export class HomeComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  sendToEvent(){
+    this.router.navigateByUrl('event' );
   }
 }
