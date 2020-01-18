@@ -171,6 +171,15 @@
 
   </mat-tab>
   <mat-tab label="Create new event">
+    <br>
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-8"></div>
+
+      <button class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Submit</button>
+    </div>
+    <br>
+    <br>
 
     <div id="carouselExampleControls" class="carousel-slide" data-ride="carousel">
       <div class="carousel-inner">
@@ -186,27 +195,31 @@
     </div>
       <form>
         <div class="form-group row">
+          <div class="col-sm-1"></div>
           <label for="inputeventname" class="col-sm-2 col-form-label">Event name</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
             <input type="eventname" class="form-control" id="inputeventname" placeholder="Add a short,clear name">
           </div>
         </div>
         <div class="form-group row">
+          <div class="col-sm-1"></div>
           <label for="inputlocation" class="col-sm-2 col-form-label">Location</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
             <input type="location" class="form-control" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
           </div>
 
         </div>
         <div class="form-group row">
+          <div class="col-sm-1"></div>
           <label for="description" class="col-sm-2 col-form-label">Description</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
             <textarea class="form-control" id="validationTextarea" placeholder=" description" required></textarea>
           </div>
         </div>
         <div class="form-group row">
+          <div class="col-sm-1"></div>
           <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
         <mat-form-field>
           <input matInput [(ngModel)]="startdate" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -216,8 +229,9 @@
         </div>
         <br>
         <div class="form-group row">
+          <div class="col-sm-1"></div>
           <label for="enddate" class="col-sm-2 col-form-label">End Date</label>
-          <div class="col-sm-10">
+          <div class="col-sm-7">
 
         <mat-form-field>
           <input matInput [(ngModel)]="enddate" [ngModelOptions]="{standalone: true}" [matDatepicker]="picker1" placeholder="Choose a date">
@@ -230,11 +244,17 @@
         <br>
         <br>
 
-
       </form>
+    <div class="form-group row">
+      <div class="col-sm-1"></div>
+      <div class="form-group pt-4 col-12 col-sm-5 mb-1 align-self-center">
+        <input type="file" id="InputPhoto" value="Choose File" class="inputfile" (change)="processImage($event)" accept="image/*">
+        <label for="InputPhoto" class="mx-0 text-center"><i class="fa fa-upload mr-1" aria-hidden="true"></i>{{filename}}</label>
+      </div>
+      <span class="col-auto  px-5 ml-3"><img id="displayPhoto" class=" align-self-center" *ngIf="photoURL" [src]="photoURL"></span>
+    </div>
 
-    <button  class="btn col-2 bg-none attachment-btn text-primary rounded p-2 mx-3 text-center align-self-center">Reset</button>
-    <button class="btn col-2 bg-none attachment-btn text-primary rounded p-2 mx-3 text-center align-self-center" (click)="saveEvent()">Submit</button>
+
   </mat-tab>
 </mat-tab-group>
 
