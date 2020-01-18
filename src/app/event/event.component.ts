@@ -1,9 +1,11 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone} from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone, NgModule} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import {MapsAPILoader} from '@agm/core';
 import {UploadService} from '../services/upload.service';
 import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
 
@@ -12,14 +14,18 @@ import {UserService} from '../services/user.service';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css']
 })
+
 export class EventComponent implements OnInit {
   name;
   description;
   startdate;
   enddate;
   starttime;
-  endtime;
   eventcreatedby;
+  eventid;
+  enteraddress;
+
+
 
   inputFile;
   filename='Add New Event Photo';
@@ -31,8 +37,35 @@ export class EventComponent implements OnInit {
   latitude: number;
   longitude: number;
   zoom: number;
-  address: string;
+  address='';
   private geoCoder;
+
+  eventForm = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(30)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    startdate: new FormControl('', [
+      Validators.required
+
+    ]),
+    enteraddress: new FormControl('', [
+      Validators.required
+
+    ]),
+
+    enddate: new FormControl('', [
+      Validators.required
+    ]),
+    starttime: new FormControl('', [
+      Validators.required
+    ])
+  });
 
   @ViewChild('search',{static:false})
   public searchElementRef: ElementRef;
@@ -91,6 +124,7 @@ export class EventComponent implements OnInit {
         });
       });
     });
+
   }
 
   private setCurrentLocation() {
@@ -119,7 +153,13 @@ export class EventComponent implements OnInit {
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          this.address = results[0].formatted_address;
+          if(this.address=''){
+            this.address='';
+          }else{
+            console.log("entered");
+            this.address = results[0].formatted_address;
+          }
+
         } else {
           window.alert('No results found');
         }
@@ -131,8 +171,10 @@ export class EventComponent implements OnInit {
   }
 
   saveEvent(){
+
   console.log("start date"+this.startdate);
   console.log("end date"+this.enddate);
+  console.log("address"+this.address);
 
 
   }
