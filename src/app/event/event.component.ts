@@ -11,10 +11,12 @@ import {MapsAPILoader} from '@agm/core';
 export class EventComponent implements OnInit {
   name;
   description;
-  startdate;
-  enddate;
+  startdate='';
+  enddate='';
   starttime;
   endtime;
+  eventcreatedby;
+
 
   latitude: number;
   longitude: number;
@@ -110,6 +112,8 @@ export class EventComponent implements OnInit {
   }
 
   saveEvent(){
+  console.log("start date"+this.startdate);
+  console.log("end date"+this.enddate);
 
 
   }
