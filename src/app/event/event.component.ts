@@ -1,8 +1,12 @@
 import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import {MapsAPILoader} from '@agm/core';
+import {UploadService} from '../services/upload.service';
+import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
+
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
@@ -11,11 +15,17 @@ import {MapsAPILoader} from '@agm/core';
 export class EventComponent implements OnInit {
   name;
   description;
-  startdate='';
-  enddate='';
+  startdate;
+  enddate;
   starttime;
   endtime;
   eventcreatedby;
+
+  inputFile;
+  filename='Add New Event Photo';
+  uid;
+  photoURL = '../../assets/images/default-profile.jpg';
+
 
 
   latitude: number;
@@ -28,8 +38,12 @@ export class EventComponent implements OnInit {
   public searchElementRef: ElementRef;
 
 
-  constructor ( private mapsAPILoader: MapsAPILoader,
-                private ngZone: NgZone) { }
+  constructor (
+    private userService:UserService,
+    private auth: AuthService,
+    private mapsAPILoader: MapsAPILoader,
+                private ngZone: NgZone,
+                private uploadService:UploadService) { }
   openDialog () {
     console.log('The dialog was closed')
   }
@@ -48,6 +62,11 @@ export class EventComponent implements OnInit {
   // }
 
   ngOnInit () {
+    this.auth.getAuthState().subscribe(currUser=>{
+      if(currUser){
+        this.uid=currUser.uid;
+      }
+    });
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
@@ -116,6 +135,18 @@ export class EventComponent implements OnInit {
   console.log("end date"+this.enddate);
 
 
+  }
+  processImage(event) {
+    this.inputFile = event.target.files[0];
+    this.filename = this.inputFile.name;
+    if (this.inputFile.size > 2000000) {
+      this.filename = 'Max Filesize 2Mb!';
+    } else {
+      if (this.filename.length > 25) {
+        this.filename = this.filename.slice(0, 25) + '...' + this.filename.slice(this.filename.length - 3);
+      }
+      this.uploadService.pushUpload(this.inputFile, 'user', this.uid);
+    }
   }
 
 
