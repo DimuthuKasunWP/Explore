@@ -5,8 +5,8 @@ import {AuthService} from './auth.service';
 
 
 
-@Injectable
-export class EventService{
+@Injectable()
+export class EventsService{
   constructor(
     private afs: AngularFirestore,
     private router: Router,
