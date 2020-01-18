@@ -89,7 +89,7 @@ export class AddPostComponent implements OnInit {
   addPost() {
     this.contract();
     if (!this.type) {
-      if (this.postBody) {
+      if (this.postBody ) {
         const newPost = {
           body: this.postBody,
           imgURL: this.imgURL ? this.imgURL : null,

@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GroupService } from '../services/group.service';
 // eslint-disable-next-line no-unused-vars
 import { Component, OnInit, Input } from '@angular/core';
+import {AuthService} from '../services/auth.service';
 // import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -19,6 +20,7 @@ export class CreateGroupComponent implements OnInit{
 
   gnameExists = false;
   ogname;
+  uid;
 
   description;
   gname;
@@ -49,11 +51,17 @@ export class CreateGroupComponent implements OnInit{
   }
 
   constructor(
+    private auth:AuthService,
     private groupService: GroupService,
     private afs: AngularFirestore
   ) {}
 
   ngOnInit() {
+    this.auth.getAuthState().subscribe(currUser=>{
+      if(currUser){
+        this.uid=currUser.uid;
+      }
+    });
     if (this.groupDetails) {
       this.groupService.getGroup(this.groupDetails.gid).subscribe(groupDoc => {
         this.gname = groupDoc.gname;
@@ -88,6 +96,7 @@ export class CreateGroupComponent implements OnInit{
   createGroup() {
     if (!this.Gname.errors && !this.Desc.errors && !this.gnameExists) {
       const groupData = {
+        admin:this.uid,
         gname: this.gname,
         desc: this.description
       };
