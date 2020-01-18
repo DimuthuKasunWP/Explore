@@ -85,6 +85,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { EventlistComponent } from './eventlist/eventlist.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -206,7 +207,8 @@ const routes: Routes = [
     PopupWindowComponent,
     PasswdresetComponent,
     AddMembersComponent,
-    GroupsearchComponent
+    GroupsearchComponent,
+    EventlistComponent
   ],
 
   imports: [
