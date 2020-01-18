@@ -193,19 +193,19 @@
       </div>
 
     </div>
-      <form>
+      <form [formGroup]="eventForm">
         <div class="form-group row">
           <div class="col-sm-1"></div>
           <label for="inputeventname" class="col-sm-2 col-form-label">Event name</label>
           <div class="col-sm-7">
-            <input type="eventname" class="form-control" id="inputeventname" placeholder="Add a short,clear name">
+            <input type="eventname" class="form-control" [(ngModel)]="name" [ngModelOptions]="{standalone: true}" id="inputeventname" placeholder="Add a short,clear name">
           </div>
         </div>
         <div class="form-group row">
           <div class="col-sm-1"></div>
           <label for="inputlocation" class="col-sm-2 col-form-label">Location</label>
           <div class="col-sm-7">
-            <input type="location" class="form-control" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+            <input type="location" class="form-control" [(ngModel)]="enteraddress" [ngModelOptions]="{standalone: true}" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
           </div>
 
         </div>
@@ -213,7 +213,7 @@
           <div class="col-sm-1"></div>
           <label for="description" class="col-sm-2 col-form-label">Description</label>
           <div class="col-sm-7">
-            <textarea class="form-control" id="validationTextarea" placeholder=" description" required></textarea>
+            <textarea class="form-control" [(ngModel)]="description" [ngModelOptions]="{standalone: true}" id="description" placeholder=" description" required></textarea>
           </div>
         </div>
         <div class="form-group row">
@@ -240,6 +240,14 @@
         </mat-form-field>
           </div>
 
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="starttime" class="col-sm-2 col-form-label">Start Time</label>
+          <div class="col-sm-7">
+            <input [(ngModel)]="starttime" [ngModelOptions]="{standalone: true}" placeholder="Enter Time" aria-label="Enter Time" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+            <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+          </div>
         </div>
         <br>
         <br>
