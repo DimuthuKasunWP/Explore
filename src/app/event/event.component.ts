@@ -1,9 +1,12 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone} from '@angular/core';
+import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone, NgModule} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import {MapsAPILoader} from '@agm/core';
 import {UploadService} from '../services/upload.service';
 import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
+import{EventsService} from '../services/events.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
 
@@ -12,14 +15,18 @@ import {UserService} from '../services/user.service';
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css']
 })
+
 export class EventComponent implements OnInit {
   name;
   description;
   startdate;
   enddate;
   starttime;
-  endtime;
   eventcreatedby;
+  eventid;
+  enteraddress;
+
+
 
   inputFile;
   filename='Add New Event Photo';
@@ -31,14 +38,42 @@ export class EventComponent implements OnInit {
   latitude: number;
   longitude: number;
   zoom: number;
-  address: string;
+  address='';
   private geoCoder;
+
+  eventForm = new FormGroup({
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(30)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    startdate: new FormControl('', [
+      Validators.required
+
+    ]),
+    enteraddress: new FormControl('', [
+      Validators.required
+
+    ]),
+
+    enddate: new FormControl('', [
+      Validators.required
+    ]),
+    starttime: new FormControl('', [
+      Validators.required
+    ])
+  });
 
   @ViewChild('search',{static:false})
   public searchElementRef: ElementRef;
 
 
   constructor (
+    private eventService,EventService,
     private userService:UserService,
     private auth: AuthService,
     private mapsAPILoader: MapsAPILoader,
@@ -78,6 +113,7 @@ export class EventComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          // console.log("place"+place.geometry.location);
 
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -87,10 +123,12 @@ export class EventComponent implements OnInit {
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
+          this.getAddress(this.latitude,this.longitude);
           this.zoom = 12;
         });
       });
     });
+
   }
 
   private setCurrentLocation() {
@@ -119,7 +157,15 @@ export class EventComponent implements OnInit {
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          this.address = results[0].formatted_address;
+          if(this.address=''){
+            this.address='';
+          }else{
+
+            this.address = results[0].formatted_address;
+            this.enteraddress=this.address;
+            console.log("entered new address"+this.enteraddress);
+          }
+
         } else {
           window.alert('No results found');
         }
@@ -129,10 +175,62 @@ export class EventComponent implements OnInit {
 
     });
   }
+  async getLatLngByAddress(loc){
+    this.geoCoder.geocode({ 'address': loc }, (results, status) => {
+      console.log(results);
+      console.log(status);
+      if (status === 'OK') {
+        if (results[0]) {
+          this.zoom = 12;
+          this.latitude=results[0].geometry.location.latitude;
+          this.longitude=results[0].geometry.location.longitude;
+            this.address = results[0].formatted_address;
+        } else {
+          window.alert('No results found');
+        }
+      } else {
+        window.alert('Geocoder failed due to: ' + status);
+      }
+
+    });
+  }
+  get Name(){
+   return this.eventForm.get('name');
+  }
+  get Description(){
+    return this.eventForm.get('description');
+
+  }
+  get Location(){
+    return this.eventForm.get('enteraddress');
+  }
+  get StartDate(){
+    return this.eventForm.get('startdate');
+  }
+  get EndDate(){
+    return this.eventForm.get('enddate');
+  }
+  get StartTime(){
+    return this.eventForm.get('endtime');
+  }
 
   saveEvent(){
-  console.log("start date"+this.startdate);
-  console.log("end date"+this.enddate);
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
+      this.getLatLngByAddress(this.enteraddress);
+      const data={
+        admin:this.uid,
+          latitude:this.latitude,
+          longitude:this.longitude,
+          address:this.enteraddress,
+          name:this.name,
+          gid:null,
+          description:this.description,
+          startdate:this.startdate,
+          enddate:this.enddate,
+          starttime:this.starttime
+      };
+      this.eventService.createEvent(data);
+    }
 
 
   }
