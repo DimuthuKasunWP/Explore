@@ -67,3 +67,17 @@
   font-size: 1.05rem;
   font-weight: 350;
 }
+#event-list, #suggested {
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+#user-stats > p {
+  font-weight: 550;
+}
+#btnCreateEvent:hover {
+  cursor: pointer;
+}
+.eventlistitem:hover, #alt-footer > a:hover {
+  cursor: pointer;
+  color: #E83F6F;
+}
