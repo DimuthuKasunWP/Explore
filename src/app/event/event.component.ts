@@ -4,6 +4,7 @@ import {MapsAPILoader} from '@agm/core';
 import {UploadService} from '../services/upload.service';
 import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
+import{EventsService} from '../services/events.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 // import {google} from '@agm/core/services/google-maps-types';
@@ -72,6 +73,7 @@ export class EventComponent implements OnInit {
 
 
   constructor (
+    private eventService,EventService,
     private userService:UserService,
     private auth: AuthService,
     private mapsAPILoader: MapsAPILoader,
@@ -192,12 +194,43 @@ export class EventComponent implements OnInit {
 
     });
   }
+  get Name(){
+   return this.eventForm.get('name');
+  }
+  get Description(){
+    return this.eventForm.get('description');
+
+  }
+  get Location(){
+    return this.eventForm.get('enteraddress');
+  }
+  get StartDate(){
+    return this.eventForm.get('startdate');
+  }
+  get EndDate(){
+    return this.eventForm.get('enddate');
+  }
+  get StartTime(){
+    return this.eventForm.get('endtime');
+  }
 
   saveEvent(){
-this.getLatLngByAddress(this.enteraddress);
-  console.log("start date"+this.longitude);
-  console.log("end date"+this.latitude);
-  console.log("address"+this.enteraddress);
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
+      this.getLatLngByAddress(this.enteraddress);
+      const data={
+        admin:this.uid,
+          latitude:this.latitude,
+          longitude:this.longitude,
+          address:this.enteraddress,
+          name:this.name,
+          gid:null,
+          description:this.description,
+          startdate:this.startdate,
+          enddate:this.enddate,
+          starttime:this.starttime
+      };
+      this.eventService.createEvent(data);
+    }
 
 
   }
