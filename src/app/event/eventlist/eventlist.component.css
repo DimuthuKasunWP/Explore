@@ -1,0 +1,21 @@
+h6 {
+  font-weight: 400;
+  font-size: 1.3rem;
+  display: inline-block;
+}
+h3 {
+  color: black;
+}
+#eventList {
+  border-bottom: 1px solid lightgray;
+  color: black;
+}
+#eventList:hover {
+  background-color: #E83F6F;
+  color: white;
+  cursor: pointer;
+}
+#eventListContainer {
+  max-height: 500px;
+  overflow: scroll;
+}
