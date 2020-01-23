@@ -105,6 +105,10 @@ const routes: Routes = [
     component: EventComponent
   },
   {
+    path: 'event/:eid',
+    component: EventComponent
+  },
+  {
     path: 'user/:username',
     component: ProfileComponent
   },

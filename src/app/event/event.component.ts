@@ -113,6 +113,7 @@ export class EventComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          console.log("place when listning"+place);
           // console.log("place"+place.geometry.location);
 
           //verify result
@@ -211,10 +212,11 @@ export class EventComponent implements OnInit {
     return this.eventForm.get('enddate');
   }
   get StartTime(){
-    return this.eventForm.get('endtime');
+    return this.eventForm.get('starttime');
   }
 
   saveEvent(){
+
     if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
       this.getLatLngByAddress(this.enteraddress);
       const data={
