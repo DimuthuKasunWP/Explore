@@ -11,6 +11,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CreateGroupComponent } from '../create-group/create-group.component';
 import {FollowService} from '../services/follow.service';
+import {EventsService} from '../services/events.service';
 
 @Component({
   selector: 'app-home',
@@ -49,7 +50,8 @@ export class HomeComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private modalService: NgbModal,
     private groupService: GroupService,
-    private location: PlatformLocation
+    private location: PlatformLocation,
+    private eventService:EventsService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -114,6 +116,23 @@ export class HomeComponent implements OnInit {
 
                   }
                 );
+                //get user's events
+                this.userService.getUserEvents(this.userid).subscribe(
+                  userEvents=>{
+
+                    this.events=[];
+                    userEvents.forEach((eventData:any)=>{
+
+                        this.eventService.getEvent(eventData.eid).subscribe(
+                          eventDetails=>{
+                            this.events.push(eventDetails);
+                          });
+
+
+                    });
+                  }
+                );
+
 
                 // Get user's groups
                 this.userService.getUserGroups(this.userid).subscribe(
