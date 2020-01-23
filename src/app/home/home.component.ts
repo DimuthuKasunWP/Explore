@@ -88,6 +88,9 @@ export class HomeComponent implements OnInit {
     if (path === 'custom' && location) {
       this.router.navigateByUrl(location);
     }
+    if(path=='event' && location){
+      this.router.navigateByUrl('event/'+location);
+    }
   }
   getCurrentUser() {
     this.auth.getAuthState().subscribe(
