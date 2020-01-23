@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Router,ActivatedRoute} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {Title} from '@angular/platform-browser';
 import {EventsService} from '../../services/events.service';
@@ -24,26 +24,26 @@ export class EventlistComponent implements OnInit {
 
   ngOnInit() {
 
-    // if (!this.events) {
-    //   this.route.params.subscribe(router => {
-    //     this.username = router.username;
-    //     this.titleService.setTitle(this.username + '\'s Events')
-    //     this.userService.retrieveUserDocumentFromUsername(this.username).subscribe(currentuser => {
-    //       const curruser: any = currentuser[0];
-    //       this.userService.getUserEvents(curruser.uid).subscribe(userEvents => {
-    //         if (userEvents) {
-    //           this.events = [];
-    //           userEvents.forEach((groupData: any) => {
-    //             this.eventService.getGroup(groupData.gid).subscribe(
-    //               eventDetails => {
-    //                 this.events.push(eventDetails);
-    //               });
-    //           });
-    //         }
-    //       });
-    //     });
-    //   });
-    // }
+    if (!this.events) {
+      this.route.params.subscribe(router => {
+        this.username = router.username;
+        this.titleService.setTitle(this.username + '\'s Events')
+        this.userService.retrieveUserDocumentFromUsername(this.username).subscribe(currentuser => {
+          const curruser: any = currentuser[0];
+          this.userService.getUserEvents(curruser.uid).subscribe(userEvents => {
+            if (userEvents) {
+              this.events = [];
+              userEvents.forEach((groupData: any) => {
+                this.eventService.getEvent(groupData.gid).subscribe(
+                  eventDetails => {
+                    this.events.push(eventDetails);
+                  });
+              });
+            }
+          });
+        });
+      });
+    }
 
   }
 
