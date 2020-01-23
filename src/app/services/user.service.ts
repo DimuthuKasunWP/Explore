@@ -28,6 +28,10 @@ export class UserService {
     return this.afs.collection('users/' + uid + '/groups', ref => ref.orderBy('last', 'desc')).valueChanges();
   }
 
+  getUserEvents(uid){
+    return this.afs.collection('users/'+uid+'/events',ref=>ref.orderBy('last','desc')).valueChanges();
+  }
+
   getSuggestedUsers() {
     return this.afs.collection('users', ref => ref.orderBy('totalFollowers', 'desc').limit(5)).valueChanges();
   }
