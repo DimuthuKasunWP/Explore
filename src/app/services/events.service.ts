@@ -16,14 +16,15 @@ export class EventsService {
   }
 
   createEvent(data){
+    console.log("entered to the event service createevent method");
     const  eid=this.afs.createId();
     const edata={
       createDate: firebase.firestore.FieldValue.serverTimestamp(),
       eid: eid,
-      admin:data.uid,
+      admin:data.admin,
       latitude:data.latitude,
       longitude:data.longitude,
-      address:data.enteraddress,
+      address:data.address,
       name:data.name,
       gid:'g001',
       description:data.description,
@@ -37,12 +38,13 @@ export class EventsService {
           eid: eid,
           last: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('users/' + data.uid + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));
+        this.afs.doc('users/' + data.admin + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));
         const ueventdata = {
-          uid: data.uid,
+          uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.uid).set(ueventdata);
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata);
+        console.log("event created");
       });
     });
 
