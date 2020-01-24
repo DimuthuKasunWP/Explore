@@ -115,8 +115,11 @@ export class EventComponent implements OnInit {
   // }
 
   ngOnInit () {
-    console.log(localStorage.getItem("eid"));
-    if(localStorage.getItem("eid")!=null){
+    this.route.params.subscribe(
+      routeurl => {
+        this.eid = routeurl.eid;
+      });
+    if(this.eid!=null){
       console.log("true");
       this.eid=localStorage.getItem("eid");
 
@@ -328,6 +331,25 @@ export class EventComponent implements OnInit {
       this.eventsService.createEvent(data);
     }
 
+
+  }
+  updateEvent(){
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
+      this.getLatLngByAddress(this.enteraddress);
+      const data={
+        admin:this.admin,
+        latitude:this.latitude,
+        longitude:this.longitude,
+        address:this.enteraddress,
+        name:this.name,
+        gid:this.gid,
+        description:this.description,
+        startdate:this.startdate,
+        enddate:this.enddate,
+        starttime:this.starttime
+      };
+      this.eventsService.updateEventData(data);
+    }
 
   }
   processImage(event) {
