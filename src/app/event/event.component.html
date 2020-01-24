@@ -8,7 +8,9 @@
     <div class="form-group row">
       <div class="col-sm-8"></div>
 
-      <button class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Submit</button>
+      <button *ngIf="!isexists" class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Submit</button>
+      <button *ngIf="isexists" class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Update</button>
+
     </div>
     <br>
     <br>
@@ -71,7 +73,7 @@
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker  #picker1></mat-datepicker>
         </mat-form-field>
-            <input type="eventname" class="form-control" [(ngModel)]="enddate"  id="inputeventname" placeholder="End Date" formControlName="enddate">
+            <input *ngIf="isexists" type="eventname" class="form-control" [(ngModel)]="enddate"  id="inputeventname" placeholder="End Date" formControlName="enddate">
           </div>
 
         </div>
