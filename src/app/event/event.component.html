@@ -52,11 +52,12 @@
           <div class="col-sm-1"></div>
           <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
           <div class="col-sm-7">
-        <mat-form-field>
-          <input matInput [(ngModel)]="startdate" formControlName="startdate" [matDatepicker]="picker" placeholder="Choose a date">
+        <mat-form-field *ngIf="!isexists">
+          <input matInput [(ngModel)]="startdate" formControlName="startd" [matDatepicker]="picker"  placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker  #picker></mat-datepicker>
         </mat-form-field>
+            <input type="eventname" class="form-control" [(ngModel)]="startdate"  id="startdate" placeholder="Start date" formControlName="startdate">
           </div>
         </div>
         <br>
@@ -65,11 +66,12 @@
           <label for="enddate" class="col-sm-2 col-form-label">End Date</label>
           <div class="col-sm-7">
 
-        <mat-form-field>
-          <input matInput [(ngModel)]="enddate" formControlName="enddate" [matDatepicker]="picker1" placeholder="Choose a date">
+        <mat-form-field *ngIf="!isexists">
+          <input matInput [(ngModel)]="enddate" formControlName="enddate"  [matDatepicker]="picker1" placeholder="Choose a date">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker  #picker1></mat-datepicker>
         </mat-form-field>
+            <input type="eventname" class="form-control" [(ngModel)]="enddate"  id="inputeventname" placeholder="End Date" formControlName="enddate">
           </div>
 
         </div>
