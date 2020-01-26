@@ -4,7 +4,20 @@ import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
 
-
+interface Event {
+  createDate;
+  eid: string;
+  admin?:string,
+  latitude;
+  longitude;
+  address;
+  name:string;
+  gid:string;
+  description:string;
+  startdate;
+  enddate;
+  starttime;
+}
 
 @Injectable()
 export class EventsService {
@@ -14,6 +27,7 @@ export class EventsService {
     private auth: AuthService
   ) {
   }
+
 
   createEvent(data){
     console.log("entered to the event service createevent method");
