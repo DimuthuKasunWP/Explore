@@ -276,6 +276,9 @@ exports.onDelete = functions.firestore
       afs.doc('/posts/' + parentid + '/comments/' + deletedPost.pid).delete()
       .then(() => updatePostTotalComments(deletedPost.to))
       .catch((err) => console.log(err));
+      afs.doc('/users/' + parentid + '/feed/' + deletedPost.pid).delete()
+        .then(() => updatePostTotalComments(deletedPost.to))
+        .catch((err) => console.log(err));
     }
     deleteFeedPosts(deletedPost.uid, deletedPost.pid);
   })
