@@ -6,10 +6,17 @@ import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
 import{EventsService} from '../services/events.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {ActivatedRoute} from '@angular/router';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
+import * as _moment from 'moment';
+import {DateFormatPipe} from '../services/date.pipe';
+// tslint:disable-next-line:no-duplicate-imports
 
+const moment =  _moment;
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
@@ -25,8 +32,13 @@ export class EventComponent implements OnInit {
   eventcreatedby;
   eventid;
   enteraddress;
-
-
+  startd;
+  isexists=false;
+  eid;
+  gid;
+  admin;
+  isInvalid;
+  isLoaded;
 
   inputFile;
   filename='Add New Event Photo';
@@ -65,6 +77,9 @@ export class EventComponent implements OnInit {
     ]),
     starttime: new FormControl('', [
       Validators.required
+    ]),
+    startd:new FormControl('', [
+      Validators.required
     ])
   });
 
@@ -73,6 +88,9 @@ export class EventComponent implements OnInit {
 
 
   constructor (
+
+    private datePipe: DateFormatPipe,
+    private route:ActivatedRoute,
     private eventsService:EventsService,
     private userService:UserService,
     private auth: AuthService,
@@ -97,38 +115,117 @@ export class EventComponent implements OnInit {
   // }
 
   ngOnInit () {
-    this.auth.getAuthState().subscribe(currUser=>{
-      if(currUser){
-        this.uid=currUser.uid;
-      }
-    });
-    this.mapsAPILoader.load().then(() => {
-      this.setCurrentLocation();
-      this.geoCoder = new google.maps.Geocoder;
-
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+    this.route.params.subscribe(
+      routeurl => {
+        this.eid = routeurl.eid;
       });
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          //get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          console.log("place when listning"+place);
-          // console.log("place"+place.geometry.location);
+    if(this.eid!=null){
+      console.log("true");
+      this.eid=localStorage.getItem("eid");
 
-          //verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
+      this.auth.getAuthState().subscribe(currUser=>{
+        if(currUser){
+          this.uid=currUser.uid;
+          this.eventsService.getEvent(this.eid).subscribe(
+            eventdoc=>{
+                if(eventdoc){
+                    this.latitude=eventdoc.latitude;
+                    this.longitude=eventdoc.longitude;
+                    this.enteraddress=eventdoc.address;
+                    this.name=eventdoc.name;
+                    this.admin= eventdoc.admin ? eventdoc.admin : null;
+                    this.gid= eventdoc.gid ? eventdoc.gid :null;
+                    this.description=eventdoc.description;
+                    this.startdate=eventdoc.startdate;
+                    console.log("start date value"+this.startdate);
+                    this.enddate=eventdoc.enddate;
+                    this.starttime=eventdoc.starttime;
+                    this.startd=this.startdate;
+                    this.isexists=true;
+                    this.startdate=this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
+                    this.enddate=this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
+                    // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
+                    // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
+                    // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
+                    // this.startd= new FormControl(moment[this.startdate.toDate().getFullYear(),this.startdate.toDate().getMonth(),this.startdate.toDate().getDate()]);
 
-          //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.getAddress(this.latitude,this.longitude);
-          this.zoom = 12;
+
+
+                }else {
+                  console.log('invalid');
+                  this.isInvalid = true;
+                  this.isLoaded = true;
+                }
+            }
+          );
+          // this.userService.getus
+        }
+      });
+      this.mapsAPILoader.load().then(() => {
+        this.setCurrentLocation();
+        this.geoCoder = new google.maps.Geocoder;
+
+        let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+          types: ["address"]
+        });
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            //get the place result
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+            console.log("place when listning"+place);
+            // console.log("place"+place.geometry.location);
+
+            //verify result
+            if (place.geometry === undefined || place.geometry === null) {
+              return;
+            }
+
+            //set latitude, longitude and zoom
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.getAddress(this.latitude,this.longitude);
+            this.zoom = 12;
+          });
         });
       });
-    });
+
+    }else{
+      console.log("false");
+      this.auth.getAuthState().subscribe(currUser=>{
+        if(currUser){
+          this.uid=currUser.uid;
+        }
+      });
+      this.mapsAPILoader.load().then(() => {
+        this.setCurrentLocation();
+        this.geoCoder = new google.maps.Geocoder;
+
+        let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+          types: ["address"]
+        });
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            //get the place result
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+            console.log("place when listning"+place);
+            // console.log("place"+place.geometry.location);
+
+            //verify result
+            if (place.geometry === undefined || place.geometry === null) {
+              return;
+            }
+
+            //set latitude, longitude and zoom
+            this.latitude = place.geometry.location.lat();
+            this.longitude = place.geometry.location.lng();
+            this.getAddress(this.latitude,this.longitude);
+            this.zoom = 12;
+          });
+        });
+      });
+    }
+
+
 
   }
 
@@ -236,6 +333,25 @@ export class EventComponent implements OnInit {
 
 
   }
+  updateEvent(){
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
+      this.getLatLngByAddress(this.enteraddress);
+      const data={
+        admin:this.admin,
+        latitude:this.latitude,
+        longitude:this.longitude,
+        address:this.enteraddress,
+        name:this.name,
+        gid:this.gid,
+        description:this.description,
+        startdate:this.startdate,
+        enddate:this.enddate,
+        starttime:this.starttime
+      };
+      this.eventsService.updateEventData(data);
+    }
+
+  }
   processImage(event) {
     this.inputFile = event.target.files[0];
     this.filename = this.inputFile.name;
@@ -243,9 +359,10 @@ export class EventComponent implements OnInit {
       this.filename = 'Max Filesize 2Mb!';
     } else {
       if (this.filename.length > 25) {
-        this.filename = this.filename.slice(0, 25) + '...' + this.filename.slice(this.filename.length - 3);
+        this.filename = this.filename.slice(0, 10) + '...' + this.filename.slice(this.filename.length - 3);
       }
-      this.uploadService.pushUpload(this.inputFile, 'user', this.uid);
+      console.log('pid is the ' + this.eid);
+      this.uploadService.pushUpload(this.inputFile, 'event', this.eid);
     }
   }
 
