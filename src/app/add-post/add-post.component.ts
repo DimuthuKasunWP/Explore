@@ -112,7 +112,9 @@ export class AddPostComponent implements OnInit {
           type: 'group',
           pid: this.pid
         };
-        this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+        if (this.inputFile) {
+          this.uploadService.pushUpload(this.inputFile, 'group', this.pid);
+        }
         this.postService.addPost(newPost);
         this.postBody = null;
       }
