@@ -359,9 +359,10 @@ export class EventComponent implements OnInit {
       this.filename = 'Max Filesize 2Mb!';
     } else {
       if (this.filename.length > 25) {
-        this.filename = this.filename.slice(0, 25) + '...' + this.filename.slice(this.filename.length - 3);
+        this.filename = this.filename.slice(0, 10) + '...' + this.filename.slice(this.filename.length - 3);
       }
-      this.uploadService.pushUpload(this.inputFile, 'user', this.uid);
+      console.log('pid is the ' + this.eid);
+      this.uploadService.pushUpload(this.inputFile, 'event', this.eid);
     }
   }
 
