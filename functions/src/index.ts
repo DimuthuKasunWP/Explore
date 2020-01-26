@@ -125,6 +125,20 @@ exports.onPost = functions.firestore
     updateTotalScribes(currentuid);
 });
 
+  exports.onPostFeed=functions.firestore.document('users/{uid}/feed').onCreate(
+    event=>{
+      const post = event.data.data();
+    }
+
+  );
+  exports.onDeleteFeed=functions.firestore.document('users/{uid}/feed').onDelete(
+    event =>{
+
+      const post = event.data.data();
+    }
+
+  );
+
 function notifyComment(data) {
   afs.doc('posts/' + data.to).get()
   .then(postDoc => {
