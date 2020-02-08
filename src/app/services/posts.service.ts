@@ -93,6 +93,13 @@ date;
   getProfilePosts(uid) {
     return this.afs.collection('posts', ref => ref.where('uid', '==', uid).orderBy('date', 'desc')).valueChanges();
   }
+  // Get user's feed
+  getFeed(uid) {
+    return this.afs.collection('users/' + uid + '/feed',
+      ref => ref.orderBy('date', 'desc')
+        .limit(200))
+      .valueChanges();
+  }
 
   // Add post //
   addPost(newPost) {
@@ -148,13 +155,7 @@ date;
     return this.afs.collection('posts/' + pid + '/comments', ref => ref.orderBy('timestamp', 'asc')).valueChanges();
   }
 
-  // Get user's feed
-  getFeed(uid) {
-    return this.afs.collection<any>('users/' + uid + '/feed',
-      ref => ref.orderBy('date', 'desc')
-      .limit(200))
-      .valueChanges();
-  }
+
 
   // Get individual post
   public getPost(pid) {

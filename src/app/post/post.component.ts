@@ -254,7 +254,7 @@ export class PostComponent implements OnInit {
         const newDate = new Date();
         // const datePipe = new DatePipe('en-US');
         // String value = datePipe.transform(prevDate, 'MMM yyy');
-        console.log(newDate.getTime());
+        // console.log(newDate.getTime());
         const ms = newDate.getTime() - prevDate.toDate();
         const min = Math.trunc(ms / 60000);
         let hours;

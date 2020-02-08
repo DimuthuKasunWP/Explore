@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit {
                 this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
                 this.getFollowData();
-                this.postsService.setUserFeedPosts(this.userid);
+                // this.postsService.setUserFeedPosts(this.userid);
                 this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
                 this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
                 this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
@@ -120,6 +120,13 @@ export class HomeComponent implements OnInit {
 
                   }
                 );
+                // this.postsService.getProfilePosts(this.userid).subscribe(
+                //   posts => {
+                //     if (posts) {
+                //       this.feedPosts = posts;
+                //       console.log("cheking for the confirmation");
+                //     }
+                //   });
                 //get user's events
                 this.userService.getUserEvents(this.userid).subscribe(
                   userEvents=>{

@@ -266,7 +266,6 @@ export class ProfileComponent implements OnInit {
     }
 
     getJoinDate() {
-    console.log(this.joinDate);
       return this.datePipe.transform((this.joinDate), 'month');
     }
 
