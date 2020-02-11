@@ -44,18 +44,22 @@ date;
                   while (this.postcount<Object.keys(posts).length){
                     // console.log("post"+posts[this.postcount].pid);
                     var pid=posts[(this.postcount++)].pid;
+                    var date;
 
                     // console.log("pid"+pid);
-                    this.getPost(pid).subscribe(data=>{
-                      this.date=data.date;
-
+                    this.getPost(pid).subscribe(datas=>{
+                      this.date=(datas.date);
+                      date=this.date;
+                      let data=  {
+                        pid : pid,
+                        date :this.date
+                      };
+                      // this.date=date;
+                      console.log("this is the date"+this.date);
+                      this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
+                        .then(() => console.log('user ', uid, ' posts ', pid));
                     });
-                    let data=  {
-                      pid : pid,
-                      date :this.date
-                    };
-                    this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
-                      .then(() => console.log('user ', uid, ' posts ', pid));
+
                     // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
                     // this.afs.collection<any>('/users/'+uid+'/feed').doc(pid).set(data);
                   }
@@ -72,17 +76,22 @@ date;
       userposts=>{
         while (this.userpostcount<Object.keys(userposts).length){
           var pid=userposts[(this.userpostcount++)].pid;
+          var date;
           // this.afs.collection('users/'+uid+'/feed/').doc(pid);
           // console.log("pid"+pid);
-          this.getPost(pid).subscribe(data=>{
-            this.date=data.date;
+          this.getPost(pid).subscribe(datas=>{
+            console.log("date"+datas.date);
+            this.date=(datas.date);
+            date=this.date;
+            let data=  {
+              pid : pid,
+              date :this.date
+            };
+            console.log("this is post id"+data.pid+"date"+this.date);
+            this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
+              .then(() => console.log('user ', uid, ' posts ', pid));
           });
-          let data=  {
-            pid : pid,
-            date :this.date
-          };
-          this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
-            .then(() => console.log('user ', uid, ' posts ', pid));
+
           // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
           // this.afs.collection<any>('/users/'+uid+'/feed').doc(pid).set(data);
         }
