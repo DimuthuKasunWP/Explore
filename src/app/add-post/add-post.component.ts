@@ -89,7 +89,7 @@ export class AddPostComponent implements OnInit {
   addPost() {
     this.contract();
     if (!this.type) {
-      if (this.postBody || this.inputFile.size < 2000000) {
+      if (this.postBody ) {
         const newPost = {
           body: this.postBody,
           imgURL: this.imgURL ? this.imgURL : null,
@@ -103,7 +103,7 @@ export class AddPostComponent implements OnInit {
       }
     }
     if (this.type === 'group') {
-      if (this.postBody && this.inputFile.size < 2000000) {
+      if (this.postBody ) {
         this.pid = this.afs.createId();
         const newPost = {
           body: this.postBody,
@@ -112,7 +112,9 @@ export class AddPostComponent implements OnInit {
           type: 'group',
           pid: this.pid
         };
-        this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+        if (this.inputFile) {
+          this.uploadService.pushUpload(this.inputFile, 'group', this.pid);
+        }
         this.postService.addPost(newPost);
         this.postBody = null;
       }

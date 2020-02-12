@@ -44,7 +44,7 @@ room;
   createChatroom(profileuid,rid) {
     this.auth.getAuthState().subscribe(
       curruser => {
-
+      console.log("this is in message"+rid);
 
         const roomData = {
           rid: rid,

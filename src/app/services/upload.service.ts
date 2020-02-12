@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AuthService } from './auth.service';
 import { GroupService } from './group.service';
+import {finalize} from 'rxjs/operators';
 
 @Injectable()
 export class UploadService {
@@ -26,40 +27,72 @@ export class UploadService {
   // Execute file upload to firebase storage
   pushUpload(file, type?: string, id?: string) {
     if (type === 'user') {
-      const downloadURL = this.storage.upload('user-uploads/' + id + '/dp', file);
-      const ref = this.storage.ref('user-uploads/' + id + '/dp').getDownloadURL();
-      ref.subscribe(url => {
-        if (url) {
-          this.auth.updatePhotoURL(url);
-        }
-      });
+
+      const task = this.storage.upload('user-uploads/' + id + '/dp',file);
+      const  ref=this.storage.ref('user-uploads/' + id + '/dp');
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.postService.updatePhotoURL(url,id);
+            });
+        })
+      ).subscribe();
     }
     if (type === 'post') {
-      const downloadURL = this.storage.upload('post-uploads/' + id + '/post-image', file);
-      const ref = this.storage.ref('post-uploads/' + id + '/post-image').getDownloadURL();
-      ref.subscribe(url => {
-        if (url) {
-          this.postService.updatePhotoURL(url, id);
-        }
-      });
+      console.log("post type");
+      const task = this.storage.upload('post-uploads/' + id + '/post-image',file);
+      const  ref=this.storage.ref('post-uploads/' + id + '/post-image');
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.postService.updatePhotoURL(url,id);
+            });
+        })
+      ).subscribe();
     }
     if (type === 'banner') {
-      const downloadURL = this.storage.upload('user-uploads/' + id + '/banner', file);
-      const ref = this.storage.ref('user-uploads/' + id + '/banner').getDownloadURL();
-      ref.subscribe(url => {
-        if (url) {
-          this.postService.updateBannerURL(url, id);
-        }
-      });
+
+      const task = this.storage.upload('user-uploads/' + id + '/banner',file);
+      const  ref=this.storage.ref('user-uploads/' + id + '/banner');
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.postService.updatePhotoURL(url,id);
+            });
+        })
+      ).subscribe();
     }
     if (type === 'group') {
-      const downloadURL = this.storage.upload('group-uploads/' + id + '/banner', file);
-      const ref = this.storage.ref('group-uploads/' + id + '/banner').getDownloadURL();
+      const downloadURL = this.storage.upload('group-uploads/' + id + '/'+file.name, file);
+      const ref = this.storage.ref('group-uploads/' + id + '/'+file.name).getDownloadURL();
       ref.subscribe(url => {
         if (url) {
+          console.log("url"+url);
           this.groupService.updateBannerURL(url, id);
         }
       });
     }
+    if(type === 'event'){
+      console.log("event type");
+      const task = this.storage.upload('event-uploads/' + id + '/'+file.name,file);
+      const  ref=this.storage.ref('event-uploads/' + id + '/'+file.name);
+      task.snapshotChanges().pipe(
+        finalize(() => {
+         const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.postService.updatePhotoURL(url,id);
+            });
+        })
+      ).subscribe();
+
+    }
+
   }
 }

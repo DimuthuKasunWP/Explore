@@ -1,0 +1,5 @@
+{
+    "jshint.enable": false,
+    "standard.enable": false,
+    "cquery.cacheDirectory": "${workspaceFolder}/.vscode/cquery_cached_index/"
+}
