@@ -9,8 +9,9 @@ import { AuthService } from '../services/auth.service';
 })
 export class SuggestedComponent implements OnInit {
 
-  users;
+  users=[];
   currentuser;
+  count=0;
 
   constructor(
     private userService: UserService,
@@ -24,10 +25,44 @@ export class SuggestedComponent implements OnInit {
       } else {
         this.currentuser = null;
       }
+      // this.users=this.userService.getSuggestedUsers(this.currentuser);
+      var following=[];
+      var userlist=[];
+      this.userService.getUsersList().subscribe((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          userlist.push(doc.id);
+        });
+        this.userService.getFollowingUsers(this.currentuser).subscribe(followinguser=>{
+
+          while (this.count<Object.keys(followinguser).length) {
+            var user=followinguser[this.count++];
+            // @ts-ignore
+            following.push(user.uid);
+          }
+        });
+      });
+      setTimeout(()=>{
+        if(userlist.length>0 && following.length>0) {
+          for (var user in userlist) {
+            for (var follow in following) {
+              console.log("user"+user+"follow"+follow);
+              if (user === (follow)) {
+                console.log("user in the following list");
+              } else {
+                this.users.push(user);
+              }
+            }
+          }
+        }else{
+          this.users=userlist;
+        }
+        console.log("count"+this.users.length);
+
+
+      },2000);
     });
-    this.userService.getSuggestedUsers().subscribe(userlist => {
-      this.users = userlist;
-    });
+
+
   }
 
   checkCurrent(uid) {
