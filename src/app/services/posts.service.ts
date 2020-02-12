@@ -36,7 +36,7 @@ date;
     // console.log("userid"+uid);
     this.afs.collection<any>('/users/' + uid + '/following').valueChanges().subscribe(
       followinguser=>{
-            while (this.count<Object.keys(followinguser).length){
+              while (this.count<Object.keys(followinguser).length){
                uid=followinguser[this.count++].uid;
               this.afs.collection<any>('posts', ref => ref.where('uid', '==', uid).orderBy('date', 'desc')).valueChanges().subscribe(
                 posts=>{
@@ -55,9 +55,8 @@ date;
                         date :this.date
                       };
                       // this.date=date;
-                      console.log("this is the date"+this.date);
-                      this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
-                        .then(() => console.log('user ', uid, ' posts ', pid));
+
+                      this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
                     });
 
                     // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
@@ -80,23 +79,21 @@ date;
           // this.afs.collection('users/'+uid+'/feed/').doc(pid);
           // console.log("pid"+pid);
           this.getPost(pid).subscribe(datas=>{
-            console.log("date"+datas.date);
+
             this.date=(datas.date);
             date=this.date;
             let data=  {
               pid : pid,
               date :this.date
             };
-            console.log("this is post id"+data.pid+"date"+this.date);
-            this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data)
-              .then(() => console.log('user ', uid, ' posts ', pid));
+
+            this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
           });
 
           // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
           // this.afs.collection<any>('/users/'+uid+'/feed').doc(pid).set(data);
         }
     });
-    console.log("feed posts successfull");
   }
   // Get a user's posts
   getProfilePosts(uid) {
@@ -127,7 +124,6 @@ date;
         const postRef = this.afs.collection('posts').doc(newPost.pid);
         return postRef.set(post)
           .then(() => {
-            console.log('Post Successful -', newPost.pid);
           });
       });
   }
@@ -154,7 +150,7 @@ date;
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             this.afs.doc('posts/' + newPost.to + '/comments/' + newPost.pid).set(comment);
-            console.log('Comment Successful -', newPost.pid);
+
           });
       });
   }
