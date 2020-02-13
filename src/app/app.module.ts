@@ -167,6 +167,10 @@ const routes: Routes = [
     path:'passwdreset',
     component:PasswdresetComponent
 
+  },
+  {
+    path:"hashtag/:hid",
+    component:HashtagComponent
   }
   // {
   //   path: '**',
