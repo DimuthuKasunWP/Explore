@@ -30,6 +30,7 @@ import { UserService } from './services/user.service';
 import { FollowService } from './services/follow.service';
 import { LikesService } from './services/likes.service';
 import { NotificationService } from './services/notification.service';
+import { HashtagService }  from './services/hashtag.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -258,7 +259,8 @@ const routes: Routes = [
     DateFormatPipe,
     LinkifyPipe,
     MessageService,
-    MatDatepickerModule
+    MatDatepickerModule,
+    HashtagService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

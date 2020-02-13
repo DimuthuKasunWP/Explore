@@ -97,17 +97,17 @@ export class HomeComponent implements OnInit {
     this.auth.getAuthState().subscribe(
       user => {
         if (user) {
-          console.log("user id is"+user.uid);
+
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
-                console.log("entered");
+
                 this.displayName = userDoc.displayName;
                 this.userName = userDoc.userName;
                 this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
                 this.getFollowData();
-                // this.postsService.setUserFeedPosts(this.userid);
+                this.postsService.setUserFeedPosts(this.userid);
                 this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
                 this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
                 this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
