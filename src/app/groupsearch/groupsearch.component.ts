@@ -71,7 +71,9 @@ export class GroupsearchComponent implements OnInit {
     this.searchterm = null;
     this.router.navigateByUrl('user/' + username);
   }
-  sendRequest(username){
+  sendRequest(username,uid){
+    console.log(username);
+    console.log(uid);
     
   }
 }

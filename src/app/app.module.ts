@@ -63,6 +63,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
+import { GmapsComponent } from './gmaps/gmaps.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -172,7 +173,8 @@ const routes: Routes = [
     NotificationComponent,
     PasswdresetComponent,
     AddMembersComponent,
-    GroupsearchComponent
+    GroupsearchComponent,
+    GmapsComponent
     ],
   imports: [
     BrowserModule,
