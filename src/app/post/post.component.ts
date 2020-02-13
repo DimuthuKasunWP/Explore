@@ -10,6 +10,7 @@ import { AuthService } from '../services/auth.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, PlatformLocation} from '@angular/common';
 import { ViewEncapsulation } from '@angular/core';
+import {HashtagService} from '../services/hashtag.service';
 
 @Component({
   selector: 'app-post',
@@ -30,7 +31,7 @@ export class PostComponent implements OnInit {
   currentuser;
   currentuid;
   showContext = true;
-
+  showhashtag=false;
   isLoggedIn = false;
   isSingle = false;
   isCurrentUser = false;
@@ -59,7 +60,8 @@ export class PostComponent implements OnInit {
 
   gname;
   gid;
-
+  count=0;
+  hashtag=[];
 
 
   constructor(
@@ -72,7 +74,8 @@ export class PostComponent implements OnInit {
     private location: PlatformLocation,
     private likeService: LikesService,
     private groupService: GroupService,
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
+    private hashtagservice:HashtagService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -99,6 +102,29 @@ export class PostComponent implements OnInit {
       this.body = this.inputPost.body;
       this.date = this.inputPost.date;
       this.pid = this.inputPost.pid;
+      var hashtags=[];
+      this.hashtagservice.gethashtagByPID(this.pid).subscribe(hashtag=>{
+
+        this.count=0;
+        while (this.count<Object.keys(hashtag).length) {
+
+          // @ts-ignore
+          hashtags.push(hashtag[this.count].hid);
+          this.count++;
+        }
+        if(hashtags.length>0){
+          var count=0;
+          this.body=this.body+"<br/>";
+          while(count<hashtags.length) {
+            this.showhashtag=true;
+            // this.body = this.body + "" + hashtags[count];
+            // this.hashtag = this.hashtag + hashtags[count++];
+            this.hashtag.push(hashtags[count++]);
+          }
+        }
+      });
+
+
       this.type = this.inputPost.type;
       this.postPhotoURL = this.inputPost.photoURL;
       if (this.type === 'comment') {
