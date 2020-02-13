@@ -308,6 +308,9 @@ export class PostComponent implements OnInit {
     if (this.ParentModalRef) {
       this.ParentModalRef.close();
     }
+    if(type==='hashtag'){
+      this.router.navigateByUrl("hashtag/"+id);
+    }
     if (type === 'landing') {
       this.router.navigateByUrl('start');
     }

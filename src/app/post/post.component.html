@@ -24,9 +24,9 @@
         <span *ngIf="showContext">
           <p class="text-primary my-0" *ngIf="type =='group'" (click)="sendTo('group', gid)">Posted in {{gname}}</p>
         </span>
-        <div *ngFor="let tag of hashtag;" >
+        <div *ngFor="let tag of hashtag;  let i = index" >
         <span *ngIf="showhashtag">
-            <p class="text-primary my-0"  >{{tag}}</p>
+            <p class="text-primary my-0"  (click)="sendTo('hashtag',tag)" >{{tag}}</p>
           </span>
         </div>
         <p class="text-primary my-0" *ngIf="type =='comment'" (click)="sendTo('post', parentPid)">Replying to @{{parentUsername}}</p>
