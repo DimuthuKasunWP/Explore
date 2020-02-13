@@ -12,6 +12,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 // eslint-disable-next-line no-unused-vars
 import { FormsModule } from '@angular/forms';
+import {HashtagService} from '../services/hashtag.service';
 
 @Component({
   selector: 'app-add-post',
@@ -31,6 +32,7 @@ export class AddPostComponent implements OnInit {
   addPostWrapper;
   containerStyle;
   route;
+  hashtags=[];
 
   // Post Data
   postBody;
@@ -47,7 +49,8 @@ export class AddPostComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     private afs: AngularFirestore,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private hashtagService:HashtagService
   ) { }
 
   ngOnInit () {
@@ -87,6 +90,19 @@ export class AddPostComponent implements OnInit {
   }
 
   addPost() {
+    let hashTagReg:RegExp= /#[A-Za-z0-9]*/g;
+    this.hashtags=this.postBody.match(hashTagReg);
+    var count=0;
+    while(count<this.hashtags.length){
+      console.log("name"+this.hashtags[count]);
+      let data={
+        hid:this.afs.createId(),
+        name:this.hashtags[count++]
+      };
+      this.hashtagService.sethashtag(data);
+      this.hashtagService.setposttoHashtag(this.pid);
+    }
+    this.postBody=this.postBody.replace(hashTagReg,"");
     this.contract();
     if (!this.type) {
       if (this.postBody ) {
