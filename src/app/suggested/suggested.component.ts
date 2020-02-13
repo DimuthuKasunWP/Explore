@@ -89,7 +89,6 @@ export class SuggestedComponent implements OnInit {
   addUserDetails(){
     this.count=0;
     while (this.count<this.userDetails.length){
-      console.log("user details"+this.userDetails[this.count]);
       this.userService.retrieveUserDocument(this.userDetails[this.count++]).subscribe(userdoc=>{
         if(userdoc){
           var userName=userdoc.userName;
