@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-groupsearch',
   templateUrl: './groupsearch.component.html',
@@ -72,8 +73,26 @@ export class GroupsearchComponent implements OnInit {
     this.router.navigateByUrl('user/' + username);
   }
   sendRequest(username,uid){
+    let isuser=false;
+    var gid=localStorage.getItem("gid");
+    this.afs.collection("groups").doc(gid.toString()).collection('/members', ref => ref.where('uid', '==', uid)).valueChanges().subscribe(val=>{
+      if(val){
+         isuser=true;
+      }
+    });
+     if(isuser){
+      this.afs.collection("groups").doc(gid.toString()).collection("members").doc(uid).set(
+       {
+        uid : uid,
+        date : new Date()
+       }
+      );}
     console.log(username);
     console.log(uid);
+    localStorage.getItem("gid");
+  
     
+
+
   }
 }
