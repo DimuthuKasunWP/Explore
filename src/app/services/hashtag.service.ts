@@ -26,7 +26,14 @@ hid;
     let data={
       pid:pid
     };
-    this.afs.collection<any>('/hashtags/' + this.name + '/posts').doc(pid).set(data);
+    this.afs.collection<any>('/hashtags/' + this.name + '/posts/').doc(pid).set(data);
+    let datas={
+      hid:this.name
+    };
+    this.afs.collection<any>("/posts/"+pid+"/hashtags/").doc(this.name).set(datas);
+  }
+  gethashtagByPID(pid){
+    return this.afs.collection("/posts/"+pid+"/hashtags/").valueChanges();
   }
 
 }
