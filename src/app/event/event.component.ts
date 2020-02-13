@@ -6,7 +6,6 @@ import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
 import{EventsService} from '../services/events.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {MAT_MOMENT_DATE_FORMATS, MomentDateAdapter} from '@angular/material-moment-adapter';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {ActivatedRoute} from '@angular/router';
@@ -15,7 +14,8 @@ import {ActivatedRoute} from '@angular/router';
 import * as _moment from 'moment';
 import {DateFormatPipe} from '../services/date.pipe';
 // tslint:disable-next-line:no-duplicate-imports
-
+import {NgbModal,ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { PlatformLocation } from '@angular/common';
 const moment =  _moment;
 @Component({
   selector: 'app-event',
@@ -39,6 +39,12 @@ export class EventComponent implements OnInit {
   admin;
   isInvalid;
   isLoaded;
+  modalRef;
+  closeResult
+  // displayName;
+  // userName;
+  userid;
+  // postService;
 
   inputFile;
   filename='Add New Event Photo';
@@ -86,6 +92,7 @@ export class EventComponent implements OnInit {
   @ViewChild('search',{static:false})
   public searchElementRef: ElementRef;
 
+  events=[];
 
   constructor (
 
@@ -94,12 +101,23 @@ export class EventComponent implements OnInit {
     private eventsService:EventsService,
     private userService:UserService,
     private auth: AuthService,
+    private modalService: NgbModal,
+    private location:PlatformLocation,
     private mapsAPILoader: MapsAPILoader,
                 private ngZone: NgZone,
-                private uploadService:UploadService) { }
+                private uploadService:UploadService) {
+                  location.onPopState((event) => {
+                    // ensure that modal is opened
+                    if (this.modalRef !== undefined) {
+                        this.modalRef.close();
+                    }
+                  });
+                 }
+                
   openDialog () {
-    console.log('The dialog was closed')
+  console.log('The dialog was closed')
   }
+
 
   // openDialog(): void {
   //   const dialogRef = MatDialog.open(DialogOverviewExampleDialog, {
@@ -224,10 +242,113 @@ export class EventComponent implements OnInit {
         });
       });
     }
-
+    this.getCurrentUser();
 
 
   }
+  getCurrentUser(){
+    this.auth.getAuthState().subscribe(
+      user => {
+        if (user) {
+
+          this.userService.retrieveUserDocument(user.uid).subscribe(
+            userDoc => {
+              if (userDoc) {
+
+                // this.displayName = userDoc.displayName;
+                // this.userName = userDoc.userName;
+                this.photoURL = userDoc.photoURL;
+                this.userid = userDoc.uid;
+                // this.getFollowData();
+                // // this.postsService.setUserFeedPosts(this.userid);
+                // this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
+                // this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
+                // this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
+                // this.bannerURL = userDoc.bannerURL ? userDoc.bannerURL : null;
+
+                // Get pids from user feed
+                // this.postsService.getFeed(this.userid).subscribe(
+                //   feedPosts => {
+                //     this.feedPosts = feedPosts;
+
+                //   }
+                // );
+                // this.postsService.getProfilePosts(this.userid).subscribe(
+                //   posts => {
+                //     if (posts) {
+                //       this.feedPosts = posts;
+                //       console.log("cheking for the confirmation");
+                //     }
+                //   });
+                //get user's events
+                this.userService.getUserEvents(this.userid).subscribe(
+                  userEvents=>{
+
+                    this.events=[];
+                    userEvents.forEach((eventData:any)=>{
+
+                        this.eventsService.getEvent(eventData.eid).subscribe(
+                          eventDetails=>{
+                            this.events.push(eventDetails);
+                          });
+
+
+                    });
+                  }
+                );
+
+
+                // // Get user's groups
+                // this.userService.getUserGroups(this.userid).subscribe(
+                //   userGroups => {
+                //     if (userGroups) {
+                //       this.groups = [];
+                //       userGroups.forEach((groupData: any) => {
+                //         this.groupService.getGroup(groupData.gid).subscribe(
+                //           groupDetails => {
+                //             this.groups.push(groupDetails);
+                //           });
+                //       });
+                //     }
+                //   }
+                // );
+              }
+            });
+        } 
+        // else {
+        //   this.router.navigateByUrl('start');
+        // }
+    });
+  }
+  open(content, type?) {
+    console.log("events");
+    this.modalRef = this.modalService.open(content, {
+      size: 'sm',
+      windowClass: 'modal-style'
+    });
+    // if (type === 'grouplist') {
+    //   // push new state to history
+    //   history.pushState(null, null, '/user/' + this.userName + '/groups');
+    // }
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason, type)}`;
+    });
+  }
+  private getDismissReason(reason: any, type?): string {
+    if (type === 'grouplist') {
+      history.back();
+    }
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
 
   private setCurrentLocation() {
     if ('geolocation' in navigator) {
