@@ -19,14 +19,14 @@ hid;
       hid:this.hid,
       name:this.name
     }
-    this.afs.doc('hashtags/' + this.hid).set(details);
+    this.afs.doc('hashtags/' + this.name).set(details);
 
   }
   setposttoHashtag(pid){
     let data={
       pid:pid
     };
-    this.afs.collection<any>('/hashtags/' + this.hid + '/posts').doc(pid).set(data);
+    this.afs.collection<any>('/hashtags/' + this.name + '/posts').doc(pid).set(data);
   }
 
 }
