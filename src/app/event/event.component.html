@@ -193,82 +193,19 @@
       <hr class="p-0 my-1">
       <div *ngIf="events && events.length > 0; else noGroups" class="mt-2">
         <div *ngFor="let event of events; let i = index" class="mx-3">
-          <p class="eventlistitem col-md-12" (click)="open(ViewEvent)">{{event.name}}</p>
+          
+          <div class="card" >
+            <mat-card class="example-card eventlistitem" (click)="open(ViewEvent)">
+              <img class="myImg" mat-card-image [src]="event.photoURL" alt="Photo of a Shiba Inu">
+              <mat-card-content>
+                <p class=" col-md-6">{{event.name}}</p>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div><s></s>
       </div>
     </div>
-    <h2>Events you may like</h2>
-    <div class="card" >
-      <mat-card class="example-card">
-        <img class="myImg" mat-card-image src="../../assets/images/event6.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            This is Greenskeepers Revenge.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>Like</button>
-          <button mat-button>Share</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    <div class="card" >
-      <mat-card class="example-card">
-        <img class="myImg" mat-card-image src="../../assets/images/event7.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            This is Startupweekend.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>Like</button>
-          <button mat-button>Share</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    <div class="card" >
-      <mat-card class="example-card">
-        <img class="myImg" mat-card-image src="../../assets/images/event8.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            This is WSS event.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>Like</button>
-          <button mat-button>Share</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    <div class="card" >
-      <mat-card class="example-card">
-        <img class="myImg" mat-card-image src="../../assets/images/event9.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            This is DJ party.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>Like</button>
-          <button mat-button>Share</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    <div class="card" >
-      <mat-card class="example-card">
-        <img class="myImg" mat-card-image src="../../assets/images/event10.jpg" alt="Photo of a Shiba Inu">
-        <mat-card-content>
-          <p>
-            This is Iamsuperleague.
-          </p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button>Like</button>
-          <button mat-button>Share</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    <br><br><br>
+ 
     <h2>Events category</h2>
     <button type="button" class="btn btn-outline-danger">Musical shows</button>
     <button type="button" class="btn btn-outline-danger">Business events</button>
