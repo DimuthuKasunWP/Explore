@@ -6,7 +6,7 @@ export class DateFormatPipe implements PipeTransform {
   transform(value: string, type?: string) {
     const datePipe = new DatePipe('en-US');
     if (!type) {
-      value = datePipe.transform(value, 'MMM d');
+      value = datePipe.transform(value, 'MMM yyy');
     }
     if (type === 'long') {
       value = datePipe.transform(value, 'h:mm a - d MMM yyy');
