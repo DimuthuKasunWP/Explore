@@ -68,6 +68,7 @@ export class EventsService {
   removeEvent(eid){
     this.afs.doc<any>('events/' + eid).delete();
   }
+
   updateEventData(data){
     const EData = {
       latitude:data.latitude,
@@ -81,6 +82,33 @@ export class EventsService {
     };
     return this.afs.doc('events/' + data.eid).update(EData);
   }
+  editEvent(data) {
+    const EData = {
+      name: data.gname,
+      desc: data.desc,
+    };
+    return this.afs.doc('events/' + data.eid).update(EData);
+  }
+  subscribe(eid) {
+    this.auth.getAuthState().subscribe(currentuser => {
+      if (currentuser) {
+        const uid = currentuser.uid;
+        const data = {
+          uid: uid,
+          date: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        this.afs.doc('events/' + eid + '/members/' + uid).set(data);
+      }
+    });
+  }
+  unsubscribe(eid) {
+    this.auth.getAuthState().subscribe(currentuser => {
+      if (currentuser) {
+        const uid = currentuser.uid;
+        this.afs.doc('events/' + eid + '/members/' + uid).delete();
+      }
+    });
+  }
 
   getEvent(eid){
     return this.afs.doc<Event>('events/' + eid).valueChanges();
@@ -91,6 +119,27 @@ export class EventsService {
 
   getmembers(eid){
     return this.afs.collection('groups/' + eid + '/members', ref => ref.orderBy('date')).valueChanges();
+  }
+
+  updateBannerURL(url, gid) {
+    const data = {
+      bannerURL: url
+    };
+    this.afs.doc('groups/' + gid).update(data)
+      .then(() => console.log('Group banner updated'));
+  }
+
+
+  getFeed(eid) {
+    return this.afs.collection('posts/' , ref => ref.where('to', '==', eid)).valueChanges();
+  }
+
+  getMembers(eid) {
+    return this.afs.collection('events/' + eid + '/members', ref => ref.orderBy('date')).valueChanges();
+  }
+
+  getMostSubbed() {
+    return this.afs.collection('events', ref => ref.orderBy('totalMembers', 'desc')).valueChanges();
   }
 }
 
