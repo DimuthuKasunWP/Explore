@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import {AgmCoreModule} from '@agm/core'
+import {AgmCoreModule} from '@agm/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
