@@ -125,6 +125,20 @@ exports.onPost = functions.firestore
     updateTotalScribes(currentuid);
 });
 
+  exports.onPostFeed=functions.firestore.document('users/{uid}/feed').onCreate(
+    event=>{
+      const post = event.data.data();
+    }
+
+  );
+  exports.onDeleteFeed=functions.firestore.document('users/{uid}/feed').onDelete(
+    event =>{
+
+      const post = event.data.data();
+    }
+
+  );
+
 function notifyComment(data) {
   afs.doc('posts/' + data.to).get()
   .then(postDoc => {
@@ -189,6 +203,7 @@ exports.onLike = functions.firestore
     .document('posts/{postID}/likes/{userID}')
     .onCreate(event => {
         const uid = event.params.userID;
+        console.log("this is uid"+uid);
         const pid = event.params.postID;
         afs.doc('posts/' + pid).get()
         .then(postData => {
@@ -276,6 +291,9 @@ exports.onDelete = functions.firestore
       afs.doc('/posts/' + parentid + '/comments/' + deletedPost.pid).delete()
       .then(() => updatePostTotalComments(deletedPost.to))
       .catch((err) => console.log(err));
+      afs.doc('/users/' + parentid + '/feed/' + deletedPost.pid).delete()
+        .then(() => updatePostTotalComments(deletedPost.to))
+        .catch((err) => console.log(err));
     }
     deleteFeedPosts(deletedPost.uid, deletedPost.pid);
   })

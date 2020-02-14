@@ -1,0 +1,23 @@
+
+<!--<div class="row">-->
+<!--<div *ngIf="photos">-->
+<!--  <div class="column">-->
+<!--  <div *ngFor="let photo of photos; ">-->
+
+
+<!--      <img *ngIf="photo" [src]="photo" style="width:100%">-->
+
+
+
+
+<!--  </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</div>-->
+<h2 style="text-align: center">{{hid}}</h2>
+<div class="row itemsBlock">
+  <div *ngFor="let photo of photos" class="col-md-4 col-sm-6 col-12">
+    <img class="itemImage" [src]="photo" />
+
+  </div>
+</div>

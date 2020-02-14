@@ -85,7 +85,7 @@ export class GroupService {
   }
 
   getFeed(gid) {
-    return this.afs.collection('groups/' + gid + '/feed', ref => ref.orderBy('date', 'desc')).valueChanges();
+    return this.afs.collection('posts/' , ref => ref.where('to', '==', gid)).valueChanges();
   }
 
   getMembers(gid) {
@@ -102,6 +102,10 @@ export class GroupService {
     };
     this.afs.doc('groups/' + gid).update(data)
     .then(() => console.log('Group banner updated'));
+  }
+
+  getGroupList(){
+    return this.afs.collection("groups").valueChanges();
   }
 
 }

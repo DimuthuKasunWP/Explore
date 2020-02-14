@@ -9,6 +9,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/take';
 import { Router } from '@angular/router';
 import { LikesService } from './likes.service';
+import {NotificationService} from './notification.service';
 
 interface QueryConfig {
   path: string;
@@ -21,16 +22,92 @@ interface QueryConfig {
 
 @Injectable()
 export class PostsService {
-
+count=0;
+postcount=0;
+userpostcount=0;
+uid;
+date;
   constructor(
     private afs: AngularFirestore,
     private auth: AuthService,
     private router: Router,
+    private notifyservice:NotificationService
   ) { }
+  setUserFeedPosts(uid){
+    this.uid=uid;
+    // console.log("userid"+uid);
+    this.afs.collection<any>('/users/' + uid + '/following').valueChanges().subscribe(
+      followinguser=>{
+              while (this.count<Object.keys(followinguser).length){
+               uid=followinguser[this.count++].uid;
+              this.afs.collection<any>('posts', ref => ref.where('uid', '==', uid).orderBy('date', 'desc')).valueChanges().subscribe(
+                posts=>{
+                  // console.log("postes"+posts);
+                  while (this.postcount<Object.keys(posts).length){
+                    console.log("feed setup");
+                    // console.log("post"+posts[this.postcount].pid);
+                    var pid=posts[(this.postcount++)].pid;
+                    var date;
 
+                    // console.log("pid"+pid);
+                    this.getPost(pid).subscribe(datas=>{
+                      this.date=(datas.date);
+                      date=this.date;
+                      let data=  {
+                        pid : pid,
+                        date :this.date
+                      };
+                      // this.date=date;
+
+                      this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
+                    });
+
+                    // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
+                    // this.afs.collection<any>('/users/'+uid+'/feed').doc(pid).set(data);
+                  }
+
+                }
+              );
+
+
+            }
+
+    });
+
+    this.afs.collection<any>('posts', ref => ref.where('uid', '==', uid).orderBy('date', 'desc')).valueChanges().subscribe(
+      userposts=>{
+        while (this.userpostcount<Object.keys(userposts).length){
+          var pid=userposts[(this.userpostcount++)].pid;
+          var date;
+          // this.afs.collection('users/'+uid+'/feed/').doc(pid);
+          // console.log("pid"+pid);
+          this.getPost(pid).subscribe(datas=>{
+
+            this.date=(datas.date);
+            date=this.date;
+            let data=  {
+              pid : pid,
+              date :this.date
+            };
+
+            this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
+          });
+
+          // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
+          // this.afs.collection<any>('/users/'+uid+'/feed').doc(pid).set(data);
+        }
+    });
+  }
   // Get a user's posts
   getProfilePosts(uid) {
     return this.afs.collection('posts', ref => ref.where('uid', '==', uid).orderBy('date', 'desc')).valueChanges();
+  }
+  // Get user's feed
+  getFeed(uid) {
+    return this.afs.collection('users/' + uid + '/feed',
+      ref => ref.orderBy('date', 'desc')
+        .limit(200))
+      .valueChanges();
   }
 
   // Add post //
@@ -50,7 +127,8 @@ export class PostsService {
         const postRef = this.afs.collection('posts').doc(newPost.pid);
         return postRef.set(post)
           .then(() => {
-            console.log('Post Successful -', newPost.pid);
+            console.log("feed");
+            this.setUserFeedPosts(currentuser.uid);
           });
       });
   }
@@ -77,7 +155,7 @@ export class PostsService {
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             this.afs.doc('posts/' + newPost.to + '/comments/' + newPost.pid).set(comment);
-            console.log('Comment Successful -', newPost.pid);
+              this.notifyservice.notifyifreplytopost(newPost.to,currentuser.uid);
           });
       });
   }
@@ -87,17 +165,11 @@ export class PostsService {
     return this.afs.collection('posts/' + pid + '/comments', ref => ref.orderBy('timestamp', 'asc')).valueChanges();
   }
 
-  // Get user's feed
-  getFeed(uid) {
-    return this.afs.collection<any>('users/' + uid + '/feed',
-      ref => ref.orderBy('date', 'desc')
-      .limit(200))
-      .valueChanges();
-  }
+
 
   // Get individual post
   public getPost(pid) {
-    return this.afs.doc<any>('posts/' + pid).valueChanges();
+    return this.afs.doc<any>('posts/' + pid ).valueChanges();
   }
 
   // Delete post
@@ -133,9 +205,16 @@ export class PostsService {
     const data = {
       photoURL: url
     };
+    console.log("piddddd"+pid);
     this.afs.doc('posts/' + pid).update(data);
   }
-
+  updateEventPhotoURL(url, pid) {
+    const data = {
+      photoURL: url
+    };
+    console.log("piddddd"+pid);
+    this.afs.doc('events/' + pid).update(data);
+  }
   updateBannerURL(url, uid) {
     const data = {
       bannerURL: url

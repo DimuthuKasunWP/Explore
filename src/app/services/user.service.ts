@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
-
+  suggestedUserList=[];
+  count=0;
   constructor(
     private auth: AuthService,
     private afs: AngularFirestore,
@@ -28,7 +29,21 @@ export class UserService {
     return this.afs.collection('users/' + uid + '/groups', ref => ref.orderBy('last', 'desc')).valueChanges();
   }
 
-  getSuggestedUsers() {
+  getUserEvents(uid){
+    return this.afs.collection('users/'+uid+'/events',ref=>ref.orderBy('last','desc')).valueChanges();
+  }
+
+  getMostFollowedUsers(){
     return this.afs.collection('users', ref => ref.orderBy('totalFollowers', 'desc').limit(5)).valueChanges();
+
+  }
+
+  getFollowingUsers(uid){
+    console.log("user "+uid);
+      return this.afs.collection('users/' + uid + '/following').valueChanges();
+  }
+
+  getUsersList(){
+    return this.afs.collection("users").get();
   }
 }

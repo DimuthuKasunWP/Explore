@@ -1,0 +1,295 @@
+
+<mat-tab-group>
+
+
+  <mat-tab label="Create new event">
+    <br>
+    <br>
+    <div class="form-group row">
+      <div class="col-sm-8"></div>
+
+      <button *ngIf="!isexists" class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Submit</button>
+      <button *ngIf="isexists" class="btn col-auto bg-primary text-white btn-round py-2 m-0 px-5 align-self-center"(click)="saveEvent()">Update</button>
+
+    </div>
+    <br>
+    <br>
+
+    <div id="carouselExampleControls" class="carousel-slide" data-ride="carousel">
+      <div class="carousel-inner">
+
+        <div class="carousel-item">
+          <img src="..." class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="..." class="d-block w-100" alt="...">
+        </div>
+      </div>
+
+    </div>
+      <form [formGroup]="eventForm">
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="inputeventname" class="col-sm-2 col-form-label">Event name</label>
+          <div class="col-sm-7">
+            <input type="eventname" class="form-control" [(ngModel)]="name"  id="inputeventname" placeholder="Add a short,clear name" formControlName="name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="inputlocation" class="col-sm-2 col-form-label">Location</label>
+          <div class="col-sm-7">
+            <input type="location" class="form-control" [(ngModel)]="enteraddress" formControlName="enteraddress" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="description" class="col-sm-2 col-form-label">Description</label>
+          <div class="col-sm-7">
+            <textarea class="form-control" [(ngModel)]="description" formControlName="description" id="description" placeholder=" description" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="groupname" class="col-sm-2 col-form-label">Group Name</label>
+          <div class="col-sm-7">
+            <textarea class="form-control" [(ngModel)]="groupname" formControlName="groupname" id="groupname" placeholder=" group name" disabled></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
+          <div class="col-sm-7">
+        <mat-form-field *ngIf="!isexists">
+          <input matInput [(ngModel)]="startdate" formControlName="startd" [matDatepicker]="picker"  placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker  #picker></mat-datepicker>
+        </mat-form-field>
+            <input type="eventname" class="form-control" [(ngModel)]="startdate"  id="startdate" placeholder="Start date" formControlName="startdate">
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="enddate" class="col-sm-2 col-form-label">End Date</label>
+          <div class="col-sm-7">
+
+        <mat-form-field *ngIf="!isexists">
+          <input matInput [(ngModel)]="enddate" formControlName="enddate"  [matDatepicker]="picker1" placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker  #picker1></mat-datepicker>
+        </mat-form-field>
+            <input *ngIf="isexists" type="eventname" class="form-control" [(ngModel)]="enddate"  id="inputeventname" placeholder="End Date" formControlName="enddate">
+          </div>
+
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-1"></div>
+          <label for="starttime" class="col-sm-2 col-form-label">Start Time</label>
+          <div class="col-sm-7">
+            <input [(ngModel)]="starttime" formControlName="starttime" placeholder="Enter Time" aria-label="Enter Time" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+            <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+          </div>
+        </div>
+        <br>
+        <br>
+
+      </form>
+    <div class="form-group row">
+      <div class="col-sm-1"></div>
+      <div class="form-group pt-4 col-12 col-sm-5 mb-1 align-self-center">
+        <input type="file" id="InputPhoto" value="Choose File" class="inputfile" (change)="processImage($event)" accept="image/*">
+        <label for="InputPhoto" class="mx-0 text-center"><i class="fa fa-upload mr-1" aria-hidden="true"></i>{{filename}}</label>
+      </div>
+      <span class="col-auto  px-5 ml-3"><img id="displayPhoto" class=" align-self-center" *ngIf="photoURL" [src]="photoURL"></span>
+    </div>
+
+
+  </mat-tab>
+  <mat-tab label="Calender">
+
+    <div class="row">
+      <div class="col-4">
+        <div class="list-group" id="list-tab" role="tablist">
+          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home"> Beach cleanup Matara</a>
+          <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Gafs event</a>
+          <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">FS event</a>
+          <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Fijian event</a>
+          <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">DVAM CEREMONY event</a>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">Name: Beach cleanup Matara<br>Start date:09/12/2019<br>End date:09/12/2019<br>
+            Location: Matara Beach</div>
+          <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Name: Gafs event<br>Start date:30/11/2019<br>End date:30/11/2019<br>
+            Location: Matara NFS hotel</div>
+          <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Name: The FS event<br>Start date:29/11/2019<br>End date:29/11/2019<br>
+            Location: Colombo king hotel</div>
+          <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"> Name: The Fijian event.<br>Start date:20/01/2020<br>End date:20/01/2020<br>
+            Location: Colombo Galleface hotel</div>
+          <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list"> Name: The DVAM CEREMONY event.<br>Start date:22/01/2020<br>End date:22/01/2020<br>
+            Location: Colombo Galleface hotel</div>
+        </div>
+      </div>
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Explore">
+    <form class="form-inline md-form form-sm mt-0">
+      <i class="fas fa-search" aria-hidden="true"></i>
+      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+             aria-label="Search">
+    </form>
+
+    <br><br><br>
+    <h2>Your events</h2>
+    <!-- <div class="card" >
+      <mat-card class="example-card">
+        <img (click)="openDialog()" class="myImg" mat-card-image src="../../assets/images/event1.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is Fijian event.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event2.jpg" alt="Photo of a Shib Inu">
+        <mat-card-content>
+          <p>
+            This is Gafs event.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event3.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is Beach cleanup Matara
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event4.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is DVAM CEREMONY event.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event5.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is FS event.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <br><br><br> -->
+    <div id="event-list" class="bg-white my-2 pb-2" *ngIf="events">
+      <hr class="p-0 my-1">
+      <div *ngIf="events && events.length > 0; else noGroups" class="mt-2">
+        <div *ngFor="let event of events; let i = index" class="mx-3">
+          <p class="eventlistitem col-md-12" (click)="open(ViewEvent)">{{event.name}}</p>
+        </div><s></s>
+      </div>
+    </div>
+    <h2>Events you may like</h2>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event6.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is Greenskeepers Revenge.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Like</button>
+          <button mat-button>Share</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event7.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is Startupweekend.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Like</button>
+          <button mat-button>Share</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event8.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is WSS event.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Like</button>
+          <button mat-button>Share</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event9.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is DJ party.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Like</button>
+          <button mat-button>Share</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div class="card" >
+      <mat-card class="example-card">
+        <img class="myImg" mat-card-image src="../../assets/images/event10.jpg" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            This is Iamsuperleague.
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>Like</button>
+          <button mat-button>Share</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <br><br><br>
+    <h2>Events category</h2>
+    <button type="button" class="btn btn-outline-danger">Musical shows</button>
+    <button type="button" class="btn btn-outline-danger">Business events</button>
+    <button type="button" class="btn btn-outline-danger">Private parties/beach parties</button>
+    <button type="button" class="btn btn-outline-danger">Get togethers/meetups</button>
+    <button type="button" class="btn btn-outline-danger">Charity events</button>
+    <button type="button" class="btn btn-outline-danger">Social awareness programs</button>
+    <button type="button" class="btn btn-outline-danger">Exhibitions</button>
+  </mat-tab>
+</mat-tab-group>
+
+<ng-template #ViewEvent>
+  <app-popup-window [modalRef]="modalRef"></app-popup-window>
+</ng-template>
+
+

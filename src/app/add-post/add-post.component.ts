@@ -12,6 +12,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 // eslint-disable-next-line no-unused-vars
 import { FormsModule } from '@angular/forms';
+import {HashtagService} from '../services/hashtag.service';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-add-post',
@@ -31,6 +33,7 @@ export class AddPostComponent implements OnInit {
   addPostWrapper;
   containerStyle;
   route;
+  hashtags=[];
 
   // Post Data
   postBody;
@@ -47,7 +50,9 @@ export class AddPostComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private router: Router,
     private afs: AngularFirestore,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private hashtagService:HashtagService,
+    private notifyservice:NotificationService
   ) { }
 
   ngOnInit () {
@@ -87,9 +92,25 @@ export class AddPostComponent implements OnInit {
   }
 
   addPost() {
+    let hashTagReg:RegExp= /#[A-Za-z0-9]*/g;
+    this.hashtags=this.postBody.match(hashTagReg);
+    var count=0;
+    if(this.hashtags) {
+      while (count < this.hashtags.length) {
+        console.log("name" + this.hashtags[count]);
+        let data = {
+          hid: this.afs.createId(),
+          name: this.hashtags[count++]
+        };
+        this.hashtagService.sethashtag(data);
+        this.hashtagService.setposttoHashtag(this.pid);
+      }
+      this.postBody = this.postBody.replace(hashTagReg, "");
+    }
+    this.hashtags=null;
     this.contract();
     if (!this.type) {
-      if (this.postBody || this.inputFile.size < 2000000) {
+      if (this.postBody ) {
         const newPost = {
           body: this.postBody,
           imgURL: this.imgURL ? this.imgURL : null,
@@ -103,7 +124,7 @@ export class AddPostComponent implements OnInit {
       }
     }
     if (this.type === 'group') {
-      if (this.postBody && this.inputFile.size < 2000000) {
+      if (this.postBody ) {
         this.pid = this.afs.createId();
         const newPost = {
           body: this.postBody,
@@ -112,8 +133,29 @@ export class AddPostComponent implements OnInit {
           type: 'group',
           pid: this.pid
         };
-        this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+        if (this.inputFile) {
+          this.uploadService.pushUpload(this.inputFile, 'group', this.pid);
+        }
         this.postService.addPost(newPost);
+        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'group');
+        this.postBody = null;
+      }
+    }
+    if (this.type === 'event') {
+      if (this.postBody ) {
+        this.pid = this.afs.createId();
+        const newPost = {
+          body: this.postBody,
+          imgURL: this.imgURL ? this.imgURL : null,
+          to: this.id,
+          type: 'event',
+          pid: this.pid
+        };
+        if (this.inputFile) {
+          this.uploadService.pushUpload(this.inputFile, 'event', this.pid);
+        }
+        this.postService.addPost(newPost);
+        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'event');
         this.postBody = null;
       }
     }

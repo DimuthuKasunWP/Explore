@@ -10,6 +10,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { CreateGroupComponent } from '../create-group/create-group.component';
+import {FollowService} from '../services/follow.service';
+import {EventsService} from '../services/events.service';
 
 @Component({
   selector: 'app-home',
@@ -29,10 +31,13 @@ export class HomeComponent implements OnInit {
 
   modalRef;
   closeResult;
+  eventModalRef;
+
 
   feedPosts;
 
   groups = [];
+  events= [];
 
   constructor(
     private auth: AuthService,
@@ -41,10 +46,12 @@ export class HomeComponent implements OnInit {
     private afs: AngularFirestore,
     private titleService: Title,
     private userService: UserService,
+    private follow: FollowService,
     private sanitizer: DomSanitizer,
     private modalService: NgbModal,
     private groupService: GroupService,
-    private location: PlatformLocation
+    private location: PlatformLocation,
+    private eventService:EventsService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -64,7 +71,9 @@ export class HomeComponent implements OnInit {
     this.auth.checkLogin();
     this.titleService.setTitle('Home');
     this.getCurrentUser();
+
   }
+
   sendTo(path, location?) {
     if (path === 'profile') {
       this.router.navigateByUrl('user/' + this.userName);
@@ -79,18 +88,26 @@ export class HomeComponent implements OnInit {
     if (path === 'custom' && location) {
       this.router.navigateByUrl(location);
     }
+    if(path=='event' && location){
+      this.router.navigateByUrl('groupevent/'+location);
+      localStorage.setItem("geid",location);
+    }
   }
   getCurrentUser() {
     this.auth.getAuthState().subscribe(
       user => {
         if (user) {
+
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
+
                 this.displayName = userDoc.displayName;
                 this.userName = userDoc.userName;
                 this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
+                this.getFollowData();
+                this.postsService.setUserFeedPosts(this.userid);
                 this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
                 this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
                 this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
@@ -98,8 +115,35 @@ export class HomeComponent implements OnInit {
 
                 // Get pids from user feed
                 this.postsService.getFeed(this.userid).subscribe(
-                  feedPosts => this.feedPosts = feedPosts
+                  feedPosts => {
+                    this.feedPosts = feedPosts;
+
+                  }
                 );
+                // this.postsService.getProfilePosts(this.userid).subscribe(
+                //   posts => {
+                //     if (posts) {
+                //       this.feedPosts = posts;
+                //       console.log("cheking for the confirmation");
+                //     }
+                //   });
+                //get user's events
+                this.userService.getUserEvents(this.userid).subscribe(
+                  userEvents=>{
+
+                    this.events=[];
+                    userEvents.forEach((eventData:any)=>{
+
+                        this.eventService.getEvent(eventData.eid).subscribe(
+                          eventDetails=>{
+                            this.events.push(eventDetails);
+                          });
+
+
+                    });
+                  }
+                );
+
 
                 // Get user's groups
                 this.userService.getUserGroups(this.userid).subscribe(
@@ -122,7 +166,18 @@ export class HomeComponent implements OnInit {
         }
     });
   }
+  getFollowData() {
+    this.follow.getFollowers(this.userid).subscribe(
+      followers => {
+        this.totalFollowers=Object.keys(followers).length;
 
+      });
+    this.follow.getFollowing(this.userid).subscribe(
+      following => {
+        this.totalFollowing=Object.keys(following).length;
+
+      });
+  }
   createGroup(content) {
     this.modalRef = this.modalService.open(content, {
       size: 'lg',
@@ -157,5 +212,9 @@ export class HomeComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  sendToEvent(){
+    this.router.navigateByUrl('event' );
   }
 }

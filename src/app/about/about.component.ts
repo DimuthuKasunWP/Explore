@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 // eslint-disable-next-line no-unused-vars
 import { UserService } from '../services/user.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-about',
@@ -20,20 +21,26 @@ export class AboutComponent implements OnInit {
   mostLiked;
   mostFollowed;
   mostSubbed;
+  uid;
 
   // eslint-disable-next-line no-useless-constructor
   constructor (
     private title: Title,
     private postService: PostsService,
     private userService: UserService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private authService:AuthService
   ) { }
 
   ngOnInit () {
+    this.authService.getAuthState().subscribe(user=>{
+      this.uid=user.uid;
+
+    });
     this.title.setTitle('Explore | About');
     this.postService.getMostLikedPosts().subscribe(posts => this.mostLiked = posts);
     this.postService.getMostCommentedPosts().subscribe(posts => this.mostCommented = posts);
-    this.userService.getSuggestedUsers().subscribe(users => this.mostFollowed = users);
+    this.mostFollowed=this.userService.getMostFollowedUsers();
     this.groupService.getMostSubbed().subscribe(groups => this.mostSubbed = groups);
   }
 }

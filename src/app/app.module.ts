@@ -13,6 +13,7 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 import * as firebase from 'firebase';
+import {AgmCoreModule} from '@agm/core';
 
 
 // Pipes and Directives
@@ -29,6 +30,7 @@ import { UserService } from './services/user.service';
 import { FollowService } from './services/follow.service';
 import { LikesService } from './services/likes.service';
 import { NotificationService } from './services/notification.service';
+import { HashtagService }  from './services/hashtag.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -60,6 +62,11 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import { AdminComponent } from './admin/admin.component';
 import { GrouplistComponent } from './group/grouplist/grouplist.component';
 import { NotificationComponent } from './notification/notification.component';
+import { GmapsComponent } from './gmaps/gmaps.component';
+
+import { EventComponent } from './event/event.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
@@ -67,6 +74,25 @@ import { GmapsComponent } from './gmaps/gmaps.component';
 import { GmapComponent } from './gmap/gmap.component';
 import { AgmCoreModule } from '@agm/core';
 
+
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatInputModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMenuModule} from '@angular/material';
+import {MatCheckboxModule} from '@angular/material';
+import {MatIconModule} from '@angular/material';
+import {MatNativeDateModule} from '@angular/material';
+import { PopupWindowComponent } from './popup-window/popup-window.component';
+import {MatDialogModule} from '@angular/material/dialog';
+
+
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { EventlistComponent } from './event/eventlist/eventlist.component';
+import {EventsService} from './services/events.service';
+import { HashtagComponent } from './hashtag/hashtag.component';
+import { GroupEventComponent } from './group-event/group-event.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -79,6 +105,14 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'event',
+    component: EventComponent
+  },
+  {
+    path: 'event/:eid',
+    component: EventComponent
   },
   {
     path: 'user/:username',
@@ -129,8 +163,23 @@ const routes: Routes = [
     component: GrouplistComponent
   },
   {
+    path: 'popup-window',
+    component: PopupWindowComponent
+  },
+  {
+
     path:'passwdreset',
     component:PasswdresetComponent
+
+  },
+  {
+    path:"hashtag/:hid",
+    component:HashtagComponent
+  },
+  {
+    path:"groupevent/:geid",
+    component:GroupEventComponent
+
   }
   // {
   //   path: '**',
@@ -173,13 +222,19 @@ const routes: Routes = [
     AdminComponent,
     GrouplistComponent,
     NotificationComponent,
+    GmapsComponent,
+    EventComponent,
+    PopupWindowComponent,
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent,
     GmapsComponent,
     GmapComponent,
-    
-    ],
+    EventlistComponent,
+    HashtagComponent,
+    GroupEventComponent
+  ],
+
   imports: [
     BrowserModule,
     NgbModule,
@@ -194,11 +249,27 @@ const routes: Routes = [
     NgxAutoScrollModule,
     AgmCoreModule.forRoot({
       apiKey:'AIzaSyD_gQGzi-IDe-KM69qlbUsOmKTvhuIscjg'
+    }),
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatTabsModule,
+    MatInputModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    NgxMaterialTimepickerModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsKey,
+      libraries: ['places']
     })
-     
   ],
   providers: [
     AuthService,
+    EventsService,
     UploadService,
     UserService,
     PostsService,
@@ -208,7 +279,9 @@ const routes: Routes = [
     NotificationService,
     DateFormatPipe,
     LinkifyPipe,
-    MessageService
+    MessageService,
+    MatDatepickerModule,
+    HashtagService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

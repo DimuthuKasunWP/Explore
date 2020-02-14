@@ -91,8 +91,5 @@ export class GroupsearchComponent implements OnInit {
     console.log(uid);
     localStorage.getItem("gid");
   
-    
-
-
   }
 }

@@ -36,6 +36,21 @@
           <small (click)="open(GroupList, 'grouplist')" class="mx-3 my-2 text-primary pointer" *ngIf="groups && groups.length > 5">See More...</small>
         </div>
       </div>
+      <div id="event-list" class="bg-white my-2 pb-2" *ngIf="events">
+        <div class="container-fluid">
+          <div class="row">
+            <h5 class="pt-1 col-5">Events</h5>
+            <i id="btnCreateEvent" class="fa fa-plus-square fa-2x align-self-center text-primary col-3 mr-1 col-lg-2 ml-auto" (click)="sendToEvent()"></i>
+          </div>
+        </div>
+        <hr class="p-0 my-1">
+        <div *ngIf="events && events.length > 0; else noEvents" class="mt-2">
+          <div *ngFor="let event of events; let i = index" class="mx-3">
+            <p class="eventlistitem my-1" (click)="sendTo('event', event.eid)" *ngIf="i<5">{{event.name}}</p>
+          </div><s></s>
+          <small (click)="open(EventList, 'eventlist')" class="mx-3 my-2 text-primary pointer" *ngIf="events && events.length > 5">See More...</small>
+        </div>
+      </div>
     </div>
     <div id="posts-container" class="col-md-6 pb-4">
       <app-add-post [userURL]="photoURL" [showAvatar]="true"></app-add-post>
@@ -50,13 +65,7 @@
       <div id="suggested" class="bg-white mb-2 pb-2">
         <app-suggested></app-suggested>
       </div>
-      <div id="alt-footer" class="d-none d-md-inline-block mx-auto text-justify">
-        <span (click)="sendTo('custom', 'about')" class="pointer">About</span>
-        <span (click)="sendTo('custom', 'login')" class="pointer">Login</span>
-        <span (click)="sendTo('custom', 'signup')" class="pointer">Register</span>
-        <span (click)="sendTo('custom', 'feedback')" class="pointer">Feedback</span>
-        <span>Explore&nbsp;2019</span>
-      </div>
+
     </div>
   </div>
 </div>
@@ -77,4 +86,12 @@
 
 <ng-template #CreateGroup>
   <app-create-group [modalRef]="modalRef"></app-create-group>
+</ng-template>
+
+<ng-template #EventList>
+  <app-eventlist [events]="events" [modalRef]="eventModalRef"></app-eventlist>
+</ng-template>
+
+<ng-template #noEvents>
+  <p class="mx-1 text-center text-muted">You are not a subscribe to any event</p>
 </ng-template>
