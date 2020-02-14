@@ -271,70 +271,25 @@ export class EventComponent implements OnInit {
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
-
-                // this.displayName = userDoc.displayName;
-                // this.userName = userDoc.userName;
-                // this.photoURL = userDoc.photoURL;
-                this.userid = userDoc.uid;
-                // this.getFollowData();
-                // // this.postsService.setUserFeedPosts(this.userid);
-                // this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
-                // this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
-                // this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
-                // this.bannerURL = userDoc.bannerURL ? userDoc.bannerURL : null;
-
-                // Get pids from user feed
-                // this.postsService.getFeed(this.userid).subscribe(
-                //   feedPosts => {
-                //     this.feedPosts = feedPosts;
-
-                //   }
-                // );
-                // this.postsService.getProfilePosts(this.userid).subscribe(
-                //   posts => {
-                //     if (posts) {
-                //       this.feedPosts = posts;
-                //       console.log("cheking for the confirmation");
-                //     }
-                //   });
-                //get user's events
-                this.userService.getUserEvents(this.userid).subscribe(
+              this.userid = userDoc.uid;
+                this.eventsService.getEventList().subscribe(
                   userEvents=>{
 
                     this.events=[];
                     userEvents.forEach((eventData:any)=>{
 
-                        this.eventsService.getEvent(eventData.eid).subscribe(
-                          eventDetails=>{
-                            this.events.push(eventDetails);
-                          });
-
+                      this.events.push(eventData);
 
                     });
                   }
                 );
 
 
-                // // Get user's groups
-                // this.userService.getUserGroups(this.userid).subscribe(
-                //   userGroups => {
-                //     if (userGroups) {
-                //       this.groups = [];
-                //       userGroups.forEach((groupData: any) => {
-                //         this.groupService.getGroup(groupData.gid).subscribe(
-                //           groupDetails => {
-                //             this.groups.push(groupDetails);
-                //           });
-                //       });
-                //     }
-                //   }
-                // );
+            
               }
             });
         }
-        // else {
-        //   this.router.navigateByUrl('start');
-        // }
+        
     });
   }
   open(content, type?) {
@@ -343,10 +298,6 @@ export class EventComponent implements OnInit {
       size: 'sm',
       windowClass: 'modal-style'
     });
-    // if (type === 'grouplist') {
-    //   // push new state to history
-    //   history.pushState(null, null, '/user/' + this.userName + '/groups');
-    // }
     this.modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
