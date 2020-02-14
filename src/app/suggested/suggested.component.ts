@@ -2,6 +2,7 @@ import { UserService } from './../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import {EventsService} from '../services/events.service';
+import {GroupService} from '../services/group.service';
 
 @Component({
   selector: 'app-suggested',
@@ -16,11 +17,13 @@ export class SuggestedComponent implements OnInit {
   count=0;
   photoURL = '../../assets/images/default-profile.jpg';
   events;
+  groups;
 
   constructor(
     private userService: UserService,
     private auth: AuthService,
-    private eveservice:EventsService
+    private eveservice:EventsService,
+    private groupservice:GroupService
   ) { }
 
   ngOnInit() {
@@ -75,6 +78,7 @@ export class SuggestedComponent implements OnInit {
         console.log("count"+this.userDetails.length);
         this.addUserDetails();
         this.getEventList();
+        this.getGroupList();
 
       },2000);
     });
@@ -85,6 +89,11 @@ export class SuggestedComponent implements OnInit {
     this.eveservice.getEventList().subscribe(events=>{
       this.events=events;
 
+    });
+  }
+  getGroupList(){
+    this.groupservice.getGroupList().subscribe(group=>{
+      this.groups=group;
     });
   }
 
