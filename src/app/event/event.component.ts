@@ -16,6 +16,7 @@ import {DateFormatPipe} from '../services/date.pipe';
 // tslint:disable-next-line:no-duplicate-imports
 import {NgbModal,ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
+import {GroupService} from '../services/group.service';
 const moment =  _moment;
 @Component({
   selector: 'app-event',
@@ -40,7 +41,8 @@ export class EventComponent implements OnInit {
   isInvalid;
   isLoaded;
   modalRef;
-  closeResult
+  closeResult;
+  groupname;
   // displayName;
   // userName;
   userid;
@@ -66,6 +68,10 @@ export class EventComponent implements OnInit {
       Validators.maxLength(30)
     ]),
     description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    groupname: new FormControl('', [
       Validators.required,
       Validators.minLength(5)
     ]),
@@ -103,6 +109,7 @@ export class EventComponent implements OnInit {
     private auth: AuthService,
     private modalService: NgbModal,
     private location:PlatformLocation,
+    private groupservice:GroupService,
     private mapsAPILoader: MapsAPILoader,
                 private ngZone: NgZone,
                 private uploadService:UploadService) {
@@ -137,10 +144,19 @@ export class EventComponent implements OnInit {
       routeurl => {
         this.eid = routeurl.eid;
       });
+    var gid=localStorage.getItem("gid");
+    if(gid){
+      this.groupservice.getGroup(gid).subscribe(group=>{
+        if(group){
+          this.groupname=group.gname;
+        }
+      });
+    }
+    console.log("this is router eid"+this.eid);
     if(this.eid!=null){
       console.log("true");
       this.eid=localStorage.getItem("eid");
-
+        console.log("this is real eid"+this.eid);
       this.auth.getAuthState().subscribe(currUser=>{
         if(currUser){
           this.uid=currUser.uid;
@@ -255,70 +271,25 @@ export class EventComponent implements OnInit {
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
-
-                // this.displayName = userDoc.displayName;
-                // this.userName = userDoc.userName;
-                // this.photoURL = userDoc.photoURL;
-                this.userid = userDoc.uid;
-                // this.getFollowData();
-                // // this.postsService.setUserFeedPosts(this.userid);
-                // this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
-                // this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
-                // this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
-                // this.bannerURL = userDoc.bannerURL ? userDoc.bannerURL : null;
-
-                // Get pids from user feed
-                // this.postsService.getFeed(this.userid).subscribe(
-                //   feedPosts => {
-                //     this.feedPosts = feedPosts;
-
-                //   }
-                // );
-                // this.postsService.getProfilePosts(this.userid).subscribe(
-                //   posts => {
-                //     if (posts) {
-                //       this.feedPosts = posts;
-                //       console.log("cheking for the confirmation");
-                //     }
-                //   });
-                //get user's events
-                this.userService.getUserEvents(this.userid).subscribe(
+              this.userid = userDoc.uid;
+                this.eventsService.getEventList().subscribe(
                   userEvents=>{
 
                     this.events=[];
                     userEvents.forEach((eventData:any)=>{
 
-                        this.eventsService.getEvent(eventData.eid).subscribe(
-                          eventDetails=>{
-                            this.events.push(eventDetails);
-                          });
-
+                      this.events.push(eventData);
 
                     });
                   }
                 );
 
 
-                // // Get user's groups
-                // this.userService.getUserGroups(this.userid).subscribe(
-                //   userGroups => {
-                //     if (userGroups) {
-                //       this.groups = [];
-                //       userGroups.forEach((groupData: any) => {
-                //         this.groupService.getGroup(groupData.gid).subscribe(
-                //           groupDetails => {
-                //             this.groups.push(groupDetails);
-                //           });
-                //       });
-                //     }
-                //   }
-                // );
+            
               }
             });
         }
-        // else {
-        //   this.router.navigateByUrl('start');
-        // }
+        
     });
   }
   open(content, type?) {
@@ -327,10 +298,6 @@ export class EventComponent implements OnInit {
       size: 'sm',
       windowClass: 'modal-style'
     });
-    // if (type === 'grouplist') {
-    //   // push new state to history
-    //   history.pushState(null, null, '/user/' + this.userName + '/groups');
-    // }
     this.modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
