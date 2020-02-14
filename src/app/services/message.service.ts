@@ -12,7 +12,7 @@ room;
   ) { }
 
   getChatrooms(uid) {
-    return this.afs.collection('/messaging/' + uid + '/users', ref => ref.orderBy('lastUpdate', 'desc')).valueChanges();
+    return this.afs.collection('/messaging/' + uid + '/users').valueChanges();
   }
 
   // checkChatroom(profileuid) {
@@ -51,18 +51,19 @@ room;
           lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
         };
         this.room=roomData;
-        this.afs.doc('messaging/' + rid).set(roomData)
+        console.log("this is room data dd"+this.room);
+        this.afs.doc('messaging/' + profileuid).set(roomData)
         .then(() => {
           let data = {
             uid: profileuid
           };
-          this.afs.doc('messaging/' + rid + '/users/' + profileuid).set(data);
+          this.afs.doc('messaging/' + profileuid + '/users/' + rid).set(data);
           data = {
             uid: curruser.uid
           };
-          this.afs.doc('messaging/' + rid + '/users/' + curruser.uid).set(data);
+          this.afs.doc('messaging/' + curruser.uid + '/users/' + rid).set(data);
         });
-
+        console.log("this is end of creating new chatroom"+rid);
         return rid;
       });
 

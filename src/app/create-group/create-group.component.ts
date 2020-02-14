@@ -98,7 +98,8 @@ export class CreateGroupComponent implements OnInit{
       const groupData = {
         admin:this.uid,
         gname: this.gname,
-        desc: this.description
+        desc: this.description,
+        bannerURL:this.photoURL
       };
       this.groupService.createGroup(groupData);
       this.modalRef.close();
