@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 // eslint-disable-next-line no-unused-vars
 import { FormsModule } from '@angular/forms';
 import {HashtagService} from '../services/hashtag.service';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-add-post',
@@ -50,7 +51,8 @@ export class AddPostComponent implements OnInit {
     private router: Router,
     private afs: AngularFirestore,
     private uploadService: UploadService,
-    private hashtagService:HashtagService
+    private hashtagService:HashtagService,
+    private notifyservice:NotificationService
   ) { }
 
   ngOnInit () {
@@ -93,16 +95,18 @@ export class AddPostComponent implements OnInit {
     let hashTagReg:RegExp= /#[A-Za-z0-9]*/g;
     this.hashtags=this.postBody.match(hashTagReg);
     var count=0;
-    while(count<this.hashtags.length){
-      console.log("name"+this.hashtags[count]);
-      let data={
-        hid:this.afs.createId(),
-        name:this.hashtags[count++]
-      };
-      this.hashtagService.sethashtag(data);
-      this.hashtagService.setposttoHashtag(this.pid);
+    if(this.hashtags) {
+      while (count < this.hashtags.length) {
+        console.log("name" + this.hashtags[count]);
+        let data = {
+          hid: this.afs.createId(),
+          name: this.hashtags[count++]
+        };
+        this.hashtagService.sethashtag(data);
+        this.hashtagService.setposttoHashtag(this.pid);
+      }
+      this.postBody = this.postBody.replace(hashTagReg, "");
     }
-    this.postBody=this.postBody.replace(hashTagReg,"");
     this.contract();
     if (!this.type) {
       if (this.postBody ) {
@@ -132,6 +136,7 @@ export class AddPostComponent implements OnInit {
           this.uploadService.pushUpload(this.inputFile, 'group', this.pid);
         }
         this.postService.addPost(newPost);
+        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'group');
         this.postBody = null;
       }
     }
