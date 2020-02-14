@@ -17,6 +17,7 @@ interface Event {
   startdate;
   enddate;
   starttime;
+  photoURL;
 }
 
 @Injectable()
@@ -83,6 +84,9 @@ export class EventsService {
 
   getEvent(eid){
     return this.afs.doc<Event>('events/' + eid).valueChanges();
+  }
+  getEventList(){
+    return this.afs.collection("events").valueChanges();
   }
 
   getmembers(eid){
