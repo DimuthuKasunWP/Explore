@@ -13,10 +13,20 @@
         <a ngbDropdownToggle><i class="fa fa-bell mx-2" aria-hidden="true"></i>Notifications<span *ngIf="unread">
           <span *ngIf="unread.length > 0" id="unread-count">{{unread.length}}</span>
         </span></a>
-        <div ngbDropdownMenu *ngIf="unread && notifs" id="notif-dropdown">
+        <div ngbDropdownMenu *ngIf="notifcomment || notifgroup || notiflikes || notifevent" id="notif-dropdown">
           <div id="notif-list">
-            <div *ngFor="let notif of notifs; let i = index" class="notif-item">
-              <button class="dropdown-item" *ngIf="unread.length > 0 ? i <= unread.length : 10"><app-notification [notif]="notif"></app-notification></button>
+
+             <div *ngFor="let notif of notifcomment; let i = index" class="notif-item">
+              <button class="dropdown-item" ><app-notification [notif]="notif"></app-notification></button>
+            </div>
+             <div *ngFor="let notif of notiflikes; let i = index" class="notif-item">
+              <button class="dropdown-item" ><app-notification [notif]="notif"></app-notification></button>
+            </div>
+             <div *ngFor="let notif of notifgroup; let i = index" class="notif-item">
+              <button class="dropdown-item" ><app-notification [notif]="notif"></app-notification></button>
+            </div>
+             <div *ngFor="let notif of notifevent; let i = index" class="notif-item">
+              <button class="dropdown-item" ><app-notification [notif]="notif"></app-notification></button>
             </div>
           </div>
           <hr class="py-0">
@@ -64,8 +74,18 @@
     <div id="notif-list">
       <h3 class="mx-3 my-2">Notifications</h3>
       <hr class="mx-3 my-1 py-1">
-      <div *ngFor="let notif of notifs; let i = index" class="notif-item">
-        <button class="dropdown-item" *ngIf="i <= unread.length || i <= 10"><app-notification [notif]="notif" [modalRef]="modalRef"></app-notification></button>
+
+      <div *ngFor="let notif of notifevent; let i = index" class="notif-item">
+        <button class="dropdown-item" *ngIf="i <= 10"><app-notification [notif]="notif" [modalRef]="modalRef"></app-notification></button>
+      </div>
+      <div *ngFor="let notif of notifgroup; let i = index" class="notif-item">
+        <button class="dropdown-item" *ngIf="i <= 10"><app-notification [notif]="notif" [modalRef]="modalRef"></app-notification></button>
+      </div>
+      <div *ngFor="let notif of notiflikes; let i = index" class="notif-item">
+        <button class="dropdown-item" *ngIf="i <= 10"><app-notification [notif]="notif" [modalRef]="modalRef"></app-notification></button>
+      </div>
+      <div *ngFor="let notif of notifcomment; let i = index" class="notif-item">
+        <button class="dropdown-item" *ngIf="i <= 10"><app-notification [notif]="notif" [modalRef]="modalRef"></app-notification></button>
       </div>
     </div>
 </ng-template>
