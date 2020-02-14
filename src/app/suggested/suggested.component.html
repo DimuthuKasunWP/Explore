@@ -18,4 +18,24 @@
         </div>
     </div>
   </div>
+
+  <div *ngIf="events">
+    <h5 id="title" class="pt-1 px-2">Events</h5>
+    <div *ngFor="let event of events">
+      <div id="user-block" class="px-0 px-md-1 py-2"  routerLink="/event/{{event.eid}}">
+        <div class="container-fluid">
+          <div class="row justify-content-between">
+            <span class="col-4 col-lg-3">
+              <img [src]="event.photoURL" class="circle" height="50px" width="50px">
+            </span>
+            <span class="col-8 col-lg-9">
+              {{event.name}} <br>
+
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
