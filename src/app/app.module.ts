@@ -89,6 +89,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { EventlistComponent } from './event/eventlist/eventlist.component';
 import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
+import { GroupEventComponent } from './group-event/group-event.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -171,6 +172,11 @@ const routes: Routes = [
   {
     path:"hashtag/:hid",
     component:HashtagComponent
+  },
+  {
+    path:"groupevent/:geid",
+    component:GroupEventComponent
+
   }
   // {
   //   path: '**',
@@ -220,7 +226,8 @@ const routes: Routes = [
     AddMembersComponent,
     GroupsearchComponent,
     EventlistComponent,
-    HashtagComponent
+    HashtagComponent,
+    GroupEventComponent
   ],
 
   imports: [
