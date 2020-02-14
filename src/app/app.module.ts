@@ -70,6 +70,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
+import { GmapsComponent } from './gmaps/gmaps.component';
+import { GmapComponent } from './gmap/gmap.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -225,6 +228,8 @@ const routes: Routes = [
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent,
+    GmapsComponent,
+    GmapComponent,
     EventlistComponent,
     HashtagComponent,
     GroupEventComponent
@@ -242,6 +247,9 @@ const routes: Routes = [
     ChartsModule,
     ReactiveFormsModule,
     NgxAutoScrollModule,
+    AgmCoreModule.forRoot({
+      apiKey:'AIzaSyD_gQGzi-IDe-KM69qlbUsOmKTvhuIscjg'
+    }),
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatTabsModule,
