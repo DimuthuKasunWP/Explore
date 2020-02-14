@@ -203,6 +203,7 @@ exports.onLike = functions.firestore
     .document('posts/{postID}/likes/{userID}')
     .onCreate(event => {
         const uid = event.params.userID;
+        console.log("this is uid"+uid);
         const pid = event.params.postID;
         afs.doc('posts/' + pid).get()
         .then(postData => {
