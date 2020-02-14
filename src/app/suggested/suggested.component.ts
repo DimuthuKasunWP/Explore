@@ -1,6 +1,7 @@
 import { UserService } from './../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import {EventsService} from '../services/events.service';
 
 @Component({
   selector: 'app-suggested',
@@ -14,10 +15,12 @@ export class SuggestedComponent implements OnInit {
   currentuser;
   count=0;
   photoURL = '../../assets/images/default-profile.jpg';
+  events;
 
   constructor(
     private userService: UserService,
-    private auth: AuthService
+    private auth: AuthService,
+    private eveservice:EventsService
   ) { }
 
   ngOnInit() {
@@ -71,11 +74,18 @@ export class SuggestedComponent implements OnInit {
         }
         console.log("count"+this.userDetails.length);
         this.addUserDetails();
+        this.getEventList();
 
       },2000);
     });
 
 
+  }
+  getEventList(){
+    this.eveservice.getEventList().subscribe(events=>{
+      this.events=events;
+
+    });
   }
 
   checkCurrent(uid) {
