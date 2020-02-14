@@ -156,7 +156,7 @@ export class GroupComponent implements OnInit {
     return this.datePipe.transform(this.createDate.toDate(), 'month');
   }
   sendTo(){
-    this.router.navigateByUrl('event/');
+    this.router.navigateByUrl('event');
     localStorage.setItem("gid",this.gid);
   }
 
