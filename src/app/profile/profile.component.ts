@@ -259,6 +259,8 @@ export class ProfileComponent implements OnInit {
           console.log("first");
           this.rid= this.afs.createId();
           this.room=this.msgService.createChatroom(this.userid,this.rid);
+          this.room=this.rid;
+          console.log("room id is"+this.userid);
           console.log("opening"+this.room);
           this.open();
         }
@@ -270,7 +272,10 @@ export class ProfileComponent implements OnInit {
     }
 
     open() {
-
+      this.room={
+        uid:this.userid,
+        rid:this.rid
+      };
       this.modalRef = this.modalService.open(this.modalContent, {
         size: 'lg',
         windowClass: 'modal-style'

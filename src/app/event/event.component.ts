@@ -8,7 +8,7 @@ import{EventsService} from '../services/events.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
 import * as _moment from 'moment';
@@ -111,6 +111,7 @@ export class EventComponent implements OnInit {
     private location:PlatformLocation,
     private groupservice:GroupService,
     private mapsAPILoader: MapsAPILoader,
+    private router:Router,
                 private ngZone: NgZone,
                 private uploadService:UploadService) {
                   location.onPopState((event) => {
@@ -304,6 +305,13 @@ export class EventComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason, type)}`;
     });
   }
+
+  eventDeatils(eid){
+    this.router.navigateByUrl('groupevent/'+eid);
+    localStorage.setItem("geid",eid);
+  
+  }
+
   private getDismissReason(reason: any, type?): string {
     if (type === 'grouplist') {
       history.back();
