@@ -32,7 +32,7 @@ export class AdminComponent implements OnInit {
     this.titleService.setTitle('Admin Dashboard');
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
-        this.afs.doc('global/admins/admins/' + curruser.uid).valueChanges().subscribe(admin => {
+        this.afs.doc('globaladminsadmins/' + curruser.uid).valueChanges().subscribe(admin => {
           if (!admin) {
             this.router.navigateByUrl('/home');
           } else {
