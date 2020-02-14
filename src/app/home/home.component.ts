@@ -89,8 +89,8 @@ export class HomeComponent implements OnInit {
       this.router.navigateByUrl(location);
     }
     if(path=='event' && location){
-      this.router.navigateByUrl('event/'+location);
-      localStorage.setItem("eid",location);
+      this.router.navigateByUrl('groupevent/'+location);
+      localStorage.setItem("geid",location);
     }
   }
   getCurrentUser() {

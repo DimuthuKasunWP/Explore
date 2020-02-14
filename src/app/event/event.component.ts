@@ -16,6 +16,7 @@ import {DateFormatPipe} from '../services/date.pipe';
 // tslint:disable-next-line:no-duplicate-imports
 import {NgbModal,ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
+import {GroupService} from '../services/group.service';
 const moment =  _moment;
 @Component({
   selector: 'app-event',
@@ -40,7 +41,8 @@ export class EventComponent implements OnInit {
   isInvalid;
   isLoaded;
   modalRef;
-  closeResult
+  closeResult;
+  groupname;
   // displayName;
   // userName;
   userid;
@@ -66,6 +68,10 @@ export class EventComponent implements OnInit {
       Validators.maxLength(30)
     ]),
     description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    groupname: new FormControl('', [
       Validators.required,
       Validators.minLength(5)
     ]),
@@ -103,6 +109,7 @@ export class EventComponent implements OnInit {
     private auth: AuthService,
     private modalService: NgbModal,
     private location:PlatformLocation,
+    private groupservice:GroupService,
     private mapsAPILoader: MapsAPILoader,
                 private ngZone: NgZone,
                 private uploadService:UploadService) {
@@ -137,10 +144,19 @@ export class EventComponent implements OnInit {
       routeurl => {
         this.eid = routeurl.eid;
       });
+    var gid=localStorage.getItem("gid");
+    if(gid){
+      this.groupservice.getGroup(gid).subscribe(group=>{
+        if(group){
+          this.groupname=group.gname;
+        }
+      });
+    }
+    console.log("this is router eid"+this.eid);
     if(this.eid!=null){
       console.log("true");
       this.eid=localStorage.getItem("eid");
-
+        console.log("this is real eid"+this.eid);
       this.auth.getAuthState().subscribe(currUser=>{
         if(currUser){
           this.uid=currUser.uid;
