@@ -366,7 +366,7 @@ export class PostComponent implements OnInit {
   }
 
   checkAdmin() {
-    this.afs.doc('global/admins/admins/' + this.currentuid).valueChanges().subscribe(admin => {
+    this.afs.doc('globaladminsadmins/' + this.currentuid).valueChanges().subscribe(admin => {
       if (admin) {
         this.isCurrentUser = true;
       }
