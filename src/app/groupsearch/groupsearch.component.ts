@@ -72,7 +72,6 @@ export class GroupsearchComponent implements OnInit {
     this.searchterm = null;
     this.router.navigateByUrl('user/' + username);
   }
-
   sendRequest(username,uid){
     let isuser=false;
     var gid=localStorage.getItem("gid");
