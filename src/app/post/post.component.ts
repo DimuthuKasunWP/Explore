@@ -11,6 +11,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {DatePipe, PlatformLocation} from '@angular/common';
 import { ViewEncapsulation } from '@angular/core';
 import {HashtagService} from '../services/hashtag.service';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-post',
@@ -75,7 +76,8 @@ export class PostComponent implements OnInit {
     private likeService: LikesService,
     private groupService: GroupService,
     private afs: AngularFirestore,
-    private hashtagservice:HashtagService
+    private hashtagservice:HashtagService,
+    private notifyservice:NotificationService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -239,6 +241,7 @@ export class PostComponent implements OnInit {
         this.likeStyle = 'fa fa-thumbs-up post-liked';
         this.likeService.addLike(this.pid, this.currentuser.uid);
         this.isLiked = true;
+        this.notifyservice.notifyifliketopost(this.pid, this.currentuser.uid);
       } else {
         this.likeStyle = 'fa fa-thumbs-o-up';
         this.likeService.removeLike(this.pid, this.currentuser.uid);
