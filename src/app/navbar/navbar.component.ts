@@ -38,6 +38,10 @@ export class NavbarComponent implements OnInit {
   unread;
   unreadmsgs;
   notifs;
+  notifcomment;
+  notiflikes;
+  notifgroup;
+  notifevent;
 
   closeResult;
   modalRef;
@@ -78,9 +82,28 @@ export class NavbarComponent implements OnInit {
                 this.totalFollowers = userDoc.totalFollowers;
                 this.totalScribes = userDoc.totalScribes;
                 this.uid = userDoc.uid;
-                this.msgService.getUnread(userDoc.uid).subscribe(unreadmsgs => this.unreadmsgs = unreadmsgs);
-                this.notif.getUserUnread(userDoc.uid).subscribe(notifs => this.unread = notifs);
-                this.notif.getNotifs(userDoc.uid).subscribe(notifs => this.notifs = notifs);
+                // this.msgService.getUnread(userDoc.uid).subscribe(unreadmsgs => this.unreadmsgs = unreadmsgs);
+                // this.notif.getUserUnread(userDoc.uid).subscribe(notifs => this.unread = notifs);
+                // this.notif.getNotifs(userDoc.uid).subscribe(notifs => this.notifs = notifs);
+                this.notif.getNotifComment(userDoc.uid).subscribe(notifs =>{
+                  if(notifs)
+                  this.notifcomment = notifs;
+                } );
+                this.notif.getNotifLike(userDoc.uid).subscribe(notifs => {
+                  if(notifs)
+                  this.notiflikes = notifs;
+
+                });
+                this.notif.getNotifGroup(userDoc.uid).subscribe(notifs => {
+                  if(notifs)
+                  this.notifgroup = notifs;
+                });
+                this.notif.getNotifEvent(userDoc.uid).subscribe(notifs => {
+                  if(notifs)
+                  this.notifevent = notifs;
+                });
+
+
               }
             });
         } else {

@@ -85,3 +85,8 @@
   background-color: #3fc4e8!important;
   cursor: pointer;
 }
+.eventlistitem:hover, #alt-footer > a:hover {
+  cursor: pointer;
+  color: #E83F6F;
+}
+

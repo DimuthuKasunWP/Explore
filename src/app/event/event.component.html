@@ -138,7 +138,7 @@
 
     <br><br><br>
     <h2>Your events</h2>
-    <div class="card" >
+    <!-- <div class="card" >
       <mat-card class="example-card">
         <img (click)="openDialog()" class="myImg" mat-card-image src="../../assets/images/event1.jpg" alt="Photo of a Shiba Inu">
         <mat-card-content>
@@ -188,7 +188,15 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <br><br><br>
+    <br><br><br> -->
+    <div id="event-list" class="bg-white my-2 pb-2" *ngIf="events">
+      <hr class="p-0 my-1">
+      <div *ngIf="events && events.length > 0; else noGroups" class="mt-2">
+        <div *ngFor="let event of events; let i = index" class="mx-3">
+          <p class="eventlistitem col-md-12" (click)="open(ViewEvent)">{{event.name}}</p>
+        </div><s></s>
+      </div>
+    </div>
     <h2>Events you may like</h2>
     <div class="card" >
       <mat-card class="example-card">
@@ -272,5 +280,8 @@
   </mat-tab>
 </mat-tab-group>
 
+<ng-template #ViewEvent>
+  <app-popup-window [modalRef]="modalRef"></app-popup-window>
+</ng-template>
 
 
