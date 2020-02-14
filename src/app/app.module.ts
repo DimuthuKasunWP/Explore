@@ -64,6 +64,8 @@ import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
 import { GmapsComponent } from './gmaps/gmaps.component';
+import { GmapComponent } from './gmap/gmap.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 firebase.initializeApp(environment.firebase);
@@ -174,7 +176,9 @@ const routes: Routes = [
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent,
-    GmapsComponent
+    GmapsComponent,
+    GmapComponent,
+    
     ],
   imports: [
     BrowserModule,
@@ -187,7 +191,11 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     ChartsModule,
     ReactiveFormsModule,
-    NgxAutoScrollModule
+    NgxAutoScrollModule,
+    AgmCoreModule.forRoot({
+      apiKey:'AIzaSyD_gQGzi-IDe-KM69qlbUsOmKTvhuIscjg'
+    })
+     
   ],
   providers: [
     AuthService,
