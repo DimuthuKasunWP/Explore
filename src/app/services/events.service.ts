@@ -84,5 +84,9 @@ export class EventsService {
   getEvent(eid){
     return this.afs.doc<Event>('events/' + eid).valueChanges();
   }
+
+  getmembers(eid){
+    return this.afs.collection('groups/' + eid + '/members', ref => ref.orderBy('date')).valueChanges();
+  }
 }
 

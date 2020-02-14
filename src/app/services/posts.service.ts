@@ -9,6 +9,7 @@ import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/take';
 import { Router } from '@angular/router';
 import { LikesService } from './likes.service';
+import {NotificationService} from './notification.service';
 
 interface QueryConfig {
   path: string;
@@ -30,6 +31,7 @@ date;
     private afs: AngularFirestore,
     private auth: AuthService,
     private router: Router,
+    private notifyservice:NotificationService
   ) { }
   setUserFeedPosts(uid){
     this.uid=uid;
@@ -124,6 +126,7 @@ date;
         const postRef = this.afs.collection('posts').doc(newPost.pid);
         return postRef.set(post)
           .then(() => {
+
           });
       });
   }
@@ -150,7 +153,7 @@ date;
               timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             this.afs.doc('posts/' + newPost.to + '/comments/' + newPost.pid).set(comment);
-
+              this.notifyservice.notifyifreplytopost(newPost.to,currentuser.uid);
           });
       });
   }
