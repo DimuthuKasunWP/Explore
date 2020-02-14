@@ -107,6 +107,7 @@ export class AddPostComponent implements OnInit {
       }
       this.postBody = this.postBody.replace(hashTagReg, "");
     }
+    this.hashtags=null;
     this.contract();
     if (!this.type) {
       if (this.postBody ) {
