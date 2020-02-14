@@ -29,8 +29,9 @@ export class ChatroomComponent implements OnInit {
     if (!this.room.displayName) {
       this.auth.getAuthState().subscribe(curruser => {
         if (curruser) {
+          console.log("this is room id"+this.room.uid);
           this.userService.retrieveUserDocumentFromID(this.room.uid).subscribe(user => {
-            console.log("entered to the  ngoninit");
+            console.log("entered to the  ngoninit"+this.room.uid);
             this.room = {
               displayName: user.displayName,
               userName: user.userName,
