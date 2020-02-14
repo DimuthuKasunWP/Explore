@@ -104,4 +104,8 @@ export class GroupService {
     .then(() => console.log('Group banner updated'));
   }
 
+  getGroupList(){
+    return this.afs.collection("groups").valueChanges();
+  }
+
 }

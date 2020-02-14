@@ -113,7 +113,7 @@ export class EventComponent implements OnInit {
                     }
                   });
                  }
-                
+
   openDialog () {
   console.log('The dialog was closed')
   }
@@ -147,6 +147,7 @@ export class EventComponent implements OnInit {
           this.eventsService.getEvent(this.eid).subscribe(
             eventdoc=>{
                 if(eventdoc){
+                  this.photoURL=eventdoc.photoURL;
                     this.latitude=eventdoc.latitude;
                     this.longitude=eventdoc.longitude;
                     this.enteraddress=eventdoc.address;
@@ -257,7 +258,7 @@ export class EventComponent implements OnInit {
 
                 // this.displayName = userDoc.displayName;
                 // this.userName = userDoc.userName;
-                this.photoURL = userDoc.photoURL;
+                // this.photoURL = userDoc.photoURL;
                 this.userid = userDoc.uid;
                 // this.getFollowData();
                 // // this.postsService.setUserFeedPosts(this.userid);
@@ -314,7 +315,7 @@ export class EventComponent implements OnInit {
                 // );
               }
             });
-        } 
+        }
         // else {
         //   this.router.navigateByUrl('start');
         // }
@@ -447,7 +448,8 @@ export class EventComponent implements OnInit {
           description:this.description,
           startdate:this.startdate,
           enddate:this.enddate,
-          starttime:this.starttime
+          starttime:this.starttime,
+          photoURL:null
       };
       this.eventsService.createEvent(data);
     }

@@ -44,7 +44,7 @@
           </div>
         </div>
         <hr class="p-0 my-1">
-        <div *ngIf="events && events.length > 0; else noGroups" class="mt-2">
+        <div *ngIf="events && events.length > 0; else noEvents" class="mt-2">
           <div *ngFor="let event of events; let i = index" class="mx-3">
             <p class="eventlistitem my-1" (click)="sendTo('event', event.eid)" *ngIf="i<5">{{event.name}}</p>
           </div><s></s>

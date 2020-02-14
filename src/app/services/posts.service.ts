@@ -44,6 +44,7 @@ date;
                 posts=>{
                   // console.log("postes"+posts);
                   while (this.postcount<Object.keys(posts).length){
+                    console.log("feed setup");
                     // console.log("post"+posts[this.postcount].pid);
                     var pid=posts[(this.postcount++)].pid;
                     var date;
@@ -126,7 +127,8 @@ date;
         const postRef = this.afs.collection('posts').doc(newPost.pid);
         return postRef.set(post)
           .then(() => {
-
+            console.log("feed");
+            this.setUserFeedPosts(currentuser.uid);
           });
       });
   }
@@ -203,9 +205,16 @@ date;
     const data = {
       photoURL: url
     };
+    console.log("piddddd"+pid);
     this.afs.doc('posts/' + pid).update(data);
   }
-
+  updateEventPhotoURL(url, pid) {
+    const data = {
+      photoURL: url
+    };
+    console.log("piddddd"+pid);
+    this.afs.doc('events/' + pid).update(data);
+  }
   updateBannerURL(url, uid) {
     const data = {
       bannerURL: url
