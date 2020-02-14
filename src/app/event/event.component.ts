@@ -137,10 +137,11 @@ export class EventComponent implements OnInit {
       routeurl => {
         this.eid = routeurl.eid;
       });
+    console.log("this is router eid"+this.eid);
     if(this.eid!=null){
       console.log("true");
       this.eid=localStorage.getItem("eid");
-
+        console.log("this is real eid"+this.eid);
       this.auth.getAuthState().subscribe(currUser=>{
         if(currUser){
           this.uid=currUser.uid;

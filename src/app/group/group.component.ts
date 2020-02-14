@@ -17,7 +17,7 @@ import { PlatformLocation } from '@angular/common';
   styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
-  
+
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
 
 
@@ -45,6 +45,7 @@ export class GroupComponent implements OnInit {
 
   constructor(
     private afs: AngularFirestore,
+    private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
     private groupService: GroupService,
@@ -153,6 +154,10 @@ export class GroupComponent implements OnInit {
 
   getDate() {
     return this.datePipe.transform(this.createDate.toDate(), 'month');
+  }
+  sendTo(){
+    this.router.navigateByUrl('event/');
+    localStorage.setItem("gid",this.gid);
   }
 
   open(content) {
