@@ -203,7 +203,7 @@
         <div *ngFor="let event of events; let i = index" class="mx-3">
           
           <div class="card" >
-            <mat-card class="example-card eventlistitem" (click)="open(ViewEvent)">
+            <mat-card class="example-card eventlistitem" (click)="eventDeatils(event.eid)">
               <img class="myImg" mat-card-image [src]="event.photoURL" alt="Photo of a Shiba Inu">
               <mat-card-content>
                 <p class=" col-md-6">{{event.name}}</p>
