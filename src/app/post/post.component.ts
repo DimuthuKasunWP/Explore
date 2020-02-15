@@ -109,7 +109,8 @@ export class PostComponent implements OnInit {
 
         this.count=0;
         while (this.count<Object.keys(hashtag).length) {
-
+          // @ts-ignore
+          // console.log("hashtag "+hashtag[this.count].hid);
           // @ts-ignore
           hashtags.push(hashtag[this.count].hid);
           this.count++;
@@ -120,7 +121,7 @@ export class PostComponent implements OnInit {
           while(count<hashtags.length) {
             this.showhashtag=true;
             // this.body = this.body + "" + hashtags[count];
-            // this.hashtag = this.hashtag + hashtags[count++];
+            // this.hashtag = this.hashtag + hashtags[count];
             this.hashtag.push(hashtags[count++]);
           }
         }
@@ -313,6 +314,7 @@ export class PostComponent implements OnInit {
     }
     if(type==='hashtag'){
       this.router.navigateByUrl("hashtag/"+id);
+      localStorage.setItem("hid",id);
     }
     if (type === 'landing') {
       this.router.navigateByUrl('start');
@@ -364,7 +366,7 @@ export class PostComponent implements OnInit {
   }
 
   checkAdmin() {
-    this.afs.doc('global/admins/admins/' + this.currentuid).valueChanges().subscribe(admin => {
+    this.afs.doc('globaladminsadmins/' + this.currentuid).valueChanges().subscribe(admin => {
       if (admin) {
         this.isCurrentUser = true;
       }

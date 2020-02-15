@@ -87,7 +87,7 @@ export class UploadService {
          const downloadURL = ref.getDownloadURL() ;
           downloadURL.subscribe(
             url => {
-              this.postService.updatePhotoURL(url,id);
+              this.postService.updateEventPhotoURL(url,id,"event");
             });
         })
       ).subscribe();

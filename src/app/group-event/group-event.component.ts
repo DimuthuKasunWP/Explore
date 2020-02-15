@@ -10,27 +10,35 @@ import { GroupService } from '../services/group.service';
 import { DateFormatPipe } from '../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
+import {EventsService} from '../services/events.service';
 
 @Component({
-  selector: 'app-group',
-  templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css']
+  selector: 'app-group-event',
+  templateUrl: './group-event.component.html',
+  styleUrls: ['./group-event.component.css']
 })
-export class GroupComponent implements OnInit {
+export class GroupEventComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
-  
 
 
-  gid;
-  gname;
-  desc;
+  eid;
+  name;
+  description;
   totalMembers;
   totalPosts;
   createDate;
   members;
   admin;
-  bannerURL;
+  photoURL = '../../assets/images/default-profile.jpg';
+  latitude;
+  longitude;
+  gid;
+  startdate;
+  enddate;
+  starttime;
+  address;
+  gname;
 
   isInvalid;
   isSubbed = false;
@@ -45,41 +53,50 @@ export class GroupComponent implements OnInit {
   filename;
 
   constructor(
+
     private afs: AngularFirestore,
     private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private groupService: GroupService,
+    private eventservice:EventsService,
     private datePipe: DateFormatPipe,
     private modalService: NgbModal,
     private location: PlatformLocation,
     private uploadService: UploadService,
     private sanitizer: DomSanitizer,
-    private titleService: Title
+    private titleService: Title,
+    private groupservice:GroupService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
       if (this.modalRef !== undefined) {
-          this.modalRef.close();
+        this.modalRef.close();
       }
     });
   }
 
   ngOnInit() {
-    console.log(localStorage.getItem("gid"));
+    console.log(localStorage.getItem("geid"));
     this.route.params.subscribe(
       routeurl => {
-        this.gid = routeurl.gid;
-        this.groupService.getGroup(this.gid).subscribe(
-          groupDoc => {
-            if (groupDoc) {
-              this.gname = groupDoc.gname;
-              this.desc = groupDoc.desc;
-              this.createDate = groupDoc.createDate;
-              this.admin = groupDoc.admin ? groupDoc.admin : null;
+        this.eid = routeurl.geid;
+        this.eventservice.getEvent(this.eid).subscribe(
+          eventDoc => {
+            if (eventDoc) {
+              this.name = eventDoc.name;
+              this.description = eventDoc.description;
+              this.createDate = eventDoc.createDate;
+              this.admin = eventDoc.admin ? eventDoc.admin : null;
               this.isLoaded = true;
-              this.bannerURL = groupDoc.bannerURL ? groupDoc.bannerURL : null;
-              this.titleService.setTitle(this.gname + ' | ' + this.desc);
+              this.latitude=eventDoc.latitude;
+              this.longitude=eventDoc.longitude;
+              this.startdate=eventDoc.startdate;
+              this.enddate=eventDoc.enddate;
+              this.starttime=eventDoc.starttime;
+              this.gid=eventDoc.gid;
+              this.photoURL = eventDoc.photoURL ? eventDoc.photoURL : this.photoURL;
+              this.address=eventDoc.address;
+              this.titleService.setTitle(this.name + ' | ' + this.description);
               this.checkAdmin();
             } else {
               console.log('invalid');
@@ -87,22 +104,22 @@ export class GroupComponent implements OnInit {
               this.isLoaded = true;
             }
           });
-      this.groupService.getFeed(this.gid).subscribe(
-        feed => {
-          this.posts = feed;
-        });
-      this.groupService.getMembers(this.gid).subscribe(
-        memberList => {
-          this.members = memberList;
-        });
+        this.eventservice.getFeed(this.eid).subscribe(
+          feed => {
+            this.posts = feed;
+          });
+        this.eventservice.getMembers(this.eid).subscribe(
+          memberList => {
+            this.members = memberList;
+          });
         this.checkSub();
         this.checkLogin();
-    });
+      });
   }
 
   getStyle() {
-    if (this.bannerURL) {
-      return this.sanitizer.bypassSecurityTrustStyle(`background-image: url(${this.bannerURL})`);
+    if (this.photoURL) {
+      return this.sanitizer.bypassSecurityTrustStyle(`background-image: url(${this.photoURL})`);
     }
   }
 
@@ -131,36 +148,45 @@ export class GroupComponent implements OnInit {
   checkSub() {
     this.auth.getAuthState().subscribe(currentuser => {
       if (currentuser) {
-        this.afs.doc('groups/' + this.gid + '/members/' + currentuser.uid)
+        this.afs.doc('events/' + this.eid + '/members/' + currentuser.uid)
           .valueChanges()
-        .subscribe(user => {
-          if (user) {
-            this.isSubbed = true;
-          } else {
-            this.isSubbed = false;
-          }
-        });
+          .subscribe(user => {
+            if (user) {
+              this.isSubbed = true;
+            } else {
+              this.isSubbed = false;
+            }
+          });
       }
     });
   }
 
   subscribe() {
-    this.groupService.subscribe(this.gid);
+    this.eventservice.subscribe(this.eid);
   }
 
   unsubscribe() {
-    this.groupService.unsubscribe(this.gid);
+    this.eventservice.unsubscribe(this.eid);
     this.checkSub();
+  }
+  getgroup(){
+    return this.groupservice.getGroup(this.gid).subscribe(group=>{
+      if(group){
+        this.gname=group.gname;
+      }
+
+    });
   }
 
   getDate() {
     return this.datePipe.transform(this.createDate.toDate(), 'month');
   }
-  sendTo(){
-    this.router.navigateByUrl('event');
-    localStorage.setItem("gid",this.gid);
+  getStartingDate() {
+    return this.datePipe.transform(this.startdate.toDate(), 'month');
   }
-
+  getEndDate() {
+    return this.datePipe.transform(this.enddate.toDate(), 'month');
+  }
   open(content) {
     this.modalRef = this.modalService.open(content);
     this.modalRef.result.then((result) => {
@@ -168,6 +194,10 @@ export class GroupComponent implements OnInit {
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+  sendTo(){
+    this.router.navigateByUrl('event/'+this.eid);
+    localStorage.setItem("eid",this.eid);
   }
 
   see(){
@@ -198,12 +228,11 @@ export class GroupComponent implements OnInit {
       this.filename = 'Max Filesize 2Mb!';
     } else {
       this.filename = 'Edit Banner';
-      this.uploadService.pushUpload(file, 'group', this.gid);
+      this.uploadService.pushUpload(file, 'event', this.eid);
     }
   }
 
-addMembers(){
-  this.see();
-}
-
+  addMembers(){
+    this.see();
+  }
 }

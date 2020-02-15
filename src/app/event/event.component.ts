@@ -8,7 +8,7 @@ import{EventsService} from '../services/events.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
 import * as _moment from 'moment';
@@ -16,6 +16,7 @@ import {DateFormatPipe} from '../services/date.pipe';
 // tslint:disable-next-line:no-duplicate-imports
 import {NgbModal,ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
+import {GroupService} from '../services/group.service';
 const moment =  _moment;
 @Component({
   selector: 'app-event',
@@ -40,10 +41,12 @@ export class EventComponent implements OnInit {
   isInvalid;
   isLoaded;
   modalRef;
-  closeResult
+  closeResult;
+  groupname=this.gid;
   // displayName;
   // userName;
   userid;
+  ad;
   // postService;
 
   inputFile;
@@ -66,6 +69,10 @@ export class EventComponent implements OnInit {
       Validators.maxLength(30)
     ]),
     description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    groupname: new FormControl('', [
       Validators.required,
       Validators.minLength(5)
     ]),
@@ -103,7 +110,9 @@ export class EventComponent implements OnInit {
     private auth: AuthService,
     private modalService: NgbModal,
     private location:PlatformLocation,
+    private groupservice:GroupService,
     private mapsAPILoader: MapsAPILoader,
+    private router:Router,
                 private ngZone: NgZone,
                 private uploadService:UploadService) {
                   location.onPopState((event) => {
@@ -113,7 +122,7 @@ export class EventComponent implements OnInit {
                     }
                   });
                  }
-                
+
   openDialog () {
   console.log('The dialog was closed')
   }
@@ -137,19 +146,31 @@ export class EventComponent implements OnInit {
       routeurl => {
         this.eid = routeurl.eid;
       });
+    var gid=localStorage.getItem("gid");
+    if(gid){
+      this.groupservice.getGroup(gid).subscribe(group=>{
+        if(group){
+          this.groupname=group.gname;
+        }
+      });
+    }
+    console.log("this is router eid"+this.eid);
     if(this.eid!=null){
       console.log("true");
       this.eid=localStorage.getItem("eid");
-
+        console.log("this is real eid"+this.eid);
       this.auth.getAuthState().subscribe(currUser=>{
         if(currUser){
           this.uid=currUser.uid;
           this.eventsService.getEvent(this.eid).subscribe(
             eventdoc=>{
                 if(eventdoc){
+                  this.photoURL=eventdoc.photoURL?eventdoc.photoURL:this.photoURL;
                     this.latitude=eventdoc.latitude;
                     this.longitude=eventdoc.longitude;
                     this.enteraddress=eventdoc.address;
+                    this.ad=this.enteraddress;
+                    console.log("this is enter address in sid doc"+this.enteraddress);
                     this.name=eventdoc.name;
                     this.admin= eventdoc.admin ? eventdoc.admin : null;
                     this.gid= eventdoc.gid ? eventdoc.gid :null;
@@ -174,38 +195,40 @@ export class EventComponent implements OnInit {
                   this.isInvalid = true;
                   this.isLoaded = true;
                 }
+                this.groupname=this.gid;
             }
           );
           // this.userService.getus
         }
-      });
-      this.mapsAPILoader.load().then(() => {
-        this.setCurrentLocation();
-        this.geoCoder = new google.maps.Geocoder;
+        this.mapsAPILoader.load().then(() => {
+          this.setCurrentLocation();
+          this.geoCoder = new google.maps.Geocoder;
 
-        let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-          types: ["address"]
-        });
-        autocomplete.addListener("place_changed", () => {
-          this.ngZone.run(() => {
-            //get the place result
-            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-            console.log("place when listning"+place);
-            // console.log("place"+place.geometry.location);
+          let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+            types: ["address"]
+          });
+          autocomplete.addListener("place_changed", () => {
+            this.ngZone.run(() => {
+              //get the place result
+              let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+              console.log("place when listning"+place);
+              // console.log("place"+place.geometry.location);
 
-            //verify result
-            if (place.geometry === undefined || place.geometry === null) {
-              return;
-            }
+              //verify result
+              if (place.geometry === undefined || place.geometry === null) {
+                return;
+              }
 
-            //set latitude, longitude and zoom
-            this.latitude = place.geometry.location.lat();
-            this.longitude = place.geometry.location.lng();
-            this.getAddress(this.latitude,this.longitude);
-            this.zoom = 12;
+              //set latitude, longitude and zoom
+              this.latitude = place.geometry.location.lat();
+              this.longitude = place.geometry.location.lng();
+              this.getAddress(this.latitude,this.longitude);
+              this.zoom = 12;
+            });
           });
         });
       });
+
 
     }else{
       console.log("false");
@@ -254,70 +277,25 @@ export class EventComponent implements OnInit {
           this.userService.retrieveUserDocument(user.uid).subscribe(
             userDoc => {
               if (userDoc) {
-
-                // this.displayName = userDoc.displayName;
-                // this.userName = userDoc.userName;
-                this.photoURL = userDoc.photoURL;
-                this.userid = userDoc.uid;
-                // this.getFollowData();
-                // // this.postsService.setUserFeedPosts(this.userid);
-                // this.totalScribes = userDoc.totalScribes ? userDoc.totalScribes : 0;
-                // this.totalFollowers = userDoc.totalFollowers ? userDoc.totalFollowers : 0;
-                // this.totalFollowing = userDoc.totalFollowing ? userDoc.totalFollowing : 0;
-                // this.bannerURL = userDoc.bannerURL ? userDoc.bannerURL : null;
-
-                // Get pids from user feed
-                // this.postsService.getFeed(this.userid).subscribe(
-                //   feedPosts => {
-                //     this.feedPosts = feedPosts;
-
-                //   }
-                // );
-                // this.postsService.getProfilePosts(this.userid).subscribe(
-                //   posts => {
-                //     if (posts) {
-                //       this.feedPosts = posts;
-                //       console.log("cheking for the confirmation");
-                //     }
-                //   });
-                //get user's events
-                this.userService.getUserEvents(this.userid).subscribe(
+              this.userid = userDoc.uid;
+                this.eventsService.getEventList().subscribe(
                   userEvents=>{
 
                     this.events=[];
                     userEvents.forEach((eventData:any)=>{
 
-                        this.eventsService.getEvent(eventData.eid).subscribe(
-                          eventDetails=>{
-                            this.events.push(eventDetails);
-                          });
-
+                      this.events.push(eventData);
 
                     });
                   }
                 );
 
 
-                // // Get user's groups
-                // this.userService.getUserGroups(this.userid).subscribe(
-                //   userGroups => {
-                //     if (userGroups) {
-                //       this.groups = [];
-                //       userGroups.forEach((groupData: any) => {
-                //         this.groupService.getGroup(groupData.gid).subscribe(
-                //           groupDetails => {
-                //             this.groups.push(groupDetails);
-                //           });
-                //       });
-                //     }
-                //   }
-                // );
+
               }
             });
-        } 
-        // else {
-        //   this.router.navigateByUrl('start');
-        // }
+        }
+
     });
   }
   open(content, type?) {
@@ -326,16 +304,19 @@ export class EventComponent implements OnInit {
       size: 'sm',
       windowClass: 'modal-style'
     });
-    // if (type === 'grouplist') {
-    //   // push new state to history
-    //   history.pushState(null, null, '/user/' + this.userName + '/groups');
-    // }
     this.modalRef.result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason, type)}`;
     });
   }
+
+  eventDeatils(eid){
+    this.router.navigateByUrl('groupevent/'+eid);
+    localStorage.setItem("geid",eid);
+
+  }
+
   private getDismissReason(reason: any, type?): string {
     if (type === 'grouplist') {
       history.back();
@@ -381,7 +362,7 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            this.enteraddress=this.address;
+            // this.enteraddress=this.address;
             console.log("entered new address"+this.enteraddress);
           }
 
@@ -434,20 +415,22 @@ export class EventComponent implements OnInit {
   }
 
   saveEvent(){
-
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-      this.getLatLngByAddress(this.enteraddress);
+    console.log("event saving");
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
+     console.log("this is enter address ddddd"+this.ad);
+      this.getLatLngByAddress(this.ad?this.ad:this.enteraddress);
       const data={
         admin:this.uid,
           latitude:this.latitude,
           longitude:this.longitude,
-          address:this.enteraddress,
+          address:this.ad?this.ad:this.enteraddress,
           name:this.name,
-          gid:null,
+          gid:this.groupname,
           description:this.description,
           startdate:this.startdate,
           enddate:this.enddate,
-          starttime:this.starttime
+          starttime:this.starttime,
+          photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
       };
       this.eventsService.createEvent(data);
     }
@@ -455,19 +438,23 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-      this.getLatLngByAddress(this.enteraddress);
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
+      console.log("this is enter address ddddd"+this.ad);
+      this.getLatLngByAddress(this.ad);
       const data={
         admin:this.admin,
         latitude:this.latitude,
         longitude:this.longitude,
-        address:this.enteraddress,
+        address:this.ad,
         name:this.name,
-        gid:this.gid,
+        eid:this.eid,
+        gid:this.groupname,
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
-        starttime:this.starttime
+        starttime:this.starttime,
+        photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+
       };
       this.eventsService.updateEventData(data);
     }

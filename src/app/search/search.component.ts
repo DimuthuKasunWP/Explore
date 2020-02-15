@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
   searchterm;
   users;
   groups;
+  events;
 
   hide = false;
 
@@ -50,6 +51,12 @@ export class SearchComponent implements OnInit {
                 this.groups = groups;
               }
             });
+        this.doEventQuery(value[0], value[1]).subscribe(
+          events => {
+            if (events) {
+              this.events = events;
+            }
+          });
       });
   }
 
@@ -59,6 +66,9 @@ export class SearchComponent implements OnInit {
 
   doGroupQuery(start, end) {
     return this.afs.collection('groups', ref => ref.limit(3).orderBy('gname').startAt(start).endAt(end)).valueChanges();
+  }
+  doEventQuery(start, end) {
+    return this.afs.collection('events', ref => ref.limit(3).orderBy('name').startAt(start).endAt(end)).valueChanges();
   }
 
   search($event) {

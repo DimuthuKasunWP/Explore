@@ -71,6 +71,9 @@ import { PasswdresetComponent } from './passwdreset/passwdreset.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { GroupsearchComponent } from './groupsearch/groupsearch.component';
 
+import { GmapComponent } from './gmap/gmap.component';
+
+
 
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -89,6 +92,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { EventlistComponent } from './event/eventlist/eventlist.component';
 import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
+import { GroupEventComponent } from './group-event/group-event.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -171,6 +175,11 @@ const routes: Routes = [
   {
     path:"hashtag/:hid",
     component:HashtagComponent
+  },
+  {
+    path:"groupevent/:geid",
+    component:GroupEventComponent
+
   }
   // {
   //   path: '**',
@@ -219,8 +228,11 @@ const routes: Routes = [
     PasswdresetComponent,
     AddMembersComponent,
     GroupsearchComponent,
+    GmapsComponent,
+    GmapComponent,
     EventlistComponent,
-    HashtagComponent
+    HashtagComponent,
+    GroupEventComponent
   ],
 
   imports: [
@@ -235,6 +247,9 @@ const routes: Routes = [
     ChartsModule,
     ReactiveFormsModule,
     NgxAutoScrollModule,
+    AgmCoreModule.forRoot({
+      apiKey:'AIzaSyD_gQGzi-IDe-KM69qlbUsOmKTvhuIscjg'
+    }),
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatTabsModule,

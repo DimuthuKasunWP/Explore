@@ -107,6 +107,7 @@ export class AddPostComponent implements OnInit {
       }
       this.postBody = this.postBody.replace(hashTagReg, "");
     }
+    this.hashtags=null;
     this.contract();
     if (!this.type) {
       if (this.postBody ) {
@@ -137,6 +138,24 @@ export class AddPostComponent implements OnInit {
         }
         this.postService.addPost(newPost);
         this.notifyservice.notifyifpostedingroup(this.id,this.pid,'group');
+        this.postBody = null;
+      }
+    }
+    if (this.type === 'event') {
+      if (this.postBody ) {
+        this.pid = this.afs.createId();
+        const newPost = {
+          body: this.postBody,
+          imgURL: this.imgURL ? this.imgURL : null,
+          to: this.id,
+          type: 'event',
+          pid: this.pid
+        };
+        if (this.inputFile) {
+          this.uploadService.pushUpload(this.inputFile, 'event', this.pid);
+        }
+        this.postService.addPost(newPost);
+        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'event');
         this.postBody = null;
       }
     }
