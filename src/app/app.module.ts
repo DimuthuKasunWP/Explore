@@ -95,6 +95,7 @@ import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
 import { GroupEventComponent } from './group-event/group-event.component';
 import { AddmarkerComponent } from './addmarker/addmarker.component';
+import { MarkerlistComponent } from './addmarker/markerlist/markerlist.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -235,7 +236,8 @@ const routes: Routes = [
     EventlistComponent,
     HashtagComponent,
     GroupEventComponent,
-    AddmarkerComponent
+    AddmarkerComponent,
+    MarkerlistComponent
   ],
 
   imports: [

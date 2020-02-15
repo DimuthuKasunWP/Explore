@@ -23,5 +23,16 @@ export class MarkersService {
 
     getmarkers(){
       this.markerslist= this.firebase.list("markers");
+      return this.markerslist.snapshotChanges();
+    }
+
+    insertmarker(marker){
+      this.markerslist.push({
+      markerName: marker.markerName,
+      eventID: marker.eventID,
+      location: marker.location,
+      description: marker.description
+
+      });
     }
 }
