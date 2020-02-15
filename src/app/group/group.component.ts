@@ -3,7 +3,7 @@ import { UploadService } from './../services/upload.service';
 import { CreateGroupComponent } from './../create-group/create-group.component';
 import { AuthService } from './../services/auth.service';
 import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef,Input } from '@angular/core';
 import { PostsService } from '../services/posts.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GroupService } from '../services/group.service';
@@ -19,9 +19,9 @@ import { PlatformLocation } from '@angular/common';
 export class GroupComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
-  
 
 
+@Input() administrator;
   gid;
   gname;
   desc;
@@ -81,6 +81,7 @@ export class GroupComponent implements OnInit {
               this.bannerURL = groupDoc.bannerURL ? groupDoc.bannerURL : null;
               this.titleService.setTitle(this.gname + ' | ' + this.desc);
               this.checkAdmin();
+              this.checkGlobalAdministrator();
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -121,9 +122,31 @@ export class GroupComponent implements OnInit {
       if (curruser) {
         if (this.admin === curruser.uid) {
           this.isAdmin = true;
+          this.administrator=true;
         } else {
           this.isAdmin = false;
         }
+      }
+    });
+  }
+  checkGlobalAdministrator(){
+    console.log("this is global administrator");
+
+    this.auth.getAuthState().subscribe(curruser => {
+      if (curruser) {
+        console.log("this is current user"+curruser.uid);
+        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
+          var count =0;
+          while(count<Object.keys(admin).length){
+            // @ts-ignore
+            if(admin[count++].uid === curruser.uid){
+              this.administrator=true;
+              this.isAdmin=true;
+            }
+          }
+
+
+        });
       }
     });
   }
@@ -156,9 +179,18 @@ export class GroupComponent implements OnInit {
   getDate() {
     return this.datePipe.transform(this.createDate.toDate(), 'month');
   }
-  sendTo(){
-    this.router.navigateByUrl('event');
-    localStorage.setItem("gid",this.gid);
+  sendTo(type){
+    if(type === 'edit'){
+      this.router.navigateByUrl('event');
+      localStorage.setItem("gid",this.gid);
+    }
+    if(type ==='delete'){
+
+      this.groupService.deleteGroup(this.gid);
+      this.router.navigateByUrl('home');
+      alert("group successfully deleted");
+    }
+
   }
 
   open(content) {
