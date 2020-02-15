@@ -41,11 +41,12 @@ export class EventsService {
       longitude:data.longitude,
       address:data.address,
       name:data.name,
-      gid:'g001',
+      gid:data.gid,
       description:data.description,
       startdate:data.startdate,
       enddate:data.enddate,
-      starttime:data.starttime
+      starttime:data.starttime,
+      photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
     }
     this.afs.doc('events/' + eid).set(edata).then(() => {
       this.auth.getAuthState().subscribe(user => {
@@ -58,7 +59,9 @@ export class EventsService {
           uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata);
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{
+          this.router.navigateByUrl('home');
+        });
         console.log("event created");
       });
     });
@@ -70,17 +73,22 @@ export class EventsService {
   }
 
   updateEventData(data){
+    console.log("this is inside update event data"+data.address);
     const EData = {
       latitude:data.latitude,
       longitude:data.longitude,
-      address:data.enteraddress,
+      address:data.address,
       name:data.name,
+      gid:data.gid,
       description:data.description,
       startdate:data.startdate,
       enddate:data.enddate,
-      starttime:data.starttime
+      starttime:data.starttime,
+      photoURL:data.photoURL
     };
-    return this.afs.doc('events/' + data.eid).update(EData);
+    return this.afs.doc('events/' + data.eid).update(EData).then(()=>{
+      this.router.navigateByUrl('home');
+    });
   }
   editEvent(data) {
     const EData = {
