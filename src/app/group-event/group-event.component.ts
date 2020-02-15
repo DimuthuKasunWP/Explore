@@ -279,6 +279,7 @@ export class GroupEventComponent implements OnInit {
     dialogconfig.disableClose=true;
     dialogconfig.autoFocus=true;
     dialogconfig.width="60%";
+    
     this.dialog.open(AddmarkerComponent,dialogconfig);
 
 }

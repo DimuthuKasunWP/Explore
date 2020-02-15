@@ -31,6 +31,7 @@ import { FollowService } from './services/follow.service';
 import { LikesService } from './services/likes.service';
 import { NotificationService } from './services/notification.service';
 import { HashtagService }  from './services/hashtag.service';
+import {MarkersService} from './services/markers.service'
 
 // Components
 import { AppComponent } from './app.component';
@@ -94,6 +95,8 @@ import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
 import { GroupEventComponent } from './group-event/group-event.component';
 import { AddmarkerComponent } from './addmarker/addmarker.component';
+import { EventsearchComponent } from './eventsearch/eventsearch.component';
+
 
 firebase.initializeApp(environment.firebase);
 
@@ -234,7 +237,9 @@ const routes: Routes = [
     EventlistComponent,
     HashtagComponent,
     GroupEventComponent,
-    AddmarkerComponent
+    AddmarkerComponent,
+    EventsearchComponent,
+    
   ],
 
   imports: [
@@ -283,7 +288,8 @@ const routes: Routes = [
     LinkifyPipe,
     MessageService,
     MatDatepickerModule,
-    HashtagService
+    HashtagService,
+    MarkersService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
