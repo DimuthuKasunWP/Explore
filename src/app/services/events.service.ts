@@ -149,5 +149,8 @@ export class EventsService {
   getMostSubbed() {
     return this.afs.collection('events', ref => ref.orderBy('totalMembers', 'desc')).valueChanges();
   }
+  deleteEvent(eid){
+    this.afs.doc('events/'+eid).delete();
+  }
 }
 
