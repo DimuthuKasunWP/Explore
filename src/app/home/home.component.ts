@@ -81,6 +81,9 @@ export class HomeComponent implements OnInit {
     if (path === 'account') {
       this.router.navigateByUrl('account');
     }
+    if (path === 'messages') {
+      this.router.navigateByUrl('messaging');
+    }
     if (path === 'group' && location) {
       this.router.navigateByUrl('group/' + location);
       localStorage.setItem('gid',location);

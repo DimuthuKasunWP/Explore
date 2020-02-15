@@ -19,6 +19,7 @@ import { PlatformLocation } from '@angular/common';
 export class GroupComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+  
 
 
   gid;
