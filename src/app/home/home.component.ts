@@ -134,12 +134,15 @@ export class HomeComponent implements OnInit {
                 this.userService.getUserEvents(this.userid).subscribe(
                   userEvents=>{
 
-                    this.events=[];
+
                     userEvents.forEach((eventData:any)=>{
 
                         this.eventService.getEvent(eventData.eid).subscribe(
                           eventDetails=>{
-                            this.events.push(eventDetails);
+                            if(eventDetails) {
+                              console.log("thie is event details" + eventDetails.name);
+                              this.events.push(eventDetails);
+                            }
                           });
 
 
