@@ -98,7 +98,13 @@
 </ng-template>
 
 <ng-template #addmembers>
-  <app-add-members  [modalRef]="modalRef" ></app-add-members>
+  <div id="search-container" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" *ngIf="isUser">
+    <app-eventsearch></app-eventsearch>
+  </div>
+  <div id="search-container" class="col-9 col-sm-auto col-md-5 col-lg-4 order-2 offset-sm-3 offset-md-4 offset-lg-5" *ngIf="!isUser">
+    <app-eventsearch></app-eventsearch>
+  </div>
+
 </ng-template>
 
 <ng-template #Loading>

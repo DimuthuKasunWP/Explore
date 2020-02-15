@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MarkersService} from '../services/markers.service'
+import {MarkersService} from '../services/markers.service';
 
 @Component({
   selector: 'app-addmarker',
@@ -7,8 +7,8 @@ import {MarkersService} from '../services/markers.service'
   styleUrls: ['./addmarker.component.css']
 })
 export class AddmarkerComponent implements OnInit {
-  constructor(private markerservice = new MarkersService) {}
-  submitted=Boolean;
+  constructor(private markerservice : MarkersService) {}
+  submitted;
   formcontrols=this.markerservice.form.controls;
 
   ngOnInit() {
@@ -16,7 +16,9 @@ export class AddmarkerComponent implements OnInit {
 onSubmit(){
   this.submitted=true;
   if(this.markerservice.form.valid){
-
+  if(this.markerservice.form.get('$key').value==null){
+    this.markerservice.insertmarker(this.markerservice.form.value);
+  }
 
     this.submitted=false;
   }

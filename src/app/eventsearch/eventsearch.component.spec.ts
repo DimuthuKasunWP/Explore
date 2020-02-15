@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MarkerlistComponent } from './markerlist.component';
+import { EventsearchComponent } from './eventsearch.component';
 
-describe('MarkerlistComponent', () => {
-  let component: MarkerlistComponent;
-  let fixture: ComponentFixture<MarkerlistComponent>;
+describe('EventsearchComponent', () => {
+  let component: EventsearchComponent;
+  let fixture: ComponentFixture<EventsearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarkerlistComponent ]
+      declarations: [ EventsearchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MarkerlistComponent);
+    fixture = TestBed.createComponent(EventsearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

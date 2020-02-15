@@ -7,11 +7,11 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-groupsearch',
-  templateUrl: './groupsearch.component.html',
-  styleUrls: ['./groupsearch.component.css']
+  selector: 'app-eventsearch',
+  templateUrl: './eventsearch.component.html',
+  styleUrls: ['./eventsearch.component.css']
 })
-export class GroupsearchComponent implements OnInit {
+export class EventsearchComponent implements OnInit {
 
   @ViewChild('myDrop', { static: true }) searchDrop;
 
@@ -74,8 +74,8 @@ export class GroupsearchComponent implements OnInit {
   }
   async sendRequest(username,uid){
     let isuser=false;
-    var gid=localStorage.getItem("gid");
-    await this.afs.collection("groups").doc(gid.toString()).collection('/members', ref => ref.where('uid', '==', uid)).valueChanges().subscribe(val=>{
+    var geid=localStorage.getItem("geid");
+    await this.afs.collection("events").doc(geid.toString()).collection('/members', ref => ref.where('uid', '==', uid)).valueChanges().subscribe(val=>{
       if(val){
          isuser=true;
          
@@ -84,7 +84,7 @@ export class GroupsearchComponent implements OnInit {
     
      if(!isuser){
       
-      this.afs.collection("groups").doc(gid.toString()).collection("members").doc(uid).set(
+      this.afs.collection("events").doc(geid.toString()).collection("members").doc(uid).set(
        {
         uid : uid,
         date : new Date()
@@ -93,7 +93,7 @@ export class GroupsearchComponent implements OnInit {
       );}
     console.log(username);
     console.log(uid);
-    localStorage.getItem("gid");
+    localStorage.getItem("geid");
   
   }
 }
