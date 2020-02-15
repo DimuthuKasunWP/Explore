@@ -42,7 +42,7 @@ export class EventComponent implements OnInit {
   isLoaded;
   modalRef;
   closeResult;
-  groupname;
+  groupname=this.gid;
   // displayName;
   // userName;
   userid;
@@ -192,6 +192,7 @@ export class EventComponent implements OnInit {
                   this.isInvalid = true;
                   this.isLoaded = true;
                 }
+                this.groupname=this.gid;
             }
           );
           // this.userService.getus
@@ -286,11 +287,11 @@ export class EventComponent implements OnInit {
                 );
 
 
-            
+
               }
             });
         }
-        
+
     });
   }
   open(content, type?) {
@@ -309,7 +310,7 @@ export class EventComponent implements OnInit {
   eventDeatils(eid){
     this.router.navigateByUrl('groupevent/'+eid);
     localStorage.setItem("geid",eid);
-  
+
   }
 
   private getDismissReason(reason: any, type?): string {
@@ -419,7 +420,7 @@ export class EventComponent implements OnInit {
           longitude:this.longitude,
           address:this.enteraddress,
           name:this.name,
-          gid:null,
+          gname:this.groupname,
           description:this.description,
           startdate:this.startdate,
           enddate:this.enddate,
@@ -440,7 +441,7 @@ export class EventComponent implements OnInit {
         longitude:this.longitude,
         address:this.enteraddress,
         name:this.name,
-        gid:this.gid,
+        gid:this.groupname,
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
