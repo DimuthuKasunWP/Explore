@@ -15,6 +15,7 @@
         <div class="col-12 col-md-7 m-0 pr-0 order-2 order-md-1 px-0">
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
+            <gmap ></gmap>
             <div *ngFor="let post of posts">
               <app-post [inputPostID]="post.pid" *ngIf="post"></app-post>
             </div>
