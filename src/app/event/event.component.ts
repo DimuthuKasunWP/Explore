@@ -265,19 +265,11 @@ export class EventComponent implements OnInit {
         });
       });
     }
-    this.getCurrentUser();
+    this.getAllEvents();
 
 
   }
-  getCurrentUser(){
-    this.auth.getAuthState().subscribe(
-      user => {
-        if (user) {
-
-          this.userService.retrieveUserDocument(user.uid).subscribe(
-            userDoc => {
-              if (userDoc) {
-              this.userid = userDoc.uid;
+  getAllEvents(){
                 this.eventsService.getEventList().subscribe(
                   userEvents=>{
 
@@ -289,15 +281,8 @@ export class EventComponent implements OnInit {
                     });
                   }
                 );
-
-
-
-              }
-            });
-        }
-
-    });
   }
+
   open(content, type?) {
     console.log("events");
     this.modalRef = this.modalService.open(content, {

@@ -54,12 +54,12 @@ export class EventsService {
           eid: eid,
           last: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('users/' + data.admin + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));
+        this.afs.doc('users/' + data.admin + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));//user->events
         const ueventdata = {
           uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{//subcribe or unsubcribe 
           this.router.navigateByUrl('home');
         });
         console.log("event created");
