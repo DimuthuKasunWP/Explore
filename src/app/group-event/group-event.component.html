@@ -17,6 +17,8 @@
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
             <gmap ></gmap>
+            <button class="button" (click)=" addMarker() ">Add a marker</button>
+            <button class="button" (click)="deleteMarker()">Delete a marker</button>
             <div *ngFor="let post of posts">
               <app-post [inputPostID]="post.pid" *ngIf="post"></app-post>
             </div>

@@ -93,6 +93,7 @@ import { EventlistComponent } from './event/eventlist/eventlist.component';
 import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
 import { GroupEventComponent } from './group-event/group-event.component';
+import { AddmarkerComponent } from './addmarker/addmarker.component';
 
 firebase.initializeApp(environment.firebase);
 
@@ -232,7 +233,8 @@ const routes: Routes = [
     GmapComponent,
     EventlistComponent,
     HashtagComponent,
-    GroupEventComponent
+    GroupEventComponent,
+    AddmarkerComponent
   ],
 
   imports: [

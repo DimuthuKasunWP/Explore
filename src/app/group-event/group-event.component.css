@@ -51,3 +51,21 @@ small {
 .btn-banner:hover {
   background: #E83F6F!important;
 }
+
+.button {
+  background-color:#E83F6F;
+  ;
+  border: none;
+  color: white;
+  
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover {opacity: 1}
