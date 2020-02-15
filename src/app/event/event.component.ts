@@ -46,6 +46,7 @@ export class EventComponent implements OnInit {
   // displayName;
   // userName;
   userid;
+  ad;
   // postService;
 
   inputFile;
@@ -164,10 +165,12 @@ export class EventComponent implements OnInit {
           this.eventsService.getEvent(this.eid).subscribe(
             eventdoc=>{
                 if(eventdoc){
-                  this.photoURL=eventdoc.photoURL;
+                  this.photoURL=eventdoc.photoURL?eventdoc.photoURL:this.photoURL;
                     this.latitude=eventdoc.latitude;
                     this.longitude=eventdoc.longitude;
                     this.enteraddress=eventdoc.address;
+                    this.ad=this.enteraddress;
+                    console.log("this is enter address in sid doc"+this.enteraddress);
                     this.name=eventdoc.name;
                     this.admin= eventdoc.admin ? eventdoc.admin : null;
                     this.gid= eventdoc.gid ? eventdoc.gid :null;
@@ -197,34 +200,35 @@ export class EventComponent implements OnInit {
           );
           // this.userService.getus
         }
-      });
-      this.mapsAPILoader.load().then(() => {
-        this.setCurrentLocation();
-        this.geoCoder = new google.maps.Geocoder;
+        this.mapsAPILoader.load().then(() => {
+          this.setCurrentLocation();
+          this.geoCoder = new google.maps.Geocoder;
 
-        let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-          types: ["address"]
-        });
-        autocomplete.addListener("place_changed", () => {
-          this.ngZone.run(() => {
-            //get the place result
-            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-            console.log("place when listning"+place);
-            // console.log("place"+place.geometry.location);
+          let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
+            types: ["address"]
+          });
+          autocomplete.addListener("place_changed", () => {
+            this.ngZone.run(() => {
+              //get the place result
+              let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+              console.log("place when listning"+place);
+              // console.log("place"+place.geometry.location);
 
-            //verify result
-            if (place.geometry === undefined || place.geometry === null) {
-              return;
-            }
+              //verify result
+              if (place.geometry === undefined || place.geometry === null) {
+                return;
+              }
 
-            //set latitude, longitude and zoom
-            this.latitude = place.geometry.location.lat();
-            this.longitude = place.geometry.location.lng();
-            this.getAddress(this.latitude,this.longitude);
-            this.zoom = 12;
+              //set latitude, longitude and zoom
+              this.latitude = place.geometry.location.lat();
+              this.longitude = place.geometry.location.lng();
+              this.getAddress(this.latitude,this.longitude);
+              this.zoom = 12;
+            });
           });
         });
       });
+
 
     }else{
       console.log("false");
@@ -358,7 +362,7 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            this.enteraddress=this.address;
+            // this.enteraddress=this.address;
             console.log("entered new address"+this.enteraddress);
           }
 
@@ -411,21 +415,22 @@ export class EventComponent implements OnInit {
   }
 
   saveEvent(){
-
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-      this.getLatLngByAddress(this.enteraddress);
+    console.log("event saving");
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
+     console.log("this is enter address ddddd"+this.ad);
+      this.getLatLngByAddress(this.ad?this.ad:this.enteraddress);
       const data={
         admin:this.uid,
           latitude:this.latitude,
           longitude:this.longitude,
-          address:this.enteraddress,
+          address:this.ad?this.ad:this.enteraddress,
           name:this.name,
-          gname:this.groupname,
+          gid:this.groupname,
           description:this.description,
           startdate:this.startdate,
           enddate:this.enddate,
           starttime:this.starttime,
-          photoURL:null
+          photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
       };
       this.eventsService.createEvent(data);
     }
@@ -433,19 +438,23 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-      this.getLatLngByAddress(this.enteraddress);
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
+      console.log("this is enter address ddddd"+this.ad);
+      this.getLatLngByAddress(this.ad);
       const data={
         admin:this.admin,
         latitude:this.latitude,
         longitude:this.longitude,
-        address:this.enteraddress,
+        address:this.ad,
         name:this.name,
+        eid:this.eid,
         gid:this.groupname,
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
-        starttime:this.starttime
+        starttime:this.starttime,
+        photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+
       };
       this.eventsService.updateEventData(data);
     }
