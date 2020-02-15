@@ -11,6 +11,9 @@ import { DateFormatPipe } from '../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 import {EventsService} from '../services/events.service';
+import {MatDialog,MatDialogConfig} from '@angular/material'
+import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
+import { AddmarkerComponent } from '../addmarker/addmarker.component';
 
 @Component({
   selector: 'app-group-event',
@@ -21,7 +24,7 @@ export class GroupEventComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
 
-
+  administrator;
   eid;
   name;
   description;
@@ -65,7 +68,8 @@ export class GroupEventComponent implements OnInit {
     private uploadService: UploadService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private groupservice:GroupService
+    private groupservice:GroupService,
+    private dialog :MatDialog
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -98,6 +102,7 @@ export class GroupEventComponent implements OnInit {
               this.address=eventDoc.address;
               this.titleService.setTitle(this.name + ' | ' + this.description);
               this.checkAdmin();
+              this.checkGlobalAdministrator();
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -138,12 +143,34 @@ export class GroupEventComponent implements OnInit {
       if (curruser) {
         if (this.admin === curruser.uid) {
           this.isAdmin = true;
+          this.administrator=true;
         } else {
           this.isAdmin = false;
         }
       }
     });
   }
+
+  checkGlobalAdministrator(){
+
+    this.auth.getAuthState().subscribe(curruser => {
+      if (curruser) {
+        console.log("this is current user"+curruser.uid);
+        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
+          var count =0;
+          while(count<Object.keys(admin).length){
+            // @ts-ignore
+            if(admin[count++].uid === curruser.uid){
+              this.administrator=true;
+            }
+          }
+
+
+        });
+      }
+    });
+  }
+
 
   checkSub() {
     this.auth.getAuthState().subscribe(currentuser => {
@@ -195,9 +222,21 @@ export class GroupEventComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  sendTo(){
-    this.router.navigateByUrl('event/'+this.eid);
-    localStorage.setItem("eid",this.eid);
+  sendTo(type){
+    if(type === 'edit') {
+      this.router.navigateByUrl('event/' + this.eid);
+      localStorage.setItem("eid", this.eid);
+    }
+    if(type ==='delete'){
+      this.eventservice.deleteEvent(this.eid);
+      if(this.administrator&&this.admin)
+      this.router.navigateByUrl('home' );
+      else if(this.admin)
+       this.router.navigateByUrl('home');
+      else if(this.administrator)
+        this.router.navigateByUrl('admin');
+      alert("event successfully deleted");
+    }
   }
 
   see(){
@@ -235,4 +274,16 @@ export class GroupEventComponent implements OnInit {
   addMembers(){
     this.see();
   }
+  addMarker(){
+    const dialogconfig= new MatDialogConfig;
+    dialogconfig.disableClose=true;
+    dialogconfig.autoFocus=true;
+    dialogconfig.width="60%";
+    this.dialog.open(AddmarkerComponent,dialogconfig);
+
+}
+deleteMarker(){
+  
+}
+
 }

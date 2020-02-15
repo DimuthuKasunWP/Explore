@@ -6,8 +6,9 @@
     </div>
     <div class="container-fluid">
       <div id="name-bar" class="bg-white p-2 row mb-2 justify-content-between">
-        <span class="col-10 col-md-10"><h2>{{name}}</h2></span>
-        <span id="btnEdit" class="btn col-2 text-white bg-primary align-self-center" (click)="sendTo()" *ngIf="isAdmin"><h6>Edit</h6></span>
+        <span class="col-10 col-md-7"><h2>{{name}}</h2></span>
+        <span id="btnDelete" class="btn col-2 text-white bg-primary align-self-center" (click)="sendTo('delete')" *ngIf="administrator"><h6>Delete Event</h6></span>
+        <span id="btnEdit" class="btn col-2 text-white bg-primary align-self-center" (click)="sendTo('edit')" *ngIf="isAdmin"><h6>Edit</h6></span>
       </div>
     </div>
     <div class="container-fluid">
@@ -16,6 +17,8 @@
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
             <gmap ></gmap>
+            <button class="button" (click)=" addMarker() ">Add a marker</button>
+            <button class="button" (click)="deleteMarker()">Delete a marker</button>
             <div *ngFor="let post of posts">
               <app-post [inputPostID]="post.pid" *ngIf="post"></app-post>
             </div>

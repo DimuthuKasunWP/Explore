@@ -216,4 +216,9 @@ export class AuthService {
         }
       });
   }
+
+  getAllGlobalAdministrators(){
+    console.log("this is global add");
+    return this.afs.collection("globaladminsadmins").valueChanges();
+  }
 }
