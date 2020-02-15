@@ -1,3 +1,5 @@
+<div class="row">
+<div class="col-8">
 <div class="container" *ngIf="adminDetails; else Loading">
   <div class="container-fluid pt-md-3">
     <div class="row justify-content-between">
@@ -14,7 +16,7 @@
             <div id="feedback-container" class="bg-white px-3 py-2">
               <h6>{{feedback.subject}}</h6><hr class="my-1">
               <p>{{feedback.feedback}}</p>
-              <small>{{feedback.timestamp | dateFormatPipe}}</small>
+              <small>{{feedback.timestamp*1000 | dateFormatPipe}}</small>
             </div>
           </div>
         </div>
@@ -22,7 +24,12 @@
     </div>
   </div>
 </div>
+</div>
+<div class="col-3">
+  <app-suggested></app-suggested>
 
+</div>
+</div>
 <ng-template #NoReports>
   <h3>No Reports yet.</h3>
 </ng-template>

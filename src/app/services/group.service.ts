@@ -79,7 +79,9 @@ export class GroupService {
       }
     });
   }
-
+  deleteGroup(gid){
+    this.afs.doc('groups/'+gid).delete();
+  }
   getGroup(gid) {
     return this.afs.doc<Group>('groups/' + gid).valueChanges();
   }
