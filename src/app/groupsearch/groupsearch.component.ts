@@ -82,7 +82,7 @@ export class GroupsearchComponent implements OnInit {
       }
     });
     
-     if(isuser){
+     if(!isuser){
       
       this.afs.collection("groups").doc(gid.toString()).collection("members").doc(uid).set(
        {
