@@ -141,7 +141,7 @@ export class GroupComponent implements OnInit {
             // @ts-ignore
             if(admin[count++].uid === curruser.uid){
               this.administrator=true;
-              this.isAdmin=true;
+              // this.isAdmin=true;
             }
           }
 
