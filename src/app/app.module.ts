@@ -31,6 +31,7 @@ import { FollowService } from './services/follow.service';
 import { LikesService } from './services/likes.service';
 import { NotificationService } from './services/notification.service';
 import { HashtagService }  from './services/hashtag.service';
+import {MarkersService} from './services/markers.service'
 
 // Components
 import { AppComponent } from './app.component';
@@ -283,7 +284,8 @@ const routes: Routes = [
     LinkifyPipe,
     MessageService,
     MatDatepickerModule,
-    HashtagService
+    HashtagService,
+    MarkersService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
