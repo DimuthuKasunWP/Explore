@@ -187,7 +187,12 @@ export class GroupComponent implements OnInit {
     if(type ==='delete'){
 
       this.groupService.deleteGroup(this.gid);
+      if(this.administrator && this.admin)
       this.router.navigateByUrl('home');
+      else if(this.admin)
+        this.router.navigateByUrl('home');
+      else if(this.administrator)
+        this.router.navigateByUrl('admin');
       alert("group successfully deleted");
     }
 
