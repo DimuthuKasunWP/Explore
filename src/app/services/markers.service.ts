@@ -9,7 +9,7 @@ import{AngularFireDatabase,AngularFireList} from 'angularfire2/database'
 export class MarkersService {
   
 
-  constructor(private firebase: new AngularFireDatabase) {}
+  constructor(private firebase: AngularFireDatabase) {}
       
   markerslist:AngularFireList<any>;
 
