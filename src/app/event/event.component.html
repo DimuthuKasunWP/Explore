@@ -30,9 +30,10 @@
       <form [formGroup]="eventForm">
         <div class="form-group row">
           <div class="col-sm-1"></div>
-          <label for="inputeventname" class="col-sm-2 col-form-label">Event name</label>
+          <label for="inputeventname" class="col-sm-2 col-form-label ">Event name</label>
           <div class="col-sm-7">
             <input type="eventname" class="form-control" [(ngModel)]="name"  id="inputeventname" placeholder="Add a short,clear name" formControlName="name">
+              <small *ngIf="Name.errors" class="alert-danger"> * is required</small>
           </div>
         </div>
         <div class="form-group row">
@@ -40,6 +41,7 @@
           <label for="inputlocation" class="col-sm-2 col-form-label">Location</label>
           <div class="col-sm-7">
             <input type="location" class="form-control" [(ngModel)]="enteraddress" formControlName="enteraddress" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+            <small *ngIf="Location.errors" class="alert-danger"> * is required</small>
           </div>
 
         </div>
@@ -48,6 +50,7 @@
           <label for="description" class="col-sm-2 col-form-label">Description</label>
           <div class="col-sm-7">
             <textarea class="form-control" [(ngModel)]="description" formControlName="description" id="description" placeholder=" description" required></textarea>
+            <small *ngIf="Description.errors" class="alert-danger"> * is required</small>
           </div>
         </div>
 
@@ -56,7 +59,7 @@
           <label for="groupname" class="col-sm-2 col-form-label">Group Name</label>
           <div class="col-sm-7">
             <textarea class="form-control" [(ngModel)]="groupname" formControlName="groupname" id="groupname" placeholder=" group name" disabled></textarea>
-          </div>
+           </div>
         </div>
         <div class="form-group row">
           <div class="col-sm-1"></div>
@@ -64,32 +67,37 @@
           <div class="col-sm-7">
         <mat-form-field *ngIf="!isexists">
           <input matInput [(ngModel)]="startdate" formControlName="startd" [matDatepicker]="picker"  placeholder="Choose a date">
+          <small *ngIf="StartDate.errors" class="alert-danger"> * is required</small>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker  #picker></mat-datepicker>
         </mat-form-field>
             <input type="eventname" class="form-control" [(ngModel)]="startdate"  id="startdate" placeholder="Start date" formControlName="startdate">
+            <!-- <small *ngIf="Name.errors" class="alert-danger"> * is required</small> -->
           </div>
         </div>
         <br>
+
         <div class="form-group row">
           <div class="col-sm-1"></div>
           <label for="enddate" class="col-sm-2 col-form-label">End Date</label>
           <div class="col-sm-7">
-
         <mat-form-field *ngIf="!isexists">
           <input matInput [(ngModel)]="enddate" formControlName="enddate"  [matDatepicker]="picker1" placeholder="Choose a date">
+          <small *ngIf="EndDate.errors" class="alert-danger"> * is required</small>
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker  #picker1></mat-datepicker>
         </mat-form-field>
             <input *ngIf="isexists" type="eventname" class="form-control" [(ngModel)]="enddate"  id="inputeventname" placeholder="End Date" formControlName="enddate">
-          </div>
-
+            <!-- <small *ngIf="Name.errors" class="alert-danger"> * is required</small> -->
+      </div>
+      
         </div>
         <div class="form-group row">
           <div class="col-sm-1"></div>
           <label for="starttime" class="col-sm-2 col-form-label">Start Time</label>
           <div class="col-sm-7">
             <input [(ngModel)]="starttime" formControlName="starttime" placeholder="Enter Time" aria-label="Enter Time" [ngxTimepicker]="fullTime" [format]="24"  readonly>
+            <small *ngIf="StartTime.errors" class="alert-danger"> * is required</small>
             <ngx-material-timepicker #fullTime></ngx-material-timepicker>
           </div>
         </div>
