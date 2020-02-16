@@ -344,7 +344,7 @@ export class GroupEventComponent implements OnInit {
       this.getUserLocation();
 
       console.log("this is currlat"+this.currlat);
-      console.log("event"+this.eid+"member"+this.uid);
+      console.log("event"+this.currlat+"member"+this.currlng);
       if(this.currlat && this.currlng && this.originlat && this.originlng) {
         this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
           originlat:this.originlat,
