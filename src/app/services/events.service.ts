@@ -81,10 +81,9 @@ export class EventsService {
       name:data.name,
       gid:data.gid,
       description:data.description,
-      startdate:data.startdate,
-      enddate:data.enddate,
-      starttime:data.starttime,
-      photoURL:data.photoURL
+      startdate:firebase.firestore.Timestamp.fromDate(new Date(data.startdate)),
+      enddate:firebase.firestore.Timestamp.fromDate(new Date(data.enddate)),
+      starttime:data.starttime
     };
     return this.afs.doc('events/' + data.eid).update(EData).then(()=>{
       this.router.navigateByUrl('home');
