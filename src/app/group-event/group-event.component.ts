@@ -133,8 +133,10 @@ export class GroupEventComponent implements OnInit {
         this.checkSub();
         this.checkLogin();
       });
-
-      this.saveUserLocation();
+      setInterval(() => {
+        this.saveUserLocation();
+      },5000)
+      
 
   }
   getUserLocation() {
@@ -320,14 +322,14 @@ export class GroupEventComponent implements OnInit {
     deleteMarker(){};
 
 
-      saveUserLocation() { 
+      async saveUserLocation() { 
       //  this.getUserLocation();
       this.getUserLocation();
 
       console.log(this.currlat);
-      this.afs.collection("events").doc(this.eid).collection("members").doc(this.uid).set({
+      this.afs.collection("events").doc(this.eid).collection("members").doc(this.uid).update({
         currlat:this.currlat,
         currlng:this.currlng
-      });
+      }).then(val => {console.log('hi')});
     }
 }
