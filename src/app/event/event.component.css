@@ -59,6 +59,23 @@
   margin: 3rem auto;
 }
 
+label, small {
+  margin-left: 12px;
+}
+label {
+  font-weight: 450;
+}
+
+#account-card {
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-radius: 100px;
+}
+
 .inputfile {
   width: 0.1px;
   height: 0.1px;
