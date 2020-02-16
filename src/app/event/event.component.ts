@@ -348,7 +348,7 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            if(this.isfirst){
+            if(this.isfirst && !this.enteraddress){
               this.enteraddress=this.address;
               console.log("entered new address"+this.enteraddress);
               this.isfirst=false;
@@ -428,9 +428,9 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
-    console.log("this is update event");
+    console.log("this is update event"+this.enteraddress);
     if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
-      console.log("this is enter address ddddd"+this.enteraddress?this.enteraddress:this.ad);
+      console.log("this is enter address ddddd"+this.ad?this.ad:this.enteraddress);
       this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.admin,
