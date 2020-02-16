@@ -79,7 +79,7 @@ export class GroupEventComponent implements OnInit {
     private titleService: Title,
     private groupservice:GroupService,
     public dialog :MatDialog,
-    
+
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -236,16 +236,15 @@ export class GroupEventComponent implements OnInit {
   }
 
   getDate() {
-    
-   //return this.datePipe.transform(this.createDate.toDate(), 'month');
+    return this.datePipe.transform(this.createDate.toDate(),'date-picker-full');
 
   }
   getStartingDate() {
-    
-    //return this.datePipe.transform(this.startdate.toDate(), 'month');
+
+    return this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
   }
   getEndDate() {
-   // return this.datePipe.transform(this.enddate.toDate(), 'month');
+   return this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
   }
   open(content) {
     this.modalRef = this.modalService.open(content);

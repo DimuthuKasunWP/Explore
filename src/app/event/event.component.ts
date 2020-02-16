@@ -182,8 +182,8 @@ export class EventComponent implements OnInit {
                     this.starttime=eventdoc.starttime;
                     this.startd=this.startdate;
                     this.isexists=true;
-                    this.startdate=this.datePipe.transform(this.startdate);
-                    this.enddate=this.datePipe.transform(this.enddate);
+                    this.startdate=this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
+                    this.enddate=this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
                     // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
                     // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
                     // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
@@ -348,7 +348,7 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            if(this.isfirst){
+            if(this.isfirst && !this.enteraddress){
               this.enteraddress=this.address;
               console.log("entered new address"+this.enteraddress);
               this.isfirst=false;
@@ -428,9 +428,9 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
-    console.log("this is update event");
+    console.log("this is update event"+this.enteraddress);
     if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
-      console.log("this is enter address ddddd"+this.enteraddress?this.enteraddress:this.ad);
+      console.log("this is enter address ddddd"+this.ad?this.ad:this.enteraddress);
       this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.admin,
@@ -443,8 +443,7 @@ export class EventComponent implements OnInit {
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
-        starttime:this.starttime,
-        photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+        starttime:this.starttime
 
       };
       this.eventsService.updateEventData(data);
