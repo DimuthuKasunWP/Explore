@@ -15,6 +15,8 @@ import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/
 import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
 
 
+
+
 @Component({
   selector: 'app-group-event',
   templateUrl: './group-event.component.html',
@@ -44,6 +46,10 @@ export class GroupEventComponent implements OnInit {
   starttime;
   address;
   gname;
+  origin;
+  currlat;
+  currlng;
+  currzoom;
 
   isInvalid;
   isSubbed = false;
@@ -56,6 +62,7 @@ export class GroupEventComponent implements OnInit {
   closeResult;
 
   filename;
+   uid;
 
   constructor(
 
@@ -84,6 +91,8 @@ export class GroupEventComponent implements OnInit {
 
   ngOnInit() {
     console.log(localStorage.getItem("geid"));
+    var geid=localStorage.getItem("eid");
+    this.uid=localStorage.getItem("uid");
     this.route.params.subscribe(
       routeurl => {
         this.eid = routeurl.geid;
@@ -124,6 +133,24 @@ export class GroupEventComponent implements OnInit {
         this.checkSub();
         this.checkLogin();
       });
+      setInterval(() => {
+        this.saveUserLocation();
+      },5000)
+      
+
+  }
+  getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.currlat = position.coords.latitude;
+        this.currlng = position.coords.longitude;
+        this.currzoom = 16;
+        console.log(this.currlat);
+        console.log(this.currlng);
+
+        console.log("position", position)
+      });
+    }
   }
 
   getStyle() {
@@ -160,6 +187,7 @@ export class GroupEventComponent implements OnInit {
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
+        
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -292,6 +320,16 @@ export class GroupEventComponent implements OnInit {
     });
   };
     deleteMarker(){};
+
+
+      async saveUserLocation() { 
+      //  this.getUserLocation();
+      this.getUserLocation();
+
+      console.log(this.currlat);
+      this.afs.collection("events").doc(this.eid).collection("members").doc(this.uid).update({
+        currlat:this.currlat,
+        currlng:this.currlng
+      }).then(val => {console.log('hi')});
+    }
 }
-
-
