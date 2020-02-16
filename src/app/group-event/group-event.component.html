@@ -36,10 +36,10 @@
             <h4>About</h4><hr class="mt-1">
             <p>{{description}}</p>
             <p>{{address}}</p>
-            <p>Start Date :{{getStartingDate()}}</p>
-            <p>End Date :{{getEndDate()}}</p>
+            <p>Start Date :{{startdate| dateFormatPipe}}</p>
+            <p>End Date :{{enddate | dateFormatPipe}}</p>
             <p>Starting Time :{{starttime}}</p>
-            <p>Group:{{gname}}</p>
+            <p>Group:{{gid}}</p>
             <p>Created on {{getDate()}}</p>
 
           </div>
