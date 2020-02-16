@@ -59,7 +59,7 @@ export class EventsService {
           uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{//subcribe or unsubcribe 
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{//subcribe or unsubcribe
           this.router.navigateByUrl('home');
         });
         console.log("event created");
@@ -73,7 +73,7 @@ export class EventsService {
   }
 
   updateEventData(data){
-    console.log("this is inside update event data"+data.address);
+    console.log("this is inside update event data"+data.name);
     const EData = {
       latitude:data.latitude,
       longitude:data.longitude,
