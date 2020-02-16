@@ -16,7 +16,7 @@
         <div class="col-12 col-md-7 m-0 pr-0 order-2 order-md-1 px-0">
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
-            <gmap ></gmap>
+            <gmap [finallatitude]="latitude" [finallongitude]="longitude" ></gmap>
             <button class="button" (click)=" addMarker() ">Add a marker</button>
             <button class="button" (click)="deleteMarker()">Delete a marker</button>
             <div *ngFor="let post of posts">
@@ -34,13 +34,13 @@
           </div>
           <div class="bg-white px-2 py-2 mb-1" id="about">
             <h4>About</h4><hr class="mt-1">
-            <p>{{description}}</p>
-            <p>{{address}}</p>
-            <p>Start Date :{{startdate| dateFormatPipe}}</p>
-            <p>End Date :{{enddate | dateFormatPipe}}</p>
+            <p>Description :{{description}}</p>
+            <p>Address: {{address}}</p>
+            <p>Start Date :{{getStartingDate()}}</p>
+            <p>End Date :{{getEndDate()}}</p>
             <p>Starting Time :{{starttime}}</p>
             <p>Group:{{gid}}</p>
-            <p>Created on {{getDate()}}</p>
+            <p>Created on:{{getDate()}}</p>
 
           </div>
           <div class="bg-white px-2 py-2 mb-1" id="member-list" *ngIf="members">
@@ -98,10 +98,10 @@
 </ng-template>
 
 <ng-template #addmembers>
-  <div id="search-container" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" *ngIf="isUser">
+  <div id="search-container" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" >
     <app-eventsearch></app-eventsearch>
   </div>
-  <div id="search-container" class="col-9 col-sm-auto col-md-5 col-lg-4 order-2 offset-sm-3 offset-md-4 offset-lg-5" *ngIf="!isUser">
+  <div id="search-container" class="col-9 col-sm-auto col-md-5 col-lg-4 order-2 offset-sm-3 offset-md-4 offset-lg-5" >
     <app-eventsearch></app-eventsearch>
   </div>
 
@@ -115,6 +115,6 @@
 
 <ng-template #addmarker>
   <div class="col-12">
-<app-addmarker></app-addmarker>  
+<app-addmarker></app-addmarker>
 </div>
 </ng-template>
