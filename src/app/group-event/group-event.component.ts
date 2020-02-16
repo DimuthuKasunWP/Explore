@@ -116,6 +116,7 @@ export class GroupEventComponent implements OnInit {
               this.checkAdmin();
               this.checkGlobalAdministrator();
               this.getgroup();
+              this.getCurrentUser();
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -136,8 +137,15 @@ export class GroupEventComponent implements OnInit {
       setInterval(() => {
         this.saveUserLocation();
       },5000)
-      
 
+
+  }
+  getCurrentUser(){
+    this.auth.getAuthState().subscribe(currUser=>{
+      if(currUser){
+        this.uid=currUser.uid;
+      }
+    });
   }
   getUserLocation() {
     if (navigator.geolocation) {
@@ -187,7 +195,7 @@ export class GroupEventComponent implements OnInit {
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
-        
+
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -322,14 +330,19 @@ export class GroupEventComponent implements OnInit {
     deleteMarker(){};
 
 
-      async saveUserLocation() { 
+      async saveUserLocation() {
       //  this.getUserLocation();
       this.getUserLocation();
 
-      console.log(this.currlat);
-      this.afs.collection("events").doc(this.eid).collection("members").doc(this.uid).update({
-        currlat:this.currlat,
-        currlng:this.currlng
-      }).then(val => {console.log('hi')});
+      console.log("this is currlat"+this.currlat);
+      console.log("event"+this.eid+"member"+this.uid);
+      if(this.currlat && this.currlng) {
+        this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
+          currlat: this.currlat,
+          currlng: this.currlng
+        }).then(val => {
+          console.log('hi')
+        });
+      }
     }
 }
