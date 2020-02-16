@@ -1,5 +1,5 @@
 <div id="suggested" class="bg-white mb-2 mt-0 pb-2">
-  
+
   <hr class="p-0 my-1">
   <div *ngFor="let user of users">
     <div *ngIf="checkCurrent(user.uid)">
@@ -22,7 +22,7 @@
   <div *ngIf="events">
     <h5 id="title" class="pt-1 px-2">Events</h5>
     <div *ngFor="let event of events">
-      <div id="user-block" class="px-0 px-md-1 py-2"  routerLink="/event/{{event.eid}}">
+      <div id="user-block" class="px-0 px-md-1 py-2"  routerLink="/groupevent/{{event.eid}}">
         <div class="container-fluid">
           <div class="row justify-content-between">
             <span class="col-4 col-lg-3">
