@@ -23,7 +23,7 @@ import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
 export class GroupEventComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
-  
+  @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
 
 
   administrator;
@@ -209,13 +209,16 @@ export class GroupEventComponent implements OnInit {
   }
 
   getDate() {
-    return this.datePipe.transform(this.createDate.toDate(), 'month');
+    
+   //return this.datePipe.transform(this.createDate.toDate(), 'month');
+
   }
   getStartingDate() {
-    return this.datePipe.transform(this.startdate.toDate(), 'month');
+    
+    //return this.datePipe.transform(this.startdate.toDate(), 'month');
   }
   getEndDate() {
-    return this.datePipe.transform(this.enddate.toDate(), 'month');
+   // return this.datePipe.transform(this.enddate.toDate(), 'month');
   }
   open(content) {
     this.modalRef = this.modalService.open(content);
@@ -278,8 +281,16 @@ export class GroupEventComponent implements OnInit {
     this.see();
   }
   addMarker(){
-    
-    };
+    this.modalRef = this.modalService.open(this.modalContent2, {
+      size: 'sm',
+      windowClass: 'modal-style'
+    });
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  };
     deleteMarker(){};
 }
 

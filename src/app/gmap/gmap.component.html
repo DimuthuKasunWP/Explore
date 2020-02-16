@@ -1,4 +1,5 @@
 <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)="onChoseLocation($event)">
+  <agm-direction [origin]="origin" [destination]="destination"></agm-direction>
     <agm-marker
       [latitude]="latitude"
       [longitude]="longitude"

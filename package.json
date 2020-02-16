@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "@ng-bootstrap/ng-bootstrap": "^5.1.5",
+    "agm-direction": "^0.7.9",
     "angularfire2": "^5.3.0",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
