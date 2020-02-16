@@ -11,9 +11,9 @@ import { DateFormatPipe } from '../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 import {EventsService} from '../services/events.service';
-import {MatDialog,MatDialogConfig} from '@angular/material'
+import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
-import { AddmarkerComponent } from '../addmarker/addmarker.component';
+
 
 @Component({
   selector: 'app-group-event',
@@ -23,6 +23,8 @@ import { AddmarkerComponent } from '../addmarker/addmarker.component';
 export class GroupEventComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+  
+
 
   administrator;
   eid;
@@ -69,7 +71,8 @@ export class GroupEventComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private groupservice:GroupService,
-    private dialog :MatDialog
+    public dialog :MatDialog,
+    
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -275,16 +278,9 @@ export class GroupEventComponent implements OnInit {
     this.see();
   }
   addMarker(){
-    const dialogconfig= new MatDialogConfig;
-    dialogconfig.disableClose=true;
-    dialogconfig.autoFocus=true;
-    dialogconfig.width="60%";
     
-    this.dialog.open(AddmarkerComponent,dialogconfig);
-
-}
-deleteMarker(){
-  
+    };
+    deleteMarker(){};
 }
 
-}
+
