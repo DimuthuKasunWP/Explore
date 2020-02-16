@@ -50,6 +50,9 @@ export class GroupEventComponent implements OnInit {
   currlat;
   currlng;
   currzoom;
+  originlat;
+  originlng;
+  
 
   isInvalid;
   isSubbed = false;
@@ -137,16 +140,14 @@ export class GroupEventComponent implements OnInit {
       setInterval(() => {
         this.saveUserLocation();
       },5000)
-
-
-  }
-  getCurrentUser(){
-    this.auth.getAuthState().subscribe(currUser=>{
-      if(currUser){
-        this.uid=currUser.uid;
-      }
-    });
-  }
+      
+    }
+    getCurrentUser(){
+      this.auth.getAuthState().subscribe(currUser=>{
+        if(currUser){
+          this.uid=currUser.uid;
+        }
+      });  }
   getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -195,7 +196,7 @@ export class GroupEventComponent implements OnInit {
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
-
+        
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -330,19 +331,29 @@ export class GroupEventComponent implements OnInit {
     deleteMarker(){};
 
 
-      async saveUserLocation() {
-      //  this.getUserLocation();
+    async setorigin(){
+      this.getUserLocation();
+      this.originlat=this.currlat;
+      this.originlng=this.currlng;
+      await this.saveUserLocation();
+    }
+
+
+      async saveUserLocation() { 
+      
       this.getUserLocation();
 
       console.log("this is currlat"+this.currlat);
       console.log("event"+this.eid+"member"+this.uid);
-      if(this.currlat && this.currlng) {
+      if(this.currlat && this.currlng && this.originlat && this.originlng) {
         this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
+          originlat:this.originlat,
+          originlng:this.originlng,
           currlat: this.currlat,
           currlng: this.currlng
         }).then(val => {
           console.log('hi')
         });
       }
-    }
+        }
 }
