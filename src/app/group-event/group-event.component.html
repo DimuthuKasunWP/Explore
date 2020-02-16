@@ -17,6 +17,7 @@
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
             <gmap [finallatitude]="latitude" [finallongitude]="longitude" ></gmap>
+            <button class="button2" (click)=" setorigin() ">Set Our Origin Point</button>
             <button class="button" (click)=" addMarker() ">Add a marker</button>
             <button class="button" (click)="deleteMarker()">Delete a marker</button>
             <div *ngFor="let post of posts">
