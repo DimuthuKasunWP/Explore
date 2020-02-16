@@ -43,6 +43,7 @@ export class EventComponent implements OnInit {
   modalRef;
   closeResult;
   groupname=this.gid;
+  isfirst=true;
   // displayName;
   // userName;
   userid;
@@ -181,8 +182,8 @@ export class EventComponent implements OnInit {
                     this.starttime=eventdoc.starttime;
                     this.startd=this.startdate;
                     this.isexists=true;
-                    this.startdate=this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
-                    this.enddate=this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
+                    this.startdate=this.datePipe.transform(this.startdate);
+                    this.enddate=this.datePipe.transform(this.enddate);
                     // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
                     // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
                     // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
@@ -347,8 +348,12 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            // this.enteraddress=this.address;
-            console.log("entered new address"+this.enteraddress);
+            if(this.isfirst){
+              this.enteraddress=this.address;
+              console.log("entered new address"+this.enteraddress);
+              this.isfirst=false;
+            }
+
           }
 
         } else {
@@ -403,12 +408,12 @@ export class EventComponent implements OnInit {
     console.log("event saving");
     if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
      console.log("this is enter address ddddd"+this.ad);
-      this.getLatLngByAddress(this.ad?this.ad:this.enteraddress);
+      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.uid,
           latitude:this.latitude,
           longitude:this.longitude,
-          address:this.ad?this.ad:this.enteraddress,
+          address:this.enteraddress?this.enteraddress:this.ad,
           name:this.name,
           gid:this.groupname,
           description:this.description,
@@ -423,14 +428,15 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
+    console.log("this is update event");
     if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
-      console.log("this is enter address ddddd"+this.ad);
-      this.getLatLngByAddress(this.ad);
+      console.log("this is enter address ddddd"+this.enteraddress?this.enteraddress:this.ad);
+      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.admin,
         latitude:this.latitude,
         longitude:this.longitude,
-        address:this.ad,
+        address:this.enteraddress?this.enteraddress:this.ad,
         name:this.name,
         eid:this.eid,
         gid:this.groupname,

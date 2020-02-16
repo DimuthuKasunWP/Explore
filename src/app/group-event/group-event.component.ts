@@ -106,6 +106,7 @@ export class GroupEventComponent implements OnInit {
               this.titleService.setTitle(this.name + ' | ' + this.description);
               this.checkAdmin();
               this.checkGlobalAdministrator();
+              this.getgroup();
             } else {
               console.log('invalid');
               this.isInvalid = true;
