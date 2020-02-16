@@ -3,6 +3,7 @@ import {AngularFirestore} from 'angularfire2/firestore';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
+import { GmapComponent } from '../gmap/gmap.component';
 
 interface Event {
   createDate;
@@ -25,7 +26,7 @@ export class EventsService {
   constructor(
     private afs: AngularFirestore,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
   ) {
   }
 
@@ -151,5 +152,35 @@ export class EventsService {
   deleteEvent(eid){
     this.afs.doc('events/'+eid).delete();
   }
+
+  // getUserLocations(eid){
+  //   var locationarray=[];
+  //   var count =0;
+  //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+  //     if(members){
+  //       while(count<Object.keys(members).length){
+  //       //@ts-ignore 
+  //       console.log("current location"+members[count].currlat);
+
+  //       let data={
+  //         //@ts-ignore 
+  //           currlat:members[count].currlat,
+  //           //@ts-ignore 
+  //           currlng:members[count].currlng,
+  //           //@ts-ignore 
+  //           originlat:members[count].originlat,
+  //           //@ts-ignore 
+  //           originlng:members[count].originlng
+
+  //       };
+  //       locationarray.push(data);
+  //       count++;
+  //       }
+  //       return locationarray;
+  //     }
+
+  //   });
+  //   // this.gmap.setlocations(locationarray);
+  // }
 }
 

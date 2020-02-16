@@ -16,7 +16,7 @@
         <div class="col-12 col-md-7 m-0 pr-0 order-2 order-md-1 px-0">
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
-            <gmap [finallatitude]="latitude" [finallongitude]="longitude" ></gmap>
+            <gmap [finallatitude]="latitude" [finallongitude]="longitude" [eid]="eid" [uid]="uid"></gmap>
             <button class="button2" (click)=" setorigin() ">Set Our Origin Point</button>
             <button class="button" style="margin-left: 175px;" (click)=" addMarker() ">Add a marker</button>
             <button class="button" (click)="deleteMarker()">Delete a marker</button>
