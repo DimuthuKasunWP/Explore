@@ -182,8 +182,8 @@ export class EventComponent implements OnInit {
                     this.starttime=eventdoc.starttime;
                     this.startd=this.startdate;
                     this.isexists=true;
-                    this.startdate=this.datePipe.transform(this.startdate);
-                    this.enddate=this.datePipe.transform(this.enddate);
+                    this.startdate=this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
+                    this.enddate=this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
                     // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
                     // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
                     // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
@@ -443,8 +443,7 @@ export class EventComponent implements OnInit {
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
-        starttime:this.starttime,
-        photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+        starttime:this.starttime
 
       };
       this.eventsService.updateEventData(data);
