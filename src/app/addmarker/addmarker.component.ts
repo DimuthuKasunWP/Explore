@@ -17,7 +17,7 @@ onSubmit(){
   this.submitted=true;
   if(this.markerservice.form.valid){
   if(this.markerservice.form.get('$key').value==null){
-    this.markerservice.insertmarker(this.markerservice.form.value);
+    this.markerservice.insertmarker(this.markerservice.form.value)
   }
 
     this.submitted=false;

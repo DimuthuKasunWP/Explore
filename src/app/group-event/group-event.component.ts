@@ -11,9 +11,9 @@ import { DateFormatPipe } from '../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 import {EventsService} from '../services/events.service';
-import {MatDialog,MatDialogConfig} from '@angular/material'
+import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
 import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
-import { AddmarkerComponent } from '../addmarker/addmarker.component';
+
 
 @Component({
   selector: 'app-group-event',
@@ -23,6 +23,8 @@ import { AddmarkerComponent } from '../addmarker/addmarker.component';
 export class GroupEventComponent implements OnInit {
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+  @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
+
 
   administrator;
   eid;
@@ -69,7 +71,8 @@ export class GroupEventComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private titleService: Title,
     private groupservice:GroupService,
-    private dialog :MatDialog
+    public dialog :MatDialog,
+    
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -207,13 +210,16 @@ export class GroupEventComponent implements OnInit {
   }
 
   getDate() {
-    return this.datePipe.transform(this.createDate.toDate(), 'month');
+    
+   //return this.datePipe.transform(this.createDate.toDate(), 'month');
+
   }
   getStartingDate() {
-    return this.datePipe.transform(this.startdate.toDate(), 'month');
+    
+    //return this.datePipe.transform(this.startdate.toDate(), 'month');
   }
   getEndDate() {
-    return this.datePipe.transform(this.enddate.toDate(), 'month');
+   // return this.datePipe.transform(this.enddate.toDate(), 'month');
   }
   open(content) {
     this.modalRef = this.modalService.open(content);
@@ -276,16 +282,17 @@ export class GroupEventComponent implements OnInit {
     this.see();
   }
   addMarker(){
-    const dialogconfig= new MatDialogConfig;
-    dialogconfig.disableClose=true;
-    dialogconfig.autoFocus=true;
-    dialogconfig.width="60%";
-
-    this.dialog.open(AddmarkerComponent,dialogconfig);
-
+    this.modalRef = this.modalService.open(this.modalContent2, {
+      size: 'sm',
+      windowClass: 'modal-style'
+    });
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  };
+    deleteMarker(){};
 }
-deleteMarker(){
 
-}
 
-}

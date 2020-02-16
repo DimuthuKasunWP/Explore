@@ -14,6 +14,7 @@ import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 import * as firebase from 'firebase';
 import {AgmCoreModule} from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 
 // Pipes and Directives
@@ -96,6 +97,7 @@ import { HashtagComponent } from './hashtag/hashtag.component';
 import { GroupEventComponent } from './group-event/group-event.component';
 import { AddmarkerComponent } from './addmarker/addmarker.component';
 import { EventsearchComponent } from './eventsearch/eventsearch.component';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 
 
 firebase.initializeApp(environment.firebase);
@@ -272,7 +274,9 @@ const routes: Routes = [
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsKey,
       libraries: ['places']
-    })
+    }),
+    AngularFireDatabaseModule,
+    AgmDirectionModule,  
   ],
   providers: [
     AuthService,
