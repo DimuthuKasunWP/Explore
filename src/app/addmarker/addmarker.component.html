@@ -1,4 +1,4 @@
-<div class="col-md-5">
+<div class="col-12">
     <form [formGroup]=" this.markerservice.form" (ngSubmit)="onSubmit()">
         <input type="hidden" formControlName="$key">
         <div class="form-group">
@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
             <label>Location</label>
-            <input formControlName="markerName" class="form-control" [ngClass]="{'is-Invalid':submitted() && formcontrols.location.errors}">
+            <input formControlName="markerName" class="form-control" [ngClass]="{'is-Invalid':submitted && formcontrols.location.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div>
         </div>
         <div class="form-group" >
