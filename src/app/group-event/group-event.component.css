@@ -82,6 +82,9 @@ small {
   text-decoration: none;
   cursor: pointer;
 }
+.xx{
+  padding-left: 30%;
+}
 
 .button:hover {opacity: 1}
 .button2:hover{opacity: 1}

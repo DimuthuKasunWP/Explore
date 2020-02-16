@@ -1,6 +1,7 @@
 import { Component, OnInit, NgModule, Input } from '@angular/core';
 import {AgmCoreModule} from '@agm/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { DocumentBuilder } from 'firebase-functions/lib/providers/firestore';
 
 @Component({
   selector: 'gmap',
@@ -14,9 +15,20 @@ export class GmapComponent implements OnInit {
 
     @Input() finallatitude;
     @Input() finallongitude;
+    @Input() currlat;
+    @Input() currlng;
+    @Input() originlat;
+    @Input() originlng;
+
     
-    origin = { lat: 6.9319, lng: 79.8478 };
-    destination = { lat: 5.9485102, lng: 80.5352783 };
+    origin = { 
+      originlat:this.originlat, 
+      originlng:this.originlng
+     };
+
+    destination = { 
+      currlat:this.currlat, 
+      currlng:this.currlng };
 
   onChoseLocation(event) {
     this.latitude = event.coords.lat;
