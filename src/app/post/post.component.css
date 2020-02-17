@@ -10,7 +10,7 @@ small {
   font-size: 1rem;
 }
 a {
-  color: #E83F6F;
+  color: #48a999;
   word-break: break-all;
 }
 a:hover {
@@ -56,11 +56,11 @@ a:hover {
   font-size: 15px;
 }
 #post-info > span:hover {
-  color: #E83F6F;
+  color: #48a999;
   cursor: pointer;
 }
 .post-liked {
-  color: #E83F6F;
+  color: #48a999;
 }
 #post-container, #single-post-container, #dropdownBasic1 {
   cursor: pointer;

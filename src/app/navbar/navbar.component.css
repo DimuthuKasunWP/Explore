@@ -3,11 +3,11 @@
   color: white;
 }
 #dropdownBasic1 {
-  border: 3px solid #E83F6F;
+  border: 3px solid #48a999;
 }
 #login-nav {
   text-decoration: none;
-  color: #E83F6F!important;
+  color: #48a999!important;
 }
 #login-nav:hover {
   color: #3fc4e8!important;
@@ -35,7 +35,7 @@ hr {
   margin: 5px;
 }
 #nav-links > span {
-  color: #E83F6F;
+  color: #48a999;
   font-weight: 500;
 }
 #nav-links > span:hover {
@@ -50,7 +50,7 @@ hr {
   cursor: pointer;
 }
 .dropdown-item:focus {
-  background-color: #E83F6F;
+  background-color: #48a999;
   color: white;
 }
 #user-data > p {
@@ -83,7 +83,7 @@ hr {
     height: 20px;
     width: 20px;
     line-height: 15px;
-    text-shadow: #E83F6F;
+    text-shadow: #48a999;
     -moz-border-radius: 20%;
     border-radius: 20%;
     background-color: #3fc4e8;
@@ -96,7 +96,7 @@ hr {
   height: 20px;
   width: 20px;
   line-height: 15px;
-  text-shadow: #E83F6F;
+  text-shadow: #48a999;
   -moz-border-radius: 20%;
   border-radius: 20%;
   background-color: #3fc4e8;
