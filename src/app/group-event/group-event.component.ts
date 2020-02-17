@@ -15,6 +15,8 @@ import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/
 import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
 
 
+
+
 @Component({
   selector: 'app-group-event',
   templateUrl: './group-event.component.html',
@@ -25,7 +27,7 @@ export class GroupEventComponent implements OnInit {
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
   @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
 
-
+  locationarray=[];
   administrator;
   eid;
   name;
@@ -44,6 +46,13 @@ export class GroupEventComponent implements OnInit {
   starttime;
   address;
   gname;
+  origin;
+  currlat;
+  currlng;
+  currzoom;
+  originlat;
+  originlng;
+  
 
   isInvalid;
   isSubbed = false;
@@ -56,6 +65,7 @@ export class GroupEventComponent implements OnInit {
   closeResult;
 
   filename;
+   uid;
 
   constructor(
 
@@ -84,11 +94,14 @@ export class GroupEventComponent implements OnInit {
 
   ngOnInit() {
     console.log(localStorage.getItem("geid"));
+    var geid=localStorage.getItem("eid");
+    this.uid=localStorage.getItem("uid");
     this.route.params.subscribe(
       routeurl => {
         this.eid = routeurl.geid;
         this.eventservice.getEvent(this.eid).subscribe(
           eventDoc => {
+            this.getCurrentUser();
             if (eventDoc) {
               this.name = eventDoc.name;
               this.description = eventDoc.description;
@@ -107,6 +120,7 @@ export class GroupEventComponent implements OnInit {
               this.checkAdmin();
               this.checkGlobalAdministrator();
               this.getgroup();
+              
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -124,6 +138,28 @@ export class GroupEventComponent implements OnInit {
         this.checkSub();
         this.checkLogin();
       });
+      setInterval(() => {
+        this.saveUserLocation();
+      },20000)
+     
+    }
+    getCurrentUser(){
+      this.auth.getAuthState().subscribe(currUser=>{
+        if(currUser){
+          this.uid=currUser.uid;
+        }
+      });  }
+  getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.currlat = position.coords.latitude;
+        this.currlng = position.coords.longitude;
+        this.currzoom = 16;
+        
+
+        // console.log("position", position)
+      });
+    }
   }
 
   getStyle() {
@@ -160,6 +196,7 @@ export class GroupEventComponent implements OnInit {
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
+        
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -292,6 +329,61 @@ export class GroupEventComponent implements OnInit {
     });
   };
     deleteMarker(){};
+
+
+    async setorigin(){
+      this.getUserLocation();
+      this.originlat=this.currlat;
+      this.originlng=this.currlng;
+      await this.saveUserLocation();
+    }
+
+
+      async saveUserLocation() { 
+      
+      this.getUserLocation();
+
+      if(this.currlat && this.currlng && this.originlat && this.originlng) {
+        this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
+          originlat:this.originlat,
+          originlng:this.originlng,
+          currlat: this.currlat,
+          currlng: this.currlng
+        }).then(val => {
+          console.log('hi')
+        });
+      }
+        }
+
+    // getLocationsOfUsers(eid){
+    //   localStorage.setItem("eid",eid);
+    //   var locationarray=[];
+    //   var count =0;
+    //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+    //     if(members){
+    //       while(count<Object.keys(members).length){
+    //       // //@ts-ignore 
+    //       // console.log("current location"+members[count].currlat);
+  
+    //       let data={
+    //         //@ts-ignore 
+    //           currlat:members[count].currlat,
+    //           //@ts-ignore 
+    //           currlng:members[count].currlng,
+    //           //@ts-ignore 
+    //           originlat:members[count].originlat,
+    //           //@ts-ignore 
+    //           originlng:members[count].originlng
+  
+    //       };
+    //       locationarray.push(data);
+    //       count++;
+    //       }
+    //       this.locationarray=locationarray;
+         
+    //     }
+  
+    //   });
+     
+    // }
 }
-
-

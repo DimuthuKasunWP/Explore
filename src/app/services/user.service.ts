@@ -46,4 +46,7 @@ export class UserService {
   getUsersList(){
     return this.afs.collection("users").get();
   }
+  deleteUserProfile(uid){
+    this.afs.doc("users/"+uid).delete();
+  }
 }
