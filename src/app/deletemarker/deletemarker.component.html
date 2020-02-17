@@ -1,1 +1,5 @@
-<p>deletemarker works!</p>
+<button class="waves-effect waves-light btn col s4" 
+        *ngFor="let coffee of coffees" 
+        (click)="addCoffee(coffee)">
+{{coffee}}
+</button>
