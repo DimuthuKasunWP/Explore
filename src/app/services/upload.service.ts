@@ -87,14 +87,23 @@ export class UploadService {
       ).subscribe();
     }
     if (type === 'group') {
-      const downloadURL = this.storage.upload('group-uploads/' + id + '/'+file.name, file);
-      const ref = this.storage.ref('group-uploads/' + id + '/'+file.name).getDownloadURL();
-      ref.subscribe(url => {
-        if (url) {
-          console.log("url"+url);
-          this.groupService.updateBannerURL(url, id);
-        }
-      });
+      const task = this.storage.upload('group-uploads/' + id + '/'+file.name, file);
+      const ref = this.storage.ref('group-uploads/' + id + '/'+file.name);
+      // ref.subscribe(url => {
+      //   if (url) {
+      //     console.log("url"+url);
+      //     this.groupService.updateBannerURL(url, id);
+      //   }
+      // });
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.groupService.updateBannerURL(url,id);
+            });
+        })
+      ).subscribe();
     }
     if(type === 'event'){
       console.log("event type");
