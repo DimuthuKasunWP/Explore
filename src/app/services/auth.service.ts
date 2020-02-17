@@ -186,7 +186,9 @@ export class AuthService {
       status: status,
       displayName: displayname
     };
-    return updateRef.update(this.updateData);
+    return updateRef.update(this.updateData).then(()=>{
+      this.router.navigateByUrl("home");
+    });
   }
 
   updatePhotoURL (photourl) {
