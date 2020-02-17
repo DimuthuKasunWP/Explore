@@ -25,13 +25,13 @@ body {
   padding: 0px;
 }
 .text-primary {
-  color: #E83F6F!important;
+  color: #48a999!important;
 }
 .border-primary {
   border: 1px solid rgba(232, 63, 111, 0.726)!important;
 }
 .bg-primary {
-  background-color: #E83F6F!important;
+  background-color: #48a999!important;
 }
 .border-secondary {
   border: 1px solid rgba(63, 196, 232, 0.726)!important;

@@ -19,7 +19,7 @@
 /* Banner */
 #user-banner {
   height: 350px;
-  background-color: #E83F6F;
+  background-color: #48a999;
   background-size: cover;
 }
 @media (max-width: 1000px) {
@@ -39,7 +39,7 @@
   width: 11rem;
   margin-top: -100px;
   border: 4px white solid;
-  background-color: #E83F6F;
+  background-color: #48a999;
 }
 .text-mute {
   color: rgb(120, 120, 120);
@@ -73,7 +73,7 @@
   border-bottom: 2px solid rgba(190, 190, 190, 0.4);
 }
 .current {
-  border-bottom: #E83F6F 2px solid;
+  border-bottom: #48a999 2px solid;
 }
 #info-container {
   max-width: 100vw;
@@ -142,5 +142,5 @@ h4 {
   color: white;
 }
 .btn-banner:hover {
-  background: #E83F6F!important;
+  background: #48a999!important;
 }
