@@ -118,7 +118,7 @@
     <h2>Your events</h2>
     <div id="event-list" class="bg-white my-2 pb-2" *ngIf="events">
       <hr class="p-0 my-1">
-      <div *ngIf="events && events.length > 0; else noGroups" class="mt-2">
+      <div *ngIf="events && events.length > 0; else  noGroups" class="mt-2">
         <div *ngFor="let event of events; let i = index" class="mx-3">
 
           <div class="card" >
