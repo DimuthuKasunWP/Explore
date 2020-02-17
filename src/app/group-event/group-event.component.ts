@@ -22,7 +22,7 @@ import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
   templateUrl: './group-event.component.html',
   styleUrls: ['./group-event.component.css']
 })
-export class GroupEventComponent implements OnInit{ 
+export class GroupEventComponent implements OnInit{
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
   @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
@@ -332,6 +332,7 @@ export class GroupEventComponent implements OnInit{
     });
   };
     deleteMarker(){
+      console.log("this is delete marker");
       this.modalRef = this.modalService.open(this.modalContent3, {
         size: 'sm',
         windowClass: 'modal-style'
@@ -342,7 +343,7 @@ export class GroupEventComponent implements OnInit{
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     };
-    
+
 
 
     async setorigin(){
@@ -353,8 +354,8 @@ export class GroupEventComponent implements OnInit{
     };
 
 
-    saveUserLocation() { 
-      
+    saveUserLocation() {
+
 
       this.getUserLocation();
 
@@ -379,29 +380,29 @@ export class GroupEventComponent implements OnInit{
     //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
     //     if(members){
     //       while(count<Object.keys(members).length){
-    //       // //@ts-ignore 
+    //       // //@ts-ignore
     //       // console.log("current location"+members[count].currlat);
-  
+
     //       let data={
-    //         //@ts-ignore 
+    //         //@ts-ignore
     //           currlat:members[count].currlat,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           currlng:members[count].currlng,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           originlat:members[count].originlat,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           originlng:members[count].originlng
-  
+
     //       };
     //       locationarray.push(data);
     //       count++;
     //       }
     //       this.locationarray=locationarray;
-         
+
     //     }
-  
+
     //   });
-     
+
     // }
 }
 
