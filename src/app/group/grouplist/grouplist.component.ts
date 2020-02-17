@@ -36,6 +36,7 @@ export class GrouplistComponent implements OnInit {
               userGroups.forEach((groupData: any) => {
                 this.groupService.getGroup(groupData.gid).subscribe(
                   groupDetails => {
+                    if(groupDetails)
                     this.groups.push(groupDetails);
                   });
               });
