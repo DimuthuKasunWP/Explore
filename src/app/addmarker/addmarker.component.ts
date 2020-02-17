@@ -27,11 +27,19 @@ export class AddmarkerComponent implements OnInit {
   {
     return this.addMarker.get("location");
   }
- 
+
   submitted;
   formcontrols=this.markerservice.form.controls;
 
   ngOnInit() {
+    this.addMarker = new FormGroup(
+      {
+        markerName: new FormControl('',Validators.required),
+        eventID: new FormControl('himash1997'),
+        location:new FormControl('',Validators.required),
+        description:new FormControl(''),
+      }
+    );
   }
 onSubmit(val){
   // this.submitted=true;
