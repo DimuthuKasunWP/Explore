@@ -8,7 +8,7 @@
   width: 100%;
   height: 300px;
   background-size: cover;
-  background-color: #E83F6F;
+  background-color: #48a999;
 }
 .user-block {
   width: 60px;
@@ -49,15 +49,15 @@ small {
   color: white;
 }
 .btn-banner:hover {
-  background: #E83F6F!important;
+  background: #48a999!important;
 }
 
 .button {
-  background-color:#E83F6F;
+  background-color:#48a999;
   ;
   border: none;
   color: white;
-  
+
   text-align: center;
   font-size: 16px;
   margin: 4px 2px;

@@ -1,6 +1,6 @@
 #chatroom-container {
     width: 100%;
-    border-left: 2px solid #E83F6F;
+    border-left: 2px solid #48a999;
 }
 #roomListItem:hover {
   cursor: pointer;
