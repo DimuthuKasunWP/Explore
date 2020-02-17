@@ -9,15 +9,14 @@ import { timeout } from 'rxjs/operators';
 })
 export class DeletemarkerComponent implements OnInit {
   coffee;
-  markers;
+  marker;
   items=[];
 
 
   constructor(private afs: AngularFirestore ) {}
-  coffees = ["Americano", "Flat White", "Cappuccino", "Latte", "Espresso", "Machiato", "Mocha", "Hot Chocolate", "Tea"];
+  
 
-
-  addCoffee(coffee){ }
+  
 
   async ngOnInit()
   {
@@ -36,9 +35,18 @@ export class DeletemarkerComponent implements OnInit {
          console.log(this.items);
      }
 
+
+
   });
 
 
 
   }
-}
+  deleteMarker(data) {
+      console.log("this is markers"+data);
+     this.afs.collection("markers",ref =>ref.where ('markerName','==',data)).doc()..delete();
+      
+    }
+        
+ }
+
