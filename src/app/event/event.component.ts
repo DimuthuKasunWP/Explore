@@ -49,6 +49,7 @@ export class EventComponent implements OnInit {
   userid;
   ad;
   // postService;
+  date = new Date();
 
   inputFile;
   filename='Add New Event Photo';
@@ -270,6 +271,13 @@ export class EventComponent implements OnInit {
 
 
   }
+  
+  tomorrow(){
+    var tomorrow = new Date();
+    tomorrow.setDate(this.date.getDate()+1);
+    return tomorrow = tomorrow;
+  }
+
   getAllEvents(){
                 this.eventsService.getEventList().subscribe(
                   userEvents=>{
