@@ -10,36 +10,35 @@ import { timeout } from 'rxjs/operators';
 export class DeletemarkerComponent implements OnInit {
   coffee;
   markers;
-  items: any[];
-  
-  
+  items=[];
+
+
   constructor(private afs: AngularFirestore ) {}
   coffees = ["Americano", "Flat White", "Cappuccino", "Latte", "Espresso", "Machiato", "Mocha", "Hot Chocolate", "Tea"];
 
-  
+
   addCoffee(coffee){ }
-  
+
   async ngOnInit()
   {
   var count=0;
    this.markers= await this.afs.collection("markers").valueChanges().subscribe(
      val=>{
        if(val){
-         console.log(val)
-        let i
-        for(i =0;i<val.length;i++){
+         // @ts-ignore
+         console.log("marker name"+val[0].markerName);
+
+        while(count<Object.keys(val).length){
           //@ts-ignore
-             this.items.push(val[i].markerName);
-             
+             this.items.push(val[count++].markerName);
+
        }
-       
-     } 
+         console.log(this.items);
+     }
 
   });
-  setInterval(() => {
-    console.log(this.items);
-  },20000)
-  
- 
-  } 
+
+
+
+  }
 }
