@@ -40,6 +40,24 @@ export class UploadService {
         })
       ).subscribe();
     }
+    if (type === 'account') {
+
+      const task = this.storage.upload('user-uploads/' + id + '/dp',file);
+      const  ref=this.storage.ref('user-uploads/' + id + '/dp');
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              const data = {
+                photoURL: url
+              };
+              console.log("piddddd"+id);
+              this.afs.doc('users/' + id).update(data);
+            });
+        })
+      ).subscribe();
+    }
     if (type === 'post') {
       console.log("post type");
       const task = this.storage.upload('post-uploads/' + id + '/post-image',file);
