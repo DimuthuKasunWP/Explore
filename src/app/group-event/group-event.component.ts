@@ -27,7 +27,7 @@ export class GroupEventComponent implements OnInit {
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
   @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
 
-
+  locationarray=[];
   administrator;
   eid;
   name;
@@ -101,6 +101,7 @@ export class GroupEventComponent implements OnInit {
         this.eid = routeurl.geid;
         this.eventservice.getEvent(this.eid).subscribe(
           eventDoc => {
+            this.getCurrentUser();
             if (eventDoc) {
               this.name = eventDoc.name;
               this.description = eventDoc.description;
@@ -119,7 +120,7 @@ export class GroupEventComponent implements OnInit {
               this.checkAdmin();
               this.checkGlobalAdministrator();
               this.getgroup();
-              this.getCurrentUser();
+              
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -139,8 +140,8 @@ export class GroupEventComponent implements OnInit {
       });
       setInterval(() => {
         this.saveUserLocation();
-      },5000)
-      
+      },20000)
+     
     }
     getCurrentUser(){
       this.auth.getAuthState().subscribe(currUser=>{
@@ -154,10 +155,9 @@ export class GroupEventComponent implements OnInit {
         this.currlat = position.coords.latitude;
         this.currlng = position.coords.longitude;
         this.currzoom = 16;
-        console.log(this.currlat);
-        console.log(this.currlng);
+        
 
-        console.log("position", position)
+        // console.log("position", position)
       });
     }
   }
@@ -343,8 +343,6 @@ export class GroupEventComponent implements OnInit {
       
       this.getUserLocation();
 
-      console.log("this is currlat"+this.currlat);
-      console.log("event"+this.currlat+"member"+this.currlng);
       if(this.currlat && this.currlng && this.originlat && this.originlng) {
         this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
           originlat:this.originlat,
@@ -356,4 +354,36 @@ export class GroupEventComponent implements OnInit {
         });
       }
         }
+
+    // getLocationsOfUsers(eid){
+    //   localStorage.setItem("eid",eid);
+    //   var locationarray=[];
+    //   var count =0;
+    //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+    //     if(members){
+    //       while(count<Object.keys(members).length){
+    //       // //@ts-ignore 
+    //       // console.log("current location"+members[count].currlat);
+  
+    //       let data={
+    //         //@ts-ignore 
+    //           currlat:members[count].currlat,
+    //           //@ts-ignore 
+    //           currlng:members[count].currlng,
+    //           //@ts-ignore 
+    //           originlat:members[count].originlat,
+    //           //@ts-ignore 
+    //           originlng:members[count].originlng
+  
+    //       };
+    //       locationarray.push(data);
+    //       count++;
+    //       }
+    //       this.locationarray=locationarray;
+         
+    //     }
+  
+    //   });
+     
+    // }
 }
