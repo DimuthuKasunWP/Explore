@@ -281,6 +281,8 @@ export class ProfileComponent implements OnInit {
         if (chatroom[0]) {
           console.log("exsisting");
           this.room = chatroom[0];
+          this.rid=this.room.rid;
+          console.log();
           this.open();
         } else {
           console.log("first");
@@ -336,7 +338,7 @@ export class ProfileComponent implements OnInit {
         this.filename = 'Max Filesize 2Mb!';
       } else {
         this.filename = 'Edit Banner';
-        this.uploadService.pushUpload(file, 'banner', this.userid);
+        this.uploadService.pushUpload(file, 'user', this.userid);
       }
     }
 }

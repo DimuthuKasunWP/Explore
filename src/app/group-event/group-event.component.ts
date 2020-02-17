@@ -54,7 +54,7 @@ export class GroupEventComponent implements OnInit{
   currzoom;
   originlat;
   originlng;
-  
+
 
   isInvalid;
   isSubbed = false;
@@ -122,7 +122,7 @@ export class GroupEventComponent implements OnInit{
               this.checkAdmin();
               this.checkGlobalAdministrator();
               this.getgroup();
-              
+
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -143,7 +143,7 @@ export class GroupEventComponent implements OnInit{
       setInterval(() => {
         this.saveUserLocation();
       },20000)
-     
+
     }
     getCurrentUser(){
       this.auth.getAuthState().subscribe(currUser=>{
@@ -157,7 +157,7 @@ export class GroupEventComponent implements OnInit{
         this.currlat = position.coords.latitude;
         this.currlng = position.coords.longitude;
         this.currzoom = 16;
-        
+
 
         // console.log("position", position)
       });
@@ -198,7 +198,7 @@ export class GroupEventComponent implements OnInit{
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
-        
+
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -308,6 +308,7 @@ export class GroupEventComponent implements OnInit{
 
   processImage(event) {
     const file = event.target.files[0];
+
     if (file.size > 2000000) {
       this.filename = 'Max Filesize 2Mb!';
     } else {
@@ -354,6 +355,7 @@ export class GroupEventComponent implements OnInit{
 
     saveUserLocation() { 
       
+
       this.getUserLocation();
 
       if(this.currlat && this.currlng && this.originlat && this.originlng) {
@@ -367,6 +369,8 @@ export class GroupEventComponent implements OnInit{
         })
       }
         }
+
+
 
     // getLocationsOfUsers(eid){
     //   localStorage.setItem("eid",eid);
@@ -400,3 +404,4 @@ export class GroupEventComponent implements OnInit{
      
     // }
 }
+
