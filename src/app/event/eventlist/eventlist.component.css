@@ -11,7 +11,7 @@ h3 {
   color: black;
 }
 #eventList:hover {
-  background-color: #E83F6F;
+  background-color: #48a999;
   color: white;
   cursor: pointer;
 }
