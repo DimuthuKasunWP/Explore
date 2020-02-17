@@ -44,11 +44,13 @@ export class SuggestedComponent implements OnInit {
         this.userService.getFollowingUsers(this.currentuser).subscribe(followinguser=>{
 
           while (this.count<Object.keys(followinguser).length) {
+            if(followinguser){
             // @ts-ignore
-            console.log("following"+followinguser[this.count++].uid)
+            console.log("following"+followinguser[this.count].uid)
             var user=followinguser[this.count++];
             // @ts-ignore
             following.push(user.uid);
+            }
           }
         });
       });
@@ -59,16 +61,18 @@ export class SuggestedComponent implements OnInit {
           var followcount=0;
           while (usercount< userlist.length) {
             console.log("usercount"+usercount);
-            while (followcount< following.length) {
-              console.log("followcount"+followcount);
-              console.log("user"+userlist[usercount]+"follow"+following[followcount]);
-              if (userlist[usercount] === (following[followcount++])) {
-                console.log("user in the following list");
-              } else {
-                console.log("pushing data"+userlist[usercount]);
-                this.userDetails.push(userlist[usercount]);
-              }
-            }
+            // while (followcount< following.length) {
+            //   console.log("followcount"+followcount);
+            //   console.log("user"+userlist[usercount]+"follow"+following[followcount]);
+            //   if (userlist[usercount] === (following[followcount++])) {
+            //     console.log("user in the following list");
+            //   } else {
+            //     console.log("pushing data"+userlist[usercount]);
+            //     this.userDetails.push(userlist[usercount]);
+            //   }
+            // }
+            if(!(userlist[usercount]===this.currentuser))
+              this.userDetails.push(userlist[usercount]);
             followcount=0;
             usercount++;
           }
