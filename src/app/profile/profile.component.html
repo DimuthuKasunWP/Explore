@@ -16,6 +16,9 @@
         <div class="col-2 align-self-center" *ngIf="!isCurrentUser && this.isLoggedIn">
           <button class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn" (click)="followUser()">{{checkFollowing()}}</button>
         </div>
+        <div class="col-2 align-self-center" *ngIf="isCurrentUser || isadmin">
+          <button class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn" (click)="deleteProfile()">Delete Profile</button>
+        </div>
       </div>
     </div>
     <div id="profile-content" class="container row mb-5">

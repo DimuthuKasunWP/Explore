@@ -17,33 +17,33 @@ export class GmapComponent implements OnInit {
     latitude= 7.8774;
     longitude=80.7003;
     locationChosen = false;
-    
+
 
     @Input() finallatitude;
     @Input() finallongitude;
     @Input() uid;
     @Input() eid;
 
-    
+
     currlat;
     currlng;
     originlat;
     originlng;
-    
+
    lat:Number;
    lng:Number;
-   
+
    origin;
-   
-    
-    // origin = { 
+
+
+    // origin = {
     // //   lat:parseFloat(this.currlat),
     // lat:this.lat2,
     // //   lng:parseFloat(this.currlng)
     // lng:this.lng2
     //   };
 
-    // destination = { 
+    // destination = {
     // lat:this.lat1,
     // //lat:7.291418,
     //  lng:this.lng1
@@ -59,52 +59,55 @@ export class GmapComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private auth:AuthService
-    
+
   ) {
     console.log("this is origin"+this.currlat);
    }
 
   ngOnInit() {
-    
+
     this.auth.getAuthState().subscribe(currUser=>{
       if(currUser){
         this.uid=currUser.uid;
       }
        setTimeout(() => {
-         this.getLocation();
+         this.getLocation(this.uid);
         }, 10000);
         });
-   
 
-    
-    
+
+
+
   }
-  getLocation() {
-    this.afs.collection('events/' + this.eid + '/members').valueChanges().subscribe(member=>{
+  getLocation(uid) {
+    this.afs.collection('events/' + this.eid + '/members').doc(uid).valueChanges().subscribe(member=>{
       if(member){
+
+        // @ts-ignore
+        console.log("this is member"+member.currlat);
         //@ts-ignore
-        this.currlat=member[0].currlat;
+        this.currlat=member.currlat;
         //@ts-ignore
-        this.currlng=member[0].currlng;
+        this.currlng=member.currlng;
         //@ts-ignore
-        this.originlat=member[0].originlat;
+        this.originlat=member.originlat;
         //@ts-ignore
-        this.originlng=member[0].originlng;
-        
-        
-        // this.origin = { 
+        this.originlng=member.originlng;
+
+
+        // this.origin = {
         //   //@ts-ignore
         //  lat:this.lat2,
         //   //@ts-ignore
         //  lng:this.lng2
         //  };
-          //@ts-ignore
-        console.log("fuck"+member[0].currlat);
+
+
       }
     }
    )
-   
-    
+
+
   }
 
 

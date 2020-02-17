@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
   closeResult;
   room;
   rid;
+  isadmin;
 
   displayName;
   userName;
@@ -53,7 +54,7 @@ export class ProfileComponent implements OnInit {
 
   showInvalid: boolean;
   isLoaded: boolean;
-  isCurrentUser: boolean;
+  isCurrentUser: boolean=false;
   isLoggedIn: boolean;
   isFollowing: boolean;
   showPosts: boolean;
@@ -115,6 +116,7 @@ export class ProfileComponent implements OnInit {
           this.titleService.setTitle(this.displayName + ' @' + this.userName);
           this.checkCurrentUser();
           this.getFollowData();
+          this.checkGlobalAdministrator();
           this.getLikes();
           this.postsService.getProfilePosts(this.userid).subscribe(
             posts => {
@@ -158,6 +160,26 @@ export class ProfileComponent implements OnInit {
       this.showLikes = true;
     }
   }
+  checkGlobalAdministrator(){
+
+    this.auth.getAuthState().subscribe(curruser => {
+      if (curruser) {
+        console.log("this is current user"+curruser.uid);
+
+        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
+          var count =0;
+          while(count<Object.keys(admin).length){
+            // @ts-ignore
+            if(admin[count++].uid === curruser.uid){
+              this.isadmin=true;
+            }
+          }
+
+
+        });
+      }
+    });
+  }
 
   getFollowData() {
     this.follow.getFollowers(this.userid).subscribe(
@@ -183,6 +205,10 @@ export class ProfileComponent implements OnInit {
       this.follow.follow(this.userid);
     }
   }
+  deleteProfile(){
+    this.userService.deleteUserProfile(this.userid);
+    alert("profile succefully deleted");
+  }
 
   checkFollowing() {
     if (this.isFollowing) {
@@ -200,6 +226,7 @@ export class ProfileComponent implements OnInit {
             this.isLoggedIn = true;
             this.currentuid = user.uid;
             if (this.userid === user.uid) {
+              console.log("this is current user");
               this.isCurrentUser = true;
               this.profileInfoClass = 'row justify-content-center ml-md-2 ml-lg-auto';
             }
