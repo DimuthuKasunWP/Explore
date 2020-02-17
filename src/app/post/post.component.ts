@@ -268,6 +268,7 @@ export class PostComponent implements OnInit {
   }
 
   delete() {
+    console.log("this is pid"+this.pid);
     this.postService.deletePost(this.pid);
   }
 

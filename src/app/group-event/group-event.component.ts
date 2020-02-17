@@ -22,7 +22,7 @@ import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
   templateUrl: './group-event.component.html',
   styleUrls: ['./group-event.component.css']
 })
-export class GroupEventComponent implements OnInit{ 
+export class GroupEventComponent implements OnInit{
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
   @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
@@ -54,7 +54,7 @@ export class GroupEventComponent implements OnInit{
   currzoom;
   originlat;
   originlng;
-  
+
 
   isInvalid;
   isSubbed = false;
@@ -122,7 +122,7 @@ export class GroupEventComponent implements OnInit{
               this.checkAdmin();
               this.checkGlobalAdministrator();
               this.getgroup();
-              
+
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -143,7 +143,7 @@ export class GroupEventComponent implements OnInit{
       setInterval(() => {
         this.saveUserLocation();
       },20000)
-     
+
     }
     getCurrentUser(){
       this.auth.getAuthState().subscribe(currUser=>{
@@ -157,7 +157,7 @@ export class GroupEventComponent implements OnInit{
         this.currlat = position.coords.latitude;
         this.currlng = position.coords.longitude;
         this.currzoom = 16;
-        
+
 
         // console.log("position", position)
       });
@@ -198,7 +198,7 @@ export class GroupEventComponent implements OnInit{
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
-        
+
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -308,6 +308,7 @@ export class GroupEventComponent implements OnInit{
 
   processImage(event) {
     const file = event.target.files[0];
+
     if (file.size > 2000000) {
       this.filename = 'Max Filesize 2Mb!';
     } else {
@@ -331,6 +332,7 @@ export class GroupEventComponent implements OnInit{
     });
   };
     deleteMarker(){
+      console.log("this is delete marker");
       this.modalRef = this.modalService.open(this.modalContent3, {
         size: 'sm',
         windowClass: 'modal-style'
@@ -341,7 +343,7 @@ export class GroupEventComponent implements OnInit{
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       });
     };
-    
+
 
 
     async setorigin(){
@@ -352,8 +354,9 @@ export class GroupEventComponent implements OnInit{
     };
 
 
-    saveUserLocation() { 
-      
+    saveUserLocation() {
+
+
       this.getUserLocation();
 
       if(this.currlat && this.currlng && this.originlat && this.originlng) {
@@ -368,6 +371,8 @@ export class GroupEventComponent implements OnInit{
       }
         }
 
+
+
     // getLocationsOfUsers(eid){
     //   localStorage.setItem("eid",eid);
     //   var locationarray=[];
@@ -375,28 +380,29 @@ export class GroupEventComponent implements OnInit{
     //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
     //     if(members){
     //       while(count<Object.keys(members).length){
-    //       // //@ts-ignore 
+    //       // //@ts-ignore
     //       // console.log("current location"+members[count].currlat);
-  
+
     //       let data={
-    //         //@ts-ignore 
+    //         //@ts-ignore
     //           currlat:members[count].currlat,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           currlng:members[count].currlng,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           originlat:members[count].originlat,
-    //           //@ts-ignore 
+    //           //@ts-ignore
     //           originlng:members[count].originlng
-  
+
     //       };
     //       locationarray.push(data);
     //       count++;
     //       }
     //       this.locationarray=locationarray;
-         
+
     //     }
-  
+
     //   });
-     
+
     // }
 }
+

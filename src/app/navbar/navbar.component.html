@@ -8,7 +8,7 @@
     </div>
     <div id="nav-links" class="col-5 col-md-5 col-lg-6 d-none d-md-inline-block order-2" *ngIf="isUser">
       <span class="p-1 d-none d-lg-inline-block" (click)="sendTo('home')"><a><i class="fa fa-home mx-2" aria-hidden="true"></i>Home</a></span>
-      <span class="p-1" (click)="sendTo('messages')"><a><i class="fa fa-envelope mx-2" aria-hidden="true"></i>Messages<i class="fa fa-exclamation-circle" *ngIf="unreadmsgs && unreadmsgs.length > 0"></i></a></span>
+<!--      <span class="p-1" (click)="sendTo('messages')"><a><i class="fa fa-envelope mx-2" aria-hidden="true"></i>Messages<i class="fa fa-exclamation-circle" *ngIf="unreadmsgs && unreadmsgs.length > 0"></i></a></span>-->
       <span class="p-1" ngbDropdown class="d-inline-block" placement="bottom" (click)="clearNotif()">
         <a ngbDropdownToggle><i class="fa fa-bell mx-2" aria-hidden="true"></i>Notifications<span *ngIf="unread">
           <span *ngIf="unread.length > 0" id="unread-count">{{unread.length}}</span>
@@ -59,7 +59,7 @@
           <button class="dropdown-item p-2 d-lg-none" (click)="sendTo('home')">Home</button>
           <button class="dropdown-item p-2" (click)="sendTo('profile')">Profile</button>
           <button class="dropdown-item p-2 d-md-none" (click)="open(notifModal); clearNotif()">Notifications<span *ngIf="unread && unread.length > 0" id="unread-count-small">{{unread.length}}</span></button>
-          <button class="dropdown-item p-2" (click)="sendTo('messages')">Messages</button>
+<!--          <button class="dropdown-item p-2" (click)="sendTo('messages')">Messages</button>-->
           <button class="dropdown-item p-2" (click)="sendTo('groups')">Groups</button>
           <hr>
           <button class="dropdown-item p-2" (click)="sendTo('account')">Account</button>
