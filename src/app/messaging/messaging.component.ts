@@ -28,7 +28,6 @@ export class MessagingComponent implements OnInit {
       if (curruser) {
         this.msgService.getChatrooms(curruser.uid).subscribe(chatrooms => {
           console.log("uid"+curruser.uid);
-          console.log("chat rooms"+chatrooms);
           this.chatrooms = chatrooms;
         });
       } else {

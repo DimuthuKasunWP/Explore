@@ -55,13 +55,15 @@ room;
         this.afs.doc('messaging/' + profileuid).set(roomData)
         .then(() => {
           let data = {
-            uid: profileuid
+            uid: profileuid,
+            rid:this.room.rid
           };
-          this.afs.doc('messaging/' + profileuid + '/users/' + rid).set(data);
+          this.afs.doc('messaging/' + profileuid + '/users/' + curruser.uid).set(data);
           data = {
-            uid: curruser.uid
+            uid: curruser.uid,
+            rid:this.room.rid
           };
-          this.afs.doc('messaging/' + curruser.uid + '/users/' + rid).set(data);
+          this.afs.doc('messaging/' + curruser.uid + '/users/' + profileuid).set(data);
         });
         console.log("this is end of creating new chatroom"+rid);
         return rid;
@@ -78,6 +80,7 @@ room;
   }
 
   sendMessage(msgData) {
+    console.log("send message");
     this.auth.getAuthState().subscribe(curruser => {
       const mid = this.afs.createId();
       const msg = {
@@ -93,7 +96,7 @@ room;
   }
 
   getChatroom(profileuid, currentuid) {
-    //console.log("profile uid and current uid"+profileuid+"helloo"+currentuid);
-    return this.afs.collection('messaging/' + currentuid + '/users', ref => ref.where('uid', '==', profileuid)).valueChanges();
+    console.log("profile uid and current uid"+profileuid+"helloo"+currentuid);
+    return this.afs.collection('messaging/' + profileuid + '/users', ref => ref.where('uid', '==', profileuid)).valueChanges();
   }
 }

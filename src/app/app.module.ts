@@ -98,6 +98,7 @@ import { GroupEventComponent } from './group-event/group-event.component';
 import { AddmarkerComponent } from './addmarker/addmarker.component';
 import { EventsearchComponent } from './eventsearch/eventsearch.component';
 import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { DeletemarkerComponent } from './deletemarker/deletemarker.component';
 
 
 firebase.initializeApp(environment.firebase);
@@ -241,6 +242,7 @@ const routes: Routes = [
     GroupEventComponent,
     AddmarkerComponent,
     EventsearchComponent,
+    DeletemarkerComponent,
     
   ],
 
