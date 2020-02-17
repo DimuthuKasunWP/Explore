@@ -48,9 +48,11 @@ export class SuggestedComponent implements OnInit {
             // @ts-ignore
             console.log("following"+followinguser[this.count].uid)
             var user=followinguser[this.count++];
+            if(user){
             // @ts-ignore
             following.push(user.uid);
             }
+
           }
         });
       });

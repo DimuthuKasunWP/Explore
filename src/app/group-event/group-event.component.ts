@@ -22,10 +22,12 @@ import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
   templateUrl: './group-event.component.html',
   styleUrls: ['./group-event.component.css']
 })
-export class GroupEventComponent implements OnInit {
+export class GroupEventComponent implements OnInit{ 
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
   @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
+  @ViewChild('deletemarker', { static: false}) modalContent3: ElementRef;
+
 
   locationarray=[];
   administrator;
@@ -329,7 +331,18 @@ export class GroupEventComponent implements OnInit {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   };
-    deleteMarker(){};
+    deleteMarker(){
+      this.modalRef = this.modalService.open(this.modalContent3, {
+        size: 'sm',
+        windowClass: 'modal-style'
+      });
+      this.modalRef.result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    };
+    
 
 
     async setorigin(){
@@ -337,10 +350,11 @@ export class GroupEventComponent implements OnInit {
       this.originlat=this.currlat;
       this.originlng=this.currlng;
       await this.saveUserLocation();
-    }
+    };
 
 
-      async saveUserLocation() {
+    saveUserLocation() { 
+      
 
       this.getUserLocation();
 
@@ -352,39 +366,42 @@ export class GroupEventComponent implements OnInit {
           currlng: this.currlng
         }).then(val => {
           console.log('hi')
-        });
+        })
       }
         }
 
-    getLocationsOfUsers(eid){
-      localStorage.setItem("eid",eid);
-      var locationarray=[];
-      var count =0;
-      this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
-        if(members){
-          while(count<Object.keys(members).length){
-          // //@ts-ignore
-          // console.log("current location"+members[count].currlat);
 
-          let data={
-            //@ts-ignore
-              currlat:members[count].currlat,
-              //@ts-ignore
-              currlng:members[count].currlng,
-              //@ts-ignore
-              originlat:members[count].originlat,
-              //@ts-ignore
-              originlng:members[count].originlng
 
-          };
-          locationarray.push(data);
-          count++;
-          }
-          this.locationarray=locationarray;
-
-        }
-
-      });
-
-    }
+    // getLocationsOfUsers(eid){
+    //   localStorage.setItem("eid",eid);
+    //   var locationarray=[];
+    //   var count =0;
+    //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+    //     if(members){
+    //       while(count<Object.keys(members).length){
+    //       // //@ts-ignore 
+    //       // console.log("current location"+members[count].currlat);
+  
+    //       let data={
+    //         //@ts-ignore 
+    //           currlat:members[count].currlat,
+    //           //@ts-ignore 
+    //           currlng:members[count].currlng,
+    //           //@ts-ignore 
+    //           originlat:members[count].originlat,
+    //           //@ts-ignore 
+    //           originlng:members[count].originlng
+  
+    //       };
+    //       locationarray.push(data);
+    //       count++;
+    //       }
+    //       this.locationarray=locationarray;
+         
+    //     }
+  
+    //   });
+     
+    // }
 }
+
