@@ -44,15 +44,15 @@ export class SuggestedComponent implements OnInit {
         this.userService.getFollowingUsers(this.currentuser).subscribe(followinguser=>{
 
           while (this.count<Object.keys(followinguser).length) {
-            if(followinguser){
-            // @ts-ignore
-            console.log("following"+followinguser[this.count].uid)
-            var user=followinguser[this.count++];
-            if(user){
-            // @ts-ignore
-            following.push(user.uid);
+            if(followinguser) {
+              // @ts-ignore
+              console.log("following" + followinguser[this.count].uid)
+              var user = followinguser[this.count++];
+              if (user) {
+                // @ts-ignore
+                following.push(user.uid);
+              }
             }
-
           }
         });
       });
