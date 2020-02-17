@@ -141,9 +141,7 @@ export class GroupEventComponent implements OnInit {
       setInterval(() => {
         this.saveUserLocation();
       },20000)
-      // setInterval(() => {
-      //   this.getLocationsOfUsers(this.eid);
-      // },5000)
+     
     }
     getCurrentUser(){
       this.auth.getAuthState().subscribe(currUser=>{

@@ -21,31 +21,34 @@ export class GmapComponent implements OnInit {
 
     @Input() finallatitude;
     @Input() finallongitude;
-   
-    @Input() originlat;
-    @Input() originlng;
     @Input() uid;
     @Input() eid;
+
+    
     currlat;
     currlng;
+    originlat;
+    originlng;
     
    lat:Number;
    lng:Number;
    
+   origin;
+   
     
-    origin = { 
-    //   lat:parseFloat(this.currlat),
-    lat:6.927079,
-    //   lng:parseFloat(this.currlng)
-    lng:79.861244
-      };
+    // origin = { 
+    // //   lat:parseFloat(this.currlat),
+    // lat:this.lat2,
+    // //   lng:parseFloat(this.currlng)
+    // lng:this.lng2
+    //   };
 
-    destination = { 
-    lat:Number(this.finallatitude),
-    //lat:7.291418,
-     lng:Number(this.finallongitude)
-    //lng:80.636696
-    };
+    // destination = { 
+    // lat:this.lat1,
+    // //lat:7.291418,
+    //  lng:this.lng1
+    // //lng:80.636696
+    // };
 
   onChoseLocation(event) {
     this.latitude = event.coords.lat;
@@ -67,35 +70,39 @@ export class GmapComponent implements OnInit {
       if(currUser){
         this.uid=currUser.uid;
       }
-
-       this.afs.collection('events/' + this.eid + '/members').valueChanges().subscribe(member=>{
-        if(member){
-          //@ts-ignore
-          this.currlat=member[0].currlat;
-          //@ts-ignore
-          this.currlng=member[0].currlng;
-          //@ts-ignore
-          console.log("this is inside oninit"+member[0].currlng);
-          //this.origin = { 
-            //@ts-ignore
-           // lat:parseFloat(member[0].currlat),
-            //@ts-ignore
-            //lng:parseFloat(member[0].currlng)
-           //};
-            //@ts-ignore
-          console.log("fuck"+member[0].currlat);
-        }
-       });
-       console.log("eid is"+this.eid);
-       console.log("uid is"+this.uid);
-    });
+       setTimeout(() => {
+         this.getLocation();
+        }, 10000);
+        });
    
 
     
     
   }
-  getDirection() {
-   
+  getLocation() {
+    this.afs.collection('events/' + this.eid + '/members').valueChanges().subscribe(member=>{
+      if(member){
+        //@ts-ignore
+        this.currlat=member[0].currlat;
+        //@ts-ignore
+        this.currlng=member[0].currlng;
+        //@ts-ignore
+        this.originlat=member[0].originlat;
+        //@ts-ignore
+        this.originlng=member[0].originlng;
+        
+        
+        // this.origin = { 
+        //   //@ts-ignore
+        //  lat:this.lat2,
+        //   //@ts-ignore
+        //  lng:this.lng2
+        //  };
+          //@ts-ignore
+        console.log("fuck"+member[0].currlat);
+      }
+    }
+   )
    
     
   }
