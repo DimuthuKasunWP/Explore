@@ -6,17 +6,18 @@
             <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
             
         </div>
-        <small *ngIf= "markerName.touched"  >*please add a marker name</small>
+        <small *ngIf="markerName.errors" class="alert-danger"> * is required</small>
         <div class="form-group">
             <label>Description</label>
             <input formControlName="description" class="form-control">
         </div>
         <div class="form-group">
             <label>Location</label>
-            <input formControlName="location" class="form-control" >
+            <input type="location" class="form-control" [(ngModel)]="enteraddress" formControlName="enteraddress" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+
             <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
         </div>
-        <small *ngIf= "location.touched">please add a  location</small>
+        <small *ngIf="location.errors" class="alert-danger"> * is required</small>
 
         <div class="form-group" >
             <input type="submit" [disabled] = '!addMarker.valid'class="btn btn-primary" value="Submit">
