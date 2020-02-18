@@ -4,7 +4,7 @@
             <label>Marker Name</label>
             <input placeholder="Ex: Place to rest" formControlName="markerName" class="form-control" >
             <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
-            
+
         </div>
         <small *ngIf="markerName.errors" class="alert-danger"> * is required</small>
         <div class="form-group">
@@ -19,7 +19,7 @@
             </div>
             <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
         </div>
-        <small *ngIf="location.errors" class="alert-danger"> * is required</small>
+<!--        <small *ngIf="location.errors" class="alert-danger"> * is required</small>-->
 
         <div class="form-group" >
             <input type="submit" [disabled] = '!addMarker.valid'class="btn btn-primary" value="Submit">

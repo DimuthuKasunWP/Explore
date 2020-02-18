@@ -17,7 +17,7 @@ export class AddmarkerComponent implements OnInit {
     {
       markerName: new FormControl('',Validators.required),
       eventID: new FormControl('himash1997'),
-      location:new FormControl('',Validators.required),
+      location:new FormControl(''),
       description:new FormControl(''),
     }
   );
@@ -60,7 +60,7 @@ export class AddmarkerComponent implements OnInit {
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
- 
+
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ["address"]
       });
@@ -68,12 +68,12 @@ export class AddmarkerComponent implements OnInit {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
- 
+
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
- 
+
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
@@ -99,8 +99,8 @@ export class AddmarkerComponent implements OnInit {
       });
     }
   }
- 
- 
+
+
   markerDragEnd($event: MouseEvent) {
     console.log($event);
     //@ts-ignore
@@ -109,7 +109,7 @@ export class AddmarkerComponent implements OnInit {
     this.longitude = $event.coords.lng;
     this.getAddress(this.latitude, this.longitude);
   }
- 
+
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
       console.log(results);
@@ -124,7 +124,7 @@ export class AddmarkerComponent implements OnInit {
       } else {
         window.alert('Geocoder failed due to: ' + status);
       }
- 
+
     });
   }
 
@@ -139,11 +139,11 @@ onSubmit(val){
   //   this.submitted=false;
   // }
   console.log(val);
-  if(!this.markerName.errors && !this.location.errors){
+  if(!this.markerName.errors ){
     this.afs.collection("markers").add(
       val
     );
   }
-  
+
 }
 }
