@@ -42,9 +42,23 @@ export class DeletemarkerComponent implements OnInit {
 
 
   }
-  deleteMarker(data) {
+  async deleteMarker(data) {
     //  console.log("this is markers"+data);
     //  this.afs.collection("markers",ref =>ref.where ('markerName','==',data)).doc().delete();
+    
+    // this.afs.collection('markers',ref=>ref.where('markerName','==',data)).valueChanges()
+    const docs =  await this.afs.firestore
+      .collection('markers')
+      .where('markerName', '==', data)
+      .get();
+
+      docs.docs.map((doc)=> {
+        this.afs.firestore
+          .collection('markers')
+          .doc(doc.id)
+          .delete().then(()=> console.log('delete'));
+      });
+    
       
     }
         
