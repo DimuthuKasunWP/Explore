@@ -28,14 +28,14 @@ export class UploadService {
   pushUpload(file, type?: string, id?: string) {
     if (type === 'user') {
 
-      const task = this.storage.upload('user-uploads/' + id + '/dp',file);
-      const  ref=this.storage.ref('user-uploads/' + id + '/dp');
+      const task = this.storage.upload('user-uploads/' + id + '/banner',file);
+      const  ref=this.storage.ref('user-uploads/' + id + '/banner');
       task.snapshotChanges().pipe(
         finalize(() => {
           const downloadURL = ref.getDownloadURL() ;
           downloadURL.subscribe(
             url => {
-              this.postService.updatePhotoURL(url,id);
+              this.postService.updateBannerURL(url,id);
             });
         })
       ).subscribe();
