@@ -1,5 +1,5 @@
 <button class="waves-effect waves-light btn col s4" 
-        *ngFor="let coffee of coffees" 
-        (click)="addCoffee(coffee)">
-{{coffee}}
+        *ngFor="let item of items" 
+        (click)="deleteMarker(item)">
+{{item}}
 </button>
