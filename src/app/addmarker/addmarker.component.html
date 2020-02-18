@@ -12,9 +12,11 @@
             <input formControlName="description" class="form-control">
         </div>
         <div class="form-group">
-            <label>Location</label>
-            <input type="location" class="form-control" [(ngModel)]="enteraddress" formControlName="enteraddress" id="inputlocation" (keydown.enter)="$event.preventDefault()" placeholder="Search For the  Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+            <div style="z-index: 99 !important;">
+                <label>Location</label>
+            <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Marker Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
 
+            </div>
             <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
         </div>
         <small *ngIf="location.errors" class="alert-danger"> * is required</small>
