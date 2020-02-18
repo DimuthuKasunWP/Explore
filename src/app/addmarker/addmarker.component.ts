@@ -30,6 +30,7 @@ export class AddmarkerComponent implements OnInit {
 
   submitted;
   formcontrols=this.markerservice.form.controls;
+  enteraddress;
 
   ngOnInit() {
     this.addMarker = new FormGroup(
@@ -51,8 +52,11 @@ onSubmit(val){
   //   this.submitted=false;
   // }
   console.log(val);
-  this.afs.collection("markers").add(
-    val
-  );
+  if(!this.markerName.errors && !this.location.errors){
+    this.afs.collection("markers").add(
+      val
+    );
+  }
+  
 }
 }

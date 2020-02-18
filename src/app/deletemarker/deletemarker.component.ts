@@ -43,10 +43,11 @@ export class DeletemarkerComponent implements OnInit {
 
   }
   deleteMarker(data) {
-      console.log("this is markers"+data);
-     this.afs.collection("markers",ref =>ref.where ('markerName','==',data)).doc()..delete();
+    //  console.log("this is markers"+data);
+    //  this.afs.collection("markers",ref =>ref.where ('markerName','==',data)).doc().delete();
       
     }
         
  }
+
 
