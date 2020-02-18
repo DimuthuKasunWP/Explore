@@ -180,7 +180,7 @@ date;
     this.afs.doc<any>('posts/' + pid).delete();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate(['/home']);
+    this.router.navigate(['/admin']);
   }
 
   // Report post
