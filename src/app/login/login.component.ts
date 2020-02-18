@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AngularFireAuth } from 'angularfire2/auth';
+import {AngularFirestore} from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-login',
@@ -17,9 +18,11 @@ export class LoginComponent implements OnInit {
   @ViewChild('content',{static: false}) modalContent: ElementRef;
 
   error: string;
+  isadmin=false;
 
   constructor(
     private auth: AuthService,
+    private afs: AngularFirestore,
     private router: Router,
     private titleService: Title,
     private modalService: NgbModal,
@@ -61,7 +64,19 @@ export class LoginComponent implements OnInit {
           this.auth.getAuthState().subscribe(user => {
             if (user) {
               if (user.emailVerified) {
-                this.router.navigateByUrl('/home');
+                this.afs.collection("globaladminsadmins/").doc(user.uid).valueChanges().subscribe(admin =>{
+                  if(admin){
+                    // @ts-ignore
+                    console.log("this is admin"+ admin.uid);
+                    this.isadmin=true;
+                    console.log("this is admins"+this.isadmin);
+                    if(this.isadmin){
+                      this.router.navigateByUrl("/admin");
+                    }else
+                      this.router.navigateByUrl('/home');
+                  }
+                });
+
               } else {
                 this.auth.getAuth().currentUser.sendEmailVerification();
                 this.auth.getAuth().signOut().then(() => this.open(this.modalContent));
