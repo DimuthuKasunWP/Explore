@@ -49,6 +49,14 @@
   margin: 1em;
 }
 
+.h2{
+  margin-left: 200px;
+}
+
+.matCard{
+  margin: 50px; 
+  border: 5px solid #4CAF50;
+ }
 .carousel-slide{
 
 }
@@ -57,6 +65,23 @@
   padding: 0;
   max-width: 600px;
   margin: 3rem auto;
+}
+
+label, small {
+  margin-left: 12px;
+}
+label {
+  font-weight: 450;
+}
+
+#account-card {
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-radius: 100px;
 }
 
 .inputfile {
@@ -71,7 +96,7 @@
   font-size: 1em;
   font-weight: 700;
   color: white;
-  background-color: #E83F6F;
+  background-color: #48a999;
   display: inline-block;
   cursor: pointer;
   padding: 10px 20px;
@@ -87,6 +112,6 @@
 }
 .eventlistitem:hover, #alt-footer > a:hover {
   cursor: pointer;
-  color: #E83F6F;
+  color: #48a999;
 }
 

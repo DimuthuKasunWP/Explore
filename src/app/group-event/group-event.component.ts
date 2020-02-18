@@ -11,16 +11,25 @@ import { DateFormatPipe } from '../services/date.pipe';
 import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { PlatformLocation } from '@angular/common';
 import {EventsService} from '../services/events.service';
+import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
+import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
+
+
+
 
 @Component({
   selector: 'app-group-event',
   templateUrl: './group-event.component.html',
   styleUrls: ['./group-event.component.css']
 })
-export class GroupEventComponent implements OnInit {
+export class GroupEventComponent implements OnInit{
 
   @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+  @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
+  @ViewChild('deletemarker', { static: false}) modalContent3: ElementRef;
 
+
+  locationarray=[];
   administrator;
   eid;
   name;
@@ -39,6 +48,13 @@ export class GroupEventComponent implements OnInit {
   starttime;
   address;
   gname;
+  origin;
+  currlat;
+  currlng;
+  currzoom;
+  originlat;
+  originlng;
+
 
   isInvalid;
   isSubbed = false;
@@ -51,6 +67,7 @@ export class GroupEventComponent implements OnInit {
   closeResult;
 
   filename;
+   uid;
 
   constructor(
 
@@ -65,7 +82,9 @@ export class GroupEventComponent implements OnInit {
     private uploadService: UploadService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private groupservice:GroupService
+    private groupservice:GroupService,
+    public dialog :MatDialog,
+
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -77,11 +96,14 @@ export class GroupEventComponent implements OnInit {
 
   ngOnInit() {
     console.log(localStorage.getItem("geid"));
+    var geid=localStorage.getItem("eid");
+    this.uid=localStorage.getItem("uid");
     this.route.params.subscribe(
       routeurl => {
         this.eid = routeurl.geid;
         this.eventservice.getEvent(this.eid).subscribe(
           eventDoc => {
+            this.getCurrentUser();
             if (eventDoc) {
               this.name = eventDoc.name;
               this.description = eventDoc.description;
@@ -99,6 +121,8 @@ export class GroupEventComponent implements OnInit {
               this.titleService.setTitle(this.name + ' | ' + this.description);
               this.checkAdmin();
               this.checkGlobalAdministrator();
+              this.getgroup();
+
             } else {
               console.log('invalid');
               this.isInvalid = true;
@@ -116,6 +140,28 @@ export class GroupEventComponent implements OnInit {
         this.checkSub();
         this.checkLogin();
       });
+      setInterval(() => {
+        this.saveUserLocation();
+      },20000)
+
+    }
+    getCurrentUser(){
+      this.auth.getAuthState().subscribe(currUser=>{
+        if(currUser){
+          this.uid=currUser.uid;
+        }
+      });  }
+  getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.currlat = position.coords.latitude;
+        this.currlng = position.coords.longitude;
+        this.currzoom = 16;
+
+
+        // console.log("position", position)
+      });
+    }
   }
 
   getStyle() {
@@ -152,6 +198,7 @@ export class GroupEventComponent implements OnInit {
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         console.log("this is current user"+curruser.uid);
+
         this.auth.getAllGlobalAdministrators().subscribe(admin=>{
           var count =0;
           while(count<Object.keys(admin).length){
@@ -202,13 +249,15 @@ export class GroupEventComponent implements OnInit {
   }
 
   getDate() {
-    return this.datePipe.transform(this.createDate.toDate(), 'month');
+    return this.datePipe.transform(this.createDate.toDate(),'date-picker-full');
+
   }
   getStartingDate() {
-    return this.datePipe.transform(this.startdate.toDate(), 'month');
+
+    return this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
   }
   getEndDate() {
-    return this.datePipe.transform(this.enddate.toDate(), 'month');
+   return this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
   }
   open(content) {
     this.modalRef = this.modalService.open(content);
@@ -259,6 +308,7 @@ export class GroupEventComponent implements OnInit {
 
   processImage(event) {
     const file = event.target.files[0];
+
     if (file.size > 2000000) {
       this.filename = 'Max Filesize 2Mb!';
     } else {
@@ -270,4 +320,89 @@ export class GroupEventComponent implements OnInit {
   addMembers(){
     this.see();
   }
+  addMarker(){
+    this.modalRef = this.modalService.open(this.modalContent2, {
+      size: 'sm',
+      windowClass: 'modal-style'
+    });
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  };
+    deleteMarker(){
+      console.log("this is delete marker");
+      this.modalRef = this.modalService.open(this.modalContent3, {
+        size: 'sm',
+        windowClass: 'modal-style'
+      });
+      this.modalRef.result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      });
+    };
+
+
+
+    async setorigin(){
+      this.getUserLocation();
+      this.originlat=this.currlat;
+      this.originlng=this.currlng;
+      await this.saveUserLocation();
+    };
+
+
+    saveUserLocation() {
+
+
+      this.getUserLocation();
+
+      if(this.currlat && this.currlng && this.originlat && this.originlng) {
+        this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
+          originlat:this.originlat,
+          originlng:this.originlng,
+          currlat: this.currlat,
+          currlng: this.currlng
+        }).then(val => {
+          console.log('hi')
+        })
+      }
+        }
+
+
+
+    // getLocationsOfUsers(eid){
+    //   localStorage.setItem("eid",eid);
+    //   var locationarray=[];
+    //   var count =0;
+    //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+    //     if(members){
+    //       while(count<Object.keys(members).length){
+    //       // //@ts-ignore
+    //       // console.log("current location"+members[count].currlat);
+
+    //       let data={
+    //         //@ts-ignore
+    //           currlat:members[count].currlat,
+    //           //@ts-ignore
+    //           currlng:members[count].currlng,
+    //           //@ts-ignore
+    //           originlat:members[count].originlat,
+    //           //@ts-ignore
+    //           originlng:members[count].originlng
+
+    //       };
+    //       locationarray.push(data);
+    //       count++;
+    //       }
+    //       this.locationarray=locationarray;
+
+    //     }
+
+    //   });
+
+    // }
 }
+

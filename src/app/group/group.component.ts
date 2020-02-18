@@ -235,6 +235,7 @@ export class GroupComponent implements OnInit {
       this.filename = 'Max Filesize 2Mb!';
     } else {
       this.filename = 'Edit Banner';
+      console.log("updating banner"+this.filename);
       this.uploadService.pushUpload(file, 'group', this.gid);
     }
   }

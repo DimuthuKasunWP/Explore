@@ -1,0 +1,28 @@
+<div class="col-12">
+    <form [formGroup]=" addMarker" (ngSubmit)="onSubmit(addMarker.value)">
+        <div class="form-group">
+            <label>Marker Name</label>
+            <input placeholder="Ex: Place to rest" formControlName="markerName" class="form-control" >
+            <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
+
+        </div>
+        <small *ngIf="markerName.errors" class="alert-danger"> * is required</small>
+        <div class="form-group">
+            <label>Description</label>
+            <input formControlName="description" class="form-control">
+        </div>
+        <div class="form-group">
+            <div style="z-index: 99 !important;">
+                <label>Location</label>
+            <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Marker Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+
+            </div>
+            <!-- <div class="invalid-feedback" *ngIf="submitted && formcontrols.markername.errors">This field is required</div> -->
+        </div>
+<!--        <small *ngIf="location.errors" class="alert-danger"> * is required</small>-->
+
+        <div class="form-group" >
+            <input type="submit" [disabled] = '!addMarker.valid'class="btn btn-primary" value="Submit">
+        </div>
+    </form>
+</div>

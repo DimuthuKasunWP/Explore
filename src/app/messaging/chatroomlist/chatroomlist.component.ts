@@ -59,8 +59,10 @@ export class ChatroomlistComponent implements OnInit {
   getUnread() {
     this.auth.getAuthState().subscribe(curruser => {
       this.msgService.getChatroomFromRID(this.room.rid, curruser.uid).subscribe(roomDoc => {
-        const roomdocument: any = roomDoc;
-        this.unread = roomdocument.unread;
+        if(roomDoc) {
+          const roomdocument: any = roomDoc;
+          this.unread = roomdocument.unread;
+        }
       });
     });
   }

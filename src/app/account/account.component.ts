@@ -120,7 +120,7 @@ export class AccountComponent implements OnInit {
       if (this.filename.length > 25) {
         this.filename = this.filename.slice(0, 25) + '...' + this.filename.slice(this.filename.length - 3);
       }
-      this.uploadService.pushUpload(this.inputFile, 'user', this.uid);
+      this.uploadService.pushUpload(this.inputFile, 'account', this.uid);
     }
   }
 

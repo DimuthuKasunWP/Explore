@@ -43,11 +43,13 @@ export class EventComponent implements OnInit {
   modalRef;
   closeResult;
   groupname=this.gid;
+  isfirst=true;
   // displayName;
   // userName;
   userid;
   ad;
   // postService;
+  date = new Date();
 
   inputFile;
   filename='Add New Event Photo';
@@ -265,19 +267,18 @@ export class EventComponent implements OnInit {
         });
       });
     }
-    this.getCurrentUser();
+    this.getAllEvents();
 
 
   }
-  getCurrentUser(){
-    this.auth.getAuthState().subscribe(
-      user => {
-        if (user) {
+  
+  tomorrow(){
+    var tomorrow = new Date();
+    tomorrow.setDate(this.date.getDate()+1);
+    return tomorrow = tomorrow;
+  }
 
-          this.userService.retrieveUserDocument(user.uid).subscribe(
-            userDoc => {
-              if (userDoc) {
-              this.userid = userDoc.uid;
+  getAllEvents(){
                 this.eventsService.getEventList().subscribe(
                   userEvents=>{
 
@@ -289,15 +290,8 @@ export class EventComponent implements OnInit {
                     });
                   }
                 );
-
-
-
-              }
-            });
-        }
-
-    });
   }
+
   open(content, type?) {
     console.log("events");
     this.modalRef = this.modalService.open(content, {
@@ -362,8 +356,12 @@ export class EventComponent implements OnInit {
           }else{
 
             this.address = results[0].formatted_address;
-            // this.enteraddress=this.address;
-            console.log("entered new address"+this.enteraddress);
+            if(this.isfirst && !this.enteraddress){
+              this.enteraddress=this.address;
+              console.log("entered new address"+this.enteraddress);
+              this.isfirst=false;
+            }
+
           }
 
         } else {
@@ -416,14 +414,14 @@ export class EventComponent implements OnInit {
 
   saveEvent(){
     console.log("event saving");
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
      console.log("this is enter address ddddd"+this.ad);
-      this.getLatLngByAddress(this.ad?this.ad:this.enteraddress);
+      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.uid,
           latitude:this.latitude,
           longitude:this.longitude,
-          address:this.ad?this.ad:this.enteraddress,
+          address:this.enteraddress?this.enteraddress:this.ad,
           name:this.name,
           gid:this.groupname,
           description:this.description,
@@ -438,22 +436,22 @@ export class EventComponent implements OnInit {
 
   }
   updateEvent(){
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors||true){
-      console.log("this is enter address ddddd"+this.ad);
-      this.getLatLngByAddress(this.ad);
+    console.log("this is update event"+this.enteraddress);
+    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
+      console.log("this is enter address ddddd"+this.ad?this.ad:this.enteraddress);
+      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
       const data={
         admin:this.admin,
         latitude:this.latitude,
         longitude:this.longitude,
-        address:this.ad,
+        address:this.enteraddress?this.enteraddress:this.ad,
         name:this.name,
         eid:this.eid,
         gid:this.groupname,
         description:this.description,
         startdate:this.startdate,
         enddate:this.enddate,
-        starttime:this.starttime,
-        photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+        starttime:this.starttime
 
       };
       this.eventsService.updateEventData(data);

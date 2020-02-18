@@ -1,6 +1,13 @@
 <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)="onChoseLocation($event)">
+  <agm-direction [origin]={lat:this.currlat,lng:this.currlng} [destination]={lat:this.finallatitude,lng:this.finallongitude}></agm-direction>
     <agm-marker
       [latitude]="latitude"
       [longitude]="longitude"
       *ngIf="locationChosen"></agm-marker>
+      <!-- <agm-marker
+       [latitude]="finallatitude"
+       [longitude]="finallongitude" title="OUR LAST DESTINATION" animation="BOUNCE"  ></agm-marker> -->
+       <agm-marker
+       [latitude]="originlat"
+       [longitude]="originlng" title="OUR STARTING POINT" animation="BOUNCE"  ></agm-marker>
   </agm-map>

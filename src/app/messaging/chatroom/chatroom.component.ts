@@ -32,12 +32,14 @@ export class ChatroomComponent implements OnInit {
           console.log("this is room id"+this.room.uid);
           this.userService.retrieveUserDocumentFromID(this.room.uid).subscribe(user => {
             console.log("entered to the  ngoninit"+this.room.uid);
-            this.room = {
-              displayName: user.displayName,
-              userName: user.userName,
-              rid: this.room.rid,
-              photoURL: user.photoURL
-            };
+            if(user) {
+              this.room = {
+                displayName: user.displayName,
+                userName: user.userName,
+                rid: this.room.rid,
+                photoURL: user.photoURL
+              };
+            }
           });
         } else {
           this.router.navigateByUrl('home');

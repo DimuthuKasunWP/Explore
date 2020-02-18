@@ -16,7 +16,10 @@
         <div class="col-12 col-md-7 m-0 pr-0 order-2 order-md-1 px-0">
           <app-add-post type="event" [id]="eid"></app-add-post>
           <div class="mt-2">
-            <gmap ></gmap>
+            <gmap [finallatitude]="latitude" [finallongitude]="longitude" [eid]="eid" [uid]="uid" ></gmap>
+            <button class="button2" (click)=" setorigin() ">Set Our Origin Point</button>
+            <button class="button" style="margin-left: 175px;" (click)=" addMarker() ">Add a marker</button>
+            <button class="button" (click)="deleteMarker()">Delete a marker</button>
             <div *ngFor="let post of posts">
               <app-post [inputPostID]="post.pid" *ngIf="post"></app-post>
             </div>
@@ -32,13 +35,13 @@
           </div>
           <div class="bg-white px-2 py-2 mb-1" id="about">
             <h4>About</h4><hr class="mt-1">
-            <p>{{description}}</p>
-            <p>{{address}}</p>
+            <p>Description :{{description}}</p>
+            <p>Address: {{address}}</p>
             <p>Start Date :{{getStartingDate()}}</p>
             <p>End Date :{{getEndDate()}}</p>
             <p>Starting Time :{{starttime}}</p>
-            <p>Group:{{gname}}</p>
-            <p>Created on {{getDate()}}</p>
+            <p>Group:{{gid}}</p>
+            <p>Created on:{{getDate()}}</p>
 
           </div>
           <div class="bg-white px-2 py-2 mb-1" id="member-list" *ngIf="members">
@@ -96,7 +99,11 @@
 </ng-template>
 
 <ng-template #addmembers>
-  <app-add-members  [modalRef]="modalRef" ></app-add-members>
+  <div id="search-container" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" >
+    <app-eventsearch></app-eventsearch>
+  </div>
+
+
 </ng-template>
 
 <ng-template #Loading>
@@ -105,4 +112,14 @@
   </div>
 </ng-template>
 
+<ng-template #addmarker>
+  <div class="col-12">
+<app-addmarker></app-addmarker>
+</div>
+</ng-template>
 
+<ng-template #deletemarker>
+  <div class="col-12">
+<app-deletemarker></app-deletemarker>
+</div>
+</ng-template>

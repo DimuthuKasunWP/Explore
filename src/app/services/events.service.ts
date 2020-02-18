@@ -3,6 +3,7 @@ import {AngularFirestore} from 'angularfire2/firestore';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
+import { GmapComponent } from '../gmap/gmap.component';
 
 interface Event {
   createDate;
@@ -25,7 +26,7 @@ export class EventsService {
   constructor(
     private afs: AngularFirestore,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
   ) {
   }
 
@@ -54,12 +55,12 @@ export class EventsService {
           eid: eid,
           last: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('users/' + data.admin + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));
+        this.afs.doc('users/' + data.admin + '/events/' + eid).set(euserdata).then(() => this.router.navigateByUrl('events/' + eid));//user->events
         const ueventdata = {
           uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{//subcribe or unsubcribe
           this.router.navigateByUrl('home');
         });
         console.log("event created");
@@ -73,7 +74,7 @@ export class EventsService {
   }
 
   updateEventData(data){
-    console.log("this is inside update event data"+data.address);
+    console.log("this is inside update event data"+data.name);
     const EData = {
       latitude:data.latitude,
       longitude:data.longitude,
@@ -81,10 +82,9 @@ export class EventsService {
       name:data.name,
       gid:data.gid,
       description:data.description,
-      startdate:data.startdate,
-      enddate:data.enddate,
-      starttime:data.starttime,
-      photoURL:data.photoURL
+      startdate:firebase.firestore.Timestamp.fromDate(new Date(data.startdate)),
+      enddate:firebase.firestore.Timestamp.fromDate(new Date(data.enddate)),
+      starttime:data.starttime
     };
     return this.afs.doc('events/' + data.eid).update(EData).then(()=>{
       this.router.navigateByUrl('home');
@@ -152,5 +152,35 @@ export class EventsService {
   deleteEvent(eid){
     this.afs.doc('events/'+eid).delete();
   }
+
+  // getUserLocations(eid){
+  //   var locationarray=[];
+  //   var count =0;
+  //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+  //     if(members){
+  //       while(count<Object.keys(members).length){
+  //       //@ts-ignore 
+  //       console.log("current location"+members[count].currlat);
+
+  //       let data={
+  //         //@ts-ignore 
+  //           currlat:members[count].currlat,
+  //           //@ts-ignore 
+  //           currlng:members[count].currlng,
+  //           //@ts-ignore 
+  //           originlat:members[count].originlat,
+  //           //@ts-ignore 
+  //           originlng:members[count].originlng
+
+  //       };
+  //       locationarray.push(data);
+  //       count++;
+  //       }
+  //       return locationarray;
+  //     }
+
+  //   });
+  //   // this.gmap.setlocations(locationarray);
+  // }
 }
 

@@ -82,15 +82,17 @@ date;
           // this.afs.collection('users/'+uid+'/feed/').doc(pid);
           // console.log("pid"+pid);
           this.getPost(pid).subscribe(datas=>{
+            if(datas) {
+              this.date = (datas.date);
+              date = this.date;
+              let data = {
+                pid: pid,
+                date: this.date
+              };
 
-            this.date=(datas.date);
-            date=this.date;
-            let data=  {
-              pid : pid,
-              date :this.date
-            };
 
-            this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
+              this.afs.doc('users/' + this.uid + '/feed/' + pid).set(data);
+            }
           });
 
           // this.afs.collection("users").doc(uid.toString()).collection("feed").doc(pid).set(data);
@@ -174,7 +176,11 @@ date;
 
   // Delete post
   public deletePost (pid) {
+    console.log("this is deleting post");
     this.afs.doc<any>('posts/' + pid).delete();
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/admin']);
   }
 
   // Report post

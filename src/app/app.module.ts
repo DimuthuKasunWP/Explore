@@ -14,6 +14,7 @@ import { ChartsModule } from 'ng2-charts';
 import {NgxAutoScrollModule} from 'ngx-auto-scroll';
 import * as firebase from 'firebase';
 import {AgmCoreModule} from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 
 
 // Pipes and Directives
@@ -31,6 +32,7 @@ import { FollowService } from './services/follow.service';
 import { LikesService } from './services/likes.service';
 import { NotificationService } from './services/notification.service';
 import { HashtagService }  from './services/hashtag.service';
+import {MarkersService} from './services/markers.service'
 
 // Components
 import { AppComponent } from './app.component';
@@ -93,6 +95,11 @@ import { EventlistComponent } from './event/eventlist/eventlist.component';
 import {EventsService} from './services/events.service';
 import { HashtagComponent } from './hashtag/hashtag.component';
 import { GroupEventComponent } from './group-event/group-event.component';
+import { AddmarkerComponent } from './addmarker/addmarker.component';
+import { EventsearchComponent } from './eventsearch/eventsearch.component';
+import { AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
+import { DeletemarkerComponent } from './deletemarker/deletemarker.component';
+
 
 firebase.initializeApp(environment.firebase);
 
@@ -232,7 +239,11 @@ const routes: Routes = [
     GmapComponent,
     EventlistComponent,
     HashtagComponent,
-    GroupEventComponent
+    GroupEventComponent,
+    AddmarkerComponent,
+    EventsearchComponent,
+    DeletemarkerComponent,
+    
   ],
 
   imports: [
@@ -265,7 +276,9 @@ const routes: Routes = [
     AgmCoreModule.forRoot({
       apiKey: environment.googleMapsKey,
       libraries: ['places']
-    })
+    }),
+    AngularFireDatabaseModule,
+    AgmDirectionModule,  
   ],
   providers: [
     AuthService,
@@ -281,7 +294,8 @@ const routes: Routes = [
     LinkifyPipe,
     MessageService,
     MatDatepickerModule,
-    HashtagService
+    HashtagService,
+    MarkersService
   ],
   bootstrap: [AppComponent],
   entryComponents: [

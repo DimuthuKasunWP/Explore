@@ -121,6 +121,7 @@ export class AddPostComponent implements OnInit {
           this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
         }
         this.postBody = null;
+        // this.router.navigateByUrl("home");
       }
     }
     if (this.type === 'group') {
@@ -159,6 +160,7 @@ export class AddPostComponent implements OnInit {
         this.postBody = null;
       }
     }
+
   }
 
   processImage(event) {

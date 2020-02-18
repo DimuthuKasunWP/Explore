@@ -4,7 +4,7 @@ span {
 }
 #user-block:hover {
   cursor: pointer;
-  background-color: #E83F6F;
+  background-color: #48a999;
   color: white;
 }
 #user-block:hover .text-muted {

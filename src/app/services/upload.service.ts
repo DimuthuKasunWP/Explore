@@ -28,6 +28,20 @@ export class UploadService {
   pushUpload(file, type?: string, id?: string) {
     if (type === 'user') {
 
+      const task = this.storage.upload('user-uploads/' + id + '/banner',file);
+      const  ref=this.storage.ref('user-uploads/' + id + '/banner');
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.postService.updateBannerURL(url,id);
+            });
+        })
+      ).subscribe();
+    }
+    if (type === 'account') {
+
       const task = this.storage.upload('user-uploads/' + id + '/dp',file);
       const  ref=this.storage.ref('user-uploads/' + id + '/dp');
       task.snapshotChanges().pipe(
@@ -35,7 +49,11 @@ export class UploadService {
           const downloadURL = ref.getDownloadURL() ;
           downloadURL.subscribe(
             url => {
-              this.postService.updatePhotoURL(url,id);
+              const data = {
+                photoURL: url
+              };
+              console.log("piddddd"+id);
+              this.afs.doc('users/' + id).update(data);
             });
         })
       ).subscribe();
@@ -69,14 +87,23 @@ export class UploadService {
       ).subscribe();
     }
     if (type === 'group') {
-      const downloadURL = this.storage.upload('group-uploads/' + id + '/'+file.name, file);
-      const ref = this.storage.ref('group-uploads/' + id + '/'+file.name).getDownloadURL();
-      ref.subscribe(url => {
-        if (url) {
-          console.log("url"+url);
-          this.groupService.updateBannerURL(url, id);
-        }
-      });
+      const task = this.storage.upload('group-uploads/' + id + '/'+file.name, file);
+      const ref = this.storage.ref('group-uploads/' + id + '/'+file.name);
+      // ref.subscribe(url => {
+      //   if (url) {
+      //     console.log("url"+url);
+      //     this.groupService.updateBannerURL(url, id);
+      //   }
+      // });
+      task.snapshotChanges().pipe(
+        finalize(() => {
+          const downloadURL = ref.getDownloadURL() ;
+          downloadURL.subscribe(
+            url => {
+              this.groupService.updateBannerURL(url,id);
+            });
+        })
+      ).subscribe();
     }
     if(type === 'event'){
       console.log("event type");
