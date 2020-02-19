@@ -1,14 +1,16 @@
-import { Directive, HostListener, Output, EventEmitter, Input } from '@angular/core';
+import {Directive, EventEmitter, HostListener, Output} from '@angular/core';
 
 @Directive({
   selector: '[appDetectScroll]'
 })
 export class DetectScrollDirective {
-  @Output() scrollPosition = new EventEmitter()
+  @Output() scrollPosition = new EventEmitter();
 
-  constructor() { }
+  constructor() {
+  }
 
-  @HostListener('window:scroll', ['$event']) public windowScrolled($event: Event) {
+  @HostListener('window:scroll', ['$event'])
+  public windowScrolled($event: Event) {
     this.windowScrollEvent($event);
   }
 
@@ -16,7 +18,7 @@ export class DetectScrollDirective {
     const target = <Document>$event.target;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     const windowHeight = target.documentElement.scrollHeight;
-    
+
     const offset = windowHeight - scrollTop;
     if (offset - target.documentElement.clientHeight === 0) {
       this.scrollPosition.emit('bottom');

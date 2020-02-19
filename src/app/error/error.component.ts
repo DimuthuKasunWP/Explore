@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-error',
@@ -11,7 +11,8 @@ export class ErrorComponent implements OnInit {
   message;
   errormsg;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     if (this.error === 'nogroup') {

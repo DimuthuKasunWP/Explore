@@ -1,9 +1,8 @@
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
-import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -12,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
 
-  @ViewChild('myDrop', { static: true }) searchDrop;
+  @ViewChild('myDrop', {static: true}) searchDrop;
 
   searchterm;
   users;
@@ -30,10 +29,11 @@ export class SearchComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
     Observable.combineLatest(this.startObs, this.endAtObs).subscribe(
@@ -45,12 +45,12 @@ export class SearchComponent implements OnInit {
               this.searchDrop.open();
             }
           });
-          this.doGroupQuery(value[0], value[1]).subscribe(
-            groups => {
-              if (groups) {
-                this.groups = groups;
-              }
-            });
+        this.doGroupQuery(value[0], value[1]).subscribe(
+          groups => {
+            if (groups) {
+              this.groups = groups;
+            }
+          });
         this.doEventQuery(value[0], value[1]).subscribe(
           events => {
             if (events) {
@@ -67,6 +67,7 @@ export class SearchComponent implements OnInit {
   doGroupQuery(start, end) {
     return this.afs.collection('groups', ref => ref.limit(3).orderBy('gname').startAt(start).endAt(end)).valueChanges();
   }
+
   doEventQuery(start, end) {
     return this.afs.collection('events', ref => ref.limit(3).orderBy('name').startAt(start).endAt(end)).valueChanges();
   }
@@ -82,11 +83,11 @@ export class SearchComponent implements OnInit {
     this.router.navigateByUrl('user/' + username);
   }
 
-  addGroup(val){
-    localStorage.setItem('gid',val);
+  addGroup(val) {
+    localStorage.setItem('gid', val);
 
     // console.log(val);
-    console.log("inside add group");
+    console.log('inside add group');
   }
 
 }

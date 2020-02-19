@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MessageService } from '../services/message.service';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
+import {Component, OnInit} from '@angular/core';
+import {MessageService} from '../services/message.service';
+import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-messaging',
@@ -20,14 +20,15 @@ export class MessagingComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private titleService: Title
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.titleService.setTitle('Messaging');
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
         this.msgService.getChatrooms(curruser.uid).subscribe(chatrooms => {
-          console.log("uid"+curruser.uid);
+          console.log('uid' + curruser.uid);
           this.chatrooms = chatrooms;
         });
       } else {

@@ -1,17 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-import { UploadService } from './../services/upload.service';
+import {UploadService} from './../services/upload.service';
 // eslint-disable-next-line no-unused-vars
-import { AngularFirestore } from 'angularfire2/firestore';
+import {AngularFirestore} from 'angularfire2/firestore';
 // eslint-disable-next-line no-unused-vars
-import { PostsService } from './../services/posts.service';
+import {PostsService} from './../services/posts.service';
 // eslint-disable-next-line no-unused-vars
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 // eslint-disable-next-line no-unused-vars
-import { DomSanitizer } from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 // eslint-disable-next-line no-unused-vars
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 // eslint-disable-next-line no-unused-vars
-import { FormsModule } from '@angular/forms';
 import {HashtagService} from '../services/hashtag.service';
 import {NotificationService} from '../services/notification.service';
 
@@ -33,7 +32,7 @@ export class AddPostComponent implements OnInit {
   addPostWrapper;
   containerStyle;
   route;
-  hashtags=[];
+  hashtags = [];
 
   // Post Data
   postBody;
@@ -45,17 +44,18 @@ export class AddPostComponent implements OnInit {
   filename;
 
   // eslint-disable-next-line no-useless-constructor
-  constructor (
+  constructor(
     private postService: PostsService,
     private sanitizer: DomSanitizer,
     private router: Router,
     private afs: AngularFirestore,
     private uploadService: UploadService,
-    private hashtagService:HashtagService,
-    private notifyservice:NotificationService
-  ) { }
+    private hashtagService: HashtagService,
+    private notifyservice: NotificationService
+  ) {
+  }
 
-  ngOnInit () {
+  ngOnInit() {
     this.pid = this.afs.createId();
     this.route = this.router.url.slice(1, 5);
     if (this.route === 'user') {
@@ -82,6 +82,7 @@ export class AddPostComponent implements OnInit {
       this.textareaClass = 'form-control col-10 expanded';
     }
   }
+
   contract() {
     this.buttonsClass = 'col-9 col-lg-12 mt-2 d-none';
     if (this.route === 'user') {
@@ -92,12 +93,12 @@ export class AddPostComponent implements OnInit {
   }
 
   addPost() {
-    let hashTagReg:RegExp= /#[A-Za-z0-9]*/g;
-    this.hashtags=this.postBody.match(hashTagReg);
-    var count=0;
-    if(this.hashtags) {
+    let hashTagReg: RegExp = /#[A-Za-z0-9]*/g;
+    this.hashtags = this.postBody.match(hashTagReg);
+    var count = 0;
+    if (this.hashtags) {
       while (count < this.hashtags.length) {
-        console.log("name" + this.hashtags[count]);
+        console.log('name' + this.hashtags[count]);
         let data = {
           hid: this.afs.createId(),
           name: this.hashtags[count++]
@@ -105,12 +106,12 @@ export class AddPostComponent implements OnInit {
         this.hashtagService.sethashtag(data);
         this.hashtagService.setposttoHashtag(this.pid);
       }
-      this.postBody = this.postBody.replace(hashTagReg, "");
+      this.postBody = this.postBody.replace(hashTagReg, '');
     }
-    this.hashtags=null;
+    this.hashtags = null;
     this.contract();
     if (!this.type) {
-      if (this.postBody ) {
+      if (this.postBody) {
         const newPost = {
           body: this.postBody,
           imgURL: this.imgURL ? this.imgURL : null,
@@ -125,7 +126,7 @@ export class AddPostComponent implements OnInit {
       }
     }
     if (this.type === 'group') {
-      if (this.postBody ) {
+      if (this.postBody) {
         this.pid = this.afs.createId();
         const newPost = {
           body: this.postBody,
@@ -138,12 +139,12 @@ export class AddPostComponent implements OnInit {
           this.uploadService.pushUpload(this.inputFile, 'group', this.pid);
         }
         this.postService.addPost(newPost);
-        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'group');
+        this.notifyservice.notifyifpostedingroup(this.id, this.pid, 'group');
         this.postBody = null;
       }
     }
     if (this.type === 'event') {
-      if (this.postBody ) {
+      if (this.postBody) {
         this.pid = this.afs.createId();
         const newPost = {
           body: this.postBody,
@@ -156,7 +157,7 @@ export class AddPostComponent implements OnInit {
           this.uploadService.pushUpload(this.inputFile, 'event', this.pid);
         }
         this.postService.addPost(newPost);
-        this.notifyservice.notifyifpostedingroup(this.id,this.pid,'event');
+        this.notifyservice.notifyifpostedingroup(this.id, this.pid, 'event');
         this.postBody = null;
       }
     }
@@ -164,7 +165,7 @@ export class AddPostComponent implements OnInit {
   }
 
   processImage(event) {
-    console.log("this is process image");
+    console.log('this is process image');
     this.inputFile = event.target.files[0];
     this.filename = this.inputFile.name;
     if (this.inputFile.size > 2000000) {

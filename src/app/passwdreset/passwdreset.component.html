@@ -1,12 +1,12 @@
-<div id="login-form" class="text-center col-11 col-sm-9 col-md-5 col-lg-4" style="margin-top: 5%;">
-<form [formGroup]="emailform">
+<div class="text-center col-11 col-sm-9 col-md-5 col-lg-4" id="login-form" style="margin-top: 5%;">
+  <form [formGroup]="emailform">
     <h2 class="mb-3">Reset Password</h2>
-    <small class="mt-0 mb-1 text-danger" *ngIf="error">{{error}}</small>
-    <input class="form-control form-control-md" formControlName="email" type="text" placeholder="Email">
-    <small class="mt-0 mb-1 text-danger" *ngIf="email.touched && email.errors">
+    <small *ngIf="error" class="mt-0 mb-1 text-danger">{{error}}</small>
+    <input class="form-control form-control-md" formControlName="email" placeholder="Email" type="text">
+    <small *ngIf="email.touched && email.errors" class="mt-0 mb-1 text-danger">
       <div *ngIf="email.errors.email && !email.errors.required">Please enter a valid Email.</div>
       <div *ngIf="email.errors.required">An Email is required.</div>
     </small>
-</form>
-<button id="login-btn" class="btn btn-dark py-2" (click)="reset(email.value)">Reset -></button>
+  </form>
+  <button (click)="reset(email.value)" class="btn btn-dark py-2" id="login-btn">Reset -></button>
 </div>

@@ -1,8 +1,8 @@
-import { UploadService } from './../services/upload.service';
-import { PostsService } from './../services/posts.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { AngularFirestore } from 'angularfire2/firestore';
+import {UploadService} from './../services/upload.service';
+import {PostsService} from './../services/posts.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+import {AngularFirestore} from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-add-comment',
@@ -36,7 +36,8 @@ export class AddCommentComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private uploadService: UploadService,
     private afs: AngularFirestore
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.textareaClass = 'form-control col-12 mx-1 my-2';
@@ -48,6 +49,7 @@ export class AddCommentComponent implements OnInit {
     this.buttonsClass = 'col-12 mt-2 mx-0 px-0';
     this.textareaClass = 'form-control col-12 expanded mx-1 my-2';
   }
+
   contract() {
     this.buttonsClass = 'col-9 col-lg-12 mt-2 d-none';
     this.textareaClass = 'form-control col-12 mx-1 my-2';
@@ -55,7 +57,7 @@ export class AddCommentComponent implements OnInit {
 
   addPost() {
     this.contract();
-    if (this.postBody ) {
+    if (this.postBody) {
       this.pid = this.afs.createId();
       const newPost = {
         body: this.postBody,
@@ -64,8 +66,9 @@ export class AddCommentComponent implements OnInit {
         imgURL: this.imgURL ? this.imgURL : null,
         pid: this.pid
       };
-      if(this.inputFile)
-      this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+      if (this.inputFile) {
+        this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+      }
       this.postService.addComment(newPost);
       this.postBody = null;
     }
@@ -75,11 +78,11 @@ export class AddCommentComponent implements OnInit {
     this.inputFile = event.target.files[0];
     this.filename = this.inputFile.name;
 
-      if (this.filename.length > 20) {
-        this.filename = this.filename.slice(0, 20) + '...' + this.filename.slice(this.filename.length - 3);
-        console.log(this.filename);
-        this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
-      }
+    if (this.filename.length > 20) {
+      this.filename = this.filename.slice(0, 20) + '...' + this.filename.slice(this.filename.length - 3);
+      console.log(this.filename);
+      this.uploadService.pushUpload(this.inputFile, 'post', this.pid);
+    }
 
   }
 }

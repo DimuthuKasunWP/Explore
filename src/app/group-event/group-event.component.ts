@@ -1,20 +1,15 @@
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { UploadService } from './../services/upload.service';
-import { CreateGroupComponent } from './../create-group/create-group.component';
-import { AuthService } from './../services/auth.service';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { PostsService } from '../services/posts.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { GroupService } from '../services/group.service';
-import { DateFormatPipe } from '../services/date.pipe';
-import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { PlatformLocation } from '@angular/common';
+import {DomSanitizer, Title} from '@angular/platform-browser';
+import {UploadService} from './../services/upload.service';
+import {AuthService} from './../services/auth.service';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {GroupService} from '../services/group.service';
+import {DateFormatPipe} from '../services/date.pipe';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {PlatformLocation} from '@angular/common';
 import {EventsService} from '../services/events.service';
-import {MatDialog,MatDialogConfig,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material'
-import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
-
-
+import {MatDialog} from '@angular/material';
 
 
 @Component({
@@ -22,14 +17,14 @@ import { GroupsearchComponent } from '../groupsearch/groupsearch.component';
   templateUrl: './group-event.component.html',
   styleUrls: ['./group-event.component.css']
 })
-export class GroupEventComponent implements OnInit{
+export class GroupEventComponent implements OnInit {
 
-  @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
-  @ViewChild('addmarker', { static: false}) modalContent2: ElementRef;
-  @ViewChild('deletemarker', { static: false}) modalContent3: ElementRef;
+  @ViewChild('addmembers', {static: false}) modalContent: ElementRef;
+  @ViewChild('addmarker', {static: false}) modalContent2: ElementRef;
+  @ViewChild('deletemarker', {static: false}) modalContent3: ElementRef;
 
 
-  locationarray=[];
+  locationarray = [];
   administrator;
   eid;
   name;
@@ -67,24 +62,22 @@ export class GroupEventComponent implements OnInit{
   closeResult;
 
   filename;
-   uid;
+  uid;
 
   constructor(
-
     private afs: AngularFirestore,
     private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private eventservice:EventsService,
+    private eventservice: EventsService,
     private datePipe: DateFormatPipe,
     private modalService: NgbModal,
     private location: PlatformLocation,
     private uploadService: UploadService,
     private sanitizer: DomSanitizer,
     private titleService: Title,
-    private groupservice:GroupService,
-    public dialog :MatDialog,
-
+    private groupservice: GroupService,
+    public dialog: MatDialog,
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
@@ -95,9 +88,9 @@ export class GroupEventComponent implements OnInit{
   }
 
   ngOnInit() {
-    console.log(localStorage.getItem("geid"));
-    var geid=localStorage.getItem("eid");
-    this.uid=localStorage.getItem("uid");
+    console.log(localStorage.getItem('geid'));
+    var geid = localStorage.getItem('eid');
+    this.uid = localStorage.getItem('uid');
     this.route.params.subscribe(
       routeurl => {
         this.eid = routeurl.geid;
@@ -110,14 +103,14 @@ export class GroupEventComponent implements OnInit{
               this.createDate = eventDoc.createDate;
               this.admin = eventDoc.admin ? eventDoc.admin : null;
               this.isLoaded = true;
-              this.latitude=eventDoc.latitude;
-              this.longitude=eventDoc.longitude;
-              this.startdate=eventDoc.startdate;
-              this.enddate=eventDoc.enddate;
-              this.starttime=eventDoc.starttime;
-              this.gid=eventDoc.gid;
+              this.latitude = eventDoc.latitude;
+              this.longitude = eventDoc.longitude;
+              this.startdate = eventDoc.startdate;
+              this.enddate = eventDoc.enddate;
+              this.starttime = eventDoc.starttime;
+              this.gid = eventDoc.gid;
               this.photoURL = eventDoc.photoURL ? eventDoc.photoURL : this.photoURL;
-              this.address=eventDoc.address;
+              this.address = eventDoc.address;
               this.titleService.setTitle(this.name + ' | ' + this.description);
               this.checkAdmin();
               this.checkGlobalAdministrator();
@@ -140,17 +133,20 @@ export class GroupEventComponent implements OnInit{
         this.checkSub();
         this.checkLogin();
       });
-      setInterval(() => {
-        this.saveUserLocation();
-      },20000)
+    setInterval(() => {
+      this.saveUserLocation();
+    }, 20000);
 
-    }
-    getCurrentUser(){
-      this.auth.getAuthState().subscribe(currUser=>{
-        if(currUser){
-          this.uid=currUser.uid;
-        }
-      });  }
+  }
+
+  getCurrentUser() {
+    this.auth.getAuthState().subscribe(currUser => {
+      if (currUser) {
+        this.uid = currUser.uid;
+      }
+    });
+  }
+
   getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
@@ -185,7 +181,7 @@ export class GroupEventComponent implements OnInit{
       if (curruser) {
         if (this.admin === curruser.uid) {
           this.isAdmin = true;
-          this.administrator=true;
+          this.administrator = true;
         } else {
           this.isAdmin = false;
         }
@@ -193,18 +189,18 @@ export class GroupEventComponent implements OnInit{
     });
   }
 
-  checkGlobalAdministrator(){
+  checkGlobalAdministrator() {
 
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
-        console.log("this is current user"+curruser.uid);
+        console.log('this is current user' + curruser.uid);
 
-        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
-          var count =0;
-          while(count<Object.keys(admin).length){
+        this.auth.getAllGlobalAdministrators().subscribe(admin => {
+          var count = 0;
+          while (count < Object.keys(admin).length) {
             // @ts-ignore
-            if(admin[count++].uid === curruser.uid){
-              this.administrator=true;
+            if (admin[count++].uid === curruser.uid) {
+              this.administrator = true;
             }
           }
 
@@ -239,26 +235,30 @@ export class GroupEventComponent implements OnInit{
     this.eventservice.unsubscribe(this.eid);
     this.checkSub();
   }
-  getgroup(){
-    return this.groupservice.getGroup(this.gid).subscribe(group=>{
-      if(group){
-        this.gname=group.gname;
+
+  getgroup() {
+    return this.groupservice.getGroup(this.gid).subscribe(group => {
+      if (group) {
+        this.gname = group.gname;
       }
 
     });
   }
 
   getDate() {
-    return this.datePipe.transform(this.createDate.toDate(),'date-picker-full');
+    return this.datePipe.transform(this.createDate.toDate(), 'date-picker-full');
 
   }
+
   getStartingDate() {
 
-    return this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
+    return this.datePipe.transform(this.startdate.toDate(), 'date-picker-full');
   }
+
   getEndDate() {
-   return this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
+    return this.datePipe.transform(this.enddate.toDate(), 'date-picker-full');
   }
+
   open(content) {
     this.modalRef = this.modalService.open(content);
     this.modalRef.result.then((result) => {
@@ -267,24 +267,26 @@ export class GroupEventComponent implements OnInit{
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
-  sendTo(type){
-    if(type === 'edit') {
+
+  sendTo(type) {
+    if (type === 'edit') {
       this.router.navigateByUrl('event/' + this.eid);
-      localStorage.setItem("eid", this.eid);
+      localStorage.setItem('eid', this.eid);
     }
-    if(type ==='delete'){
+    if (type === 'delete') {
       this.eventservice.deleteEvent(this.eid);
-      if(this.administrator&&this.admin)
-      this.router.navigateByUrl('home' );
-      else if(this.admin)
-       this.router.navigateByUrl('home');
-      else if(this.administrator)
+      if (this.administrator && this.admin) {
+        this.router.navigateByUrl('home');
+      } else if (this.admin) {
+        this.router.navigateByUrl('home');
+      } else if (this.administrator) {
         this.router.navigateByUrl('admin');
-      alert("event successfully deleted");
+      }
+      alert('event successfully deleted');
     }
   }
 
-  see(){
+  see() {
     this.modalRef = this.modalService.open(this.modalContent, {
       size: 'lg',
       windowClass: 'modal-style'
@@ -294,16 +296,6 @@ export class GroupEventComponent implements OnInit{
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
   }
 
   processImage(event) {
@@ -317,10 +309,11 @@ export class GroupEventComponent implements OnInit{
     }
   }
 
-  addMembers(){
+  addMembers() {
     this.see();
   }
-  addMarker(){
+
+  addMarker() {
     this.modalRef = this.modalService.open(this.modalContent2, {
       size: 'sm',
       windowClass: 'modal-style'
@@ -331,78 +324,85 @@ export class GroupEventComponent implements OnInit{
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   };
-    deleteMarker(){
-      console.log("this is delete marker");
-      this.modalRef = this.modalService.open(this.modalContent3, {
-        size: 'sm',
-        windowClass: 'modal-style'
+
+  deleteMarker() {
+    console.log('this is delete marker');
+    this.modalRef = this.modalService.open(this.modalContent3, {
+      size: 'sm',
+      windowClass: 'modal-style'
+    });
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  };
+
+  async setorigin() {
+    this.getUserLocation();
+    this.originlat = this.currlat;
+    this.originlng = this.currlng;
+    await this.saveUserLocation();
+  };
+
+  saveUserLocation() {
+
+
+    this.getUserLocation();
+
+    if (this.currlat && this.currlng && this.originlat && this.originlng) {
+      this.afs.collection('/events/' + this.eid + '/members').doc(this.uid).update({
+        originlat: this.originlat,
+        originlng: this.originlng,
+        currlat: this.currlat,
+        currlng: this.currlng
+      }).then(val => {
+        console.log('hi');
       });
-      this.modalRef.result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-    };
+    }
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
 
+  // getLocationsOfUsers(eid){
+  //   localStorage.setItem("eid",eid);
+  //   var locationarray=[];
+  //   var count =0;
+  //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
+  //     if(members){
+  //       while(count<Object.keys(members).length){
+  //       // //@ts-ignore
+  //       // console.log("current location"+members[count].currlat);
 
-    async setorigin(){
-      this.getUserLocation();
-      this.originlat=this.currlat;
-      this.originlng=this.currlng;
-      await this.saveUserLocation();
-    };
+  //       let data={
+  //         //@ts-ignore
+  //           currlat:members[count].currlat,
+  //           //@ts-ignore
+  //           currlng:members[count].currlng,
+  //           //@ts-ignore
+  //           originlat:members[count].originlat,
+  //           //@ts-ignore
+  //           originlng:members[count].originlng
 
+  //       };
+  //       locationarray.push(data);
+  //       count++;
+  //       }
+  //       this.locationarray=locationarray;
 
-    saveUserLocation() {
+  //     }
 
+  //   });
 
-      this.getUserLocation();
-
-      if(this.currlat && this.currlng && this.originlat && this.originlng) {
-        this.afs.collection("/events/" + this.eid + "/members").doc(this.uid).update({
-          originlat:this.originlat,
-          originlng:this.originlng,
-          currlat: this.currlat,
-          currlng: this.currlng
-        }).then(val => {
-          console.log('hi')
-        })
-      }
-        }
-
-
-
-    // getLocationsOfUsers(eid){
-    //   localStorage.setItem("eid",eid);
-    //   var locationarray=[];
-    //   var count =0;
-    //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
-    //     if(members){
-    //       while(count<Object.keys(members).length){
-    //       // //@ts-ignore
-    //       // console.log("current location"+members[count].currlat);
-
-    //       let data={
-    //         //@ts-ignore
-    //           currlat:members[count].currlat,
-    //           //@ts-ignore
-    //           currlng:members[count].currlng,
-    //           //@ts-ignore
-    //           originlat:members[count].originlat,
-    //           //@ts-ignore
-    //           originlng:members[count].originlng
-
-    //       };
-    //       locationarray.push(data);
-    //       count++;
-    //       }
-    //       this.locationarray=locationarray;
-
-    //     }
-
-    //   });
-
-    // }
+  // }
 }
 

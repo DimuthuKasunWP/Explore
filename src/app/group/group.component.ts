@@ -1,15 +1,13 @@
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { UploadService } from './../services/upload.service';
-import { CreateGroupComponent } from './../create-group/create-group.component';
-import { AuthService } from './../services/auth.service';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild, ElementRef,Input } from '@angular/core';
-import { PostsService } from '../services/posts.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { GroupService } from '../services/group.service';
-import { DateFormatPipe } from '../services/date.pipe';
-import { NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { PlatformLocation } from '@angular/common';
+import {DomSanitizer, Title} from '@angular/platform-browser';
+import {UploadService} from './../services/upload.service';
+import {AuthService} from './../services/auth.service';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {GroupService} from '../services/group.service';
+import {DateFormatPipe} from '../services/date.pipe';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {PlatformLocation} from '@angular/common';
 
 @Component({
   selector: 'app-group',
@@ -18,10 +16,10 @@ import { PlatformLocation } from '@angular/common';
 })
 export class GroupComponent implements OnInit {
 
-  @ViewChild('addmembers', { static: false}) modalContent: ElementRef;
+  @ViewChild('addmembers', {static: false}) modalContent: ElementRef;
 
 
-@Input() administrator;
+  @Input() administrator;
   gid;
   gname;
   desc;
@@ -60,13 +58,13 @@ export class GroupComponent implements OnInit {
     location.onPopState((event) => {
       // ensure that modal is opened
       if (this.modalRef !== undefined) {
-          this.modalRef.close();
+        this.modalRef.close();
       }
     });
   }
 
   ngOnInit() {
-    console.log(localStorage.getItem("gid"));
+    console.log(localStorage.getItem('gid'));
     this.route.params.subscribe(
       routeurl => {
         this.gid = routeurl.gid;
@@ -88,17 +86,17 @@ export class GroupComponent implements OnInit {
               this.isLoaded = true;
             }
           });
-      this.groupService.getFeed(this.gid).subscribe(
-        feed => {
-          this.posts = feed;
-        });
-      this.groupService.getMembers(this.gid).subscribe(
-        memberList => {
-          this.members = memberList;
-        });
+        this.groupService.getFeed(this.gid).subscribe(
+          feed => {
+            this.posts = feed;
+          });
+        this.groupService.getMembers(this.gid).subscribe(
+          memberList => {
+            this.members = memberList;
+          });
         this.checkSub();
         this.checkLogin();
-    });
+      });
   }
 
   getStyle() {
@@ -122,25 +120,26 @@ export class GroupComponent implements OnInit {
       if (curruser) {
         if (this.admin === curruser.uid) {
           this.isAdmin = true;
-          this.administrator=true;
+          this.administrator = true;
         } else {
           this.isAdmin = false;
         }
       }
     });
   }
-  checkGlobalAdministrator(){
-    console.log("this is global administrator");
+
+  checkGlobalAdministrator() {
+    console.log('this is global administrator');
 
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
-        console.log("this is current user"+curruser.uid);
-        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
-          var count =0;
-          while(count<Object.keys(admin).length){
+        console.log('this is current user' + curruser.uid);
+        this.auth.getAllGlobalAdministrators().subscribe(admin => {
+          var count = 0;
+          while (count < Object.keys(admin).length) {
             // @ts-ignore
-            if(admin[count++].uid === curruser.uid){
-              this.administrator=true;
+            if (admin[count++].uid === curruser.uid) {
+              this.administrator = true;
               // this.isAdmin=true;
             }
           }
@@ -156,13 +155,13 @@ export class GroupComponent implements OnInit {
       if (currentuser) {
         this.afs.doc('groups/' + this.gid + '/members/' + currentuser.uid)
           .valueChanges()
-        .subscribe(user => {
-          if (user) {
-            this.isSubbed = true;
-          } else {
-            this.isSubbed = false;
-          }
-        });
+          .subscribe(user => {
+            if (user) {
+              this.isSubbed = true;
+            } else {
+              this.isSubbed = false;
+            }
+          });
       }
     });
   }
@@ -179,21 +178,23 @@ export class GroupComponent implements OnInit {
   getDate() {
     return this.datePipe.transform(this.createDate.toDate(), 'month');
   }
-  sendTo(type){
-    if(type === 'edit'){
+
+  sendTo(type) {
+    if (type === 'edit') {
       this.router.navigateByUrl('event');
-      localStorage.setItem("gid",this.gid);
+      localStorage.setItem('gid', this.gid);
     }
-    if(type ==='delete'){
+    if (type === 'delete') {
 
       this.groupService.deleteGroup(this.gid);
-      if(this.administrator && this.admin)
-      this.router.navigateByUrl('home');
-      else if(this.admin)
+      if (this.administrator && this.admin) {
         this.router.navigateByUrl('home');
-      else if(this.administrator)
+      } else if (this.admin) {
+        this.router.navigateByUrl('home');
+      } else if (this.administrator) {
         this.router.navigateByUrl('admin');
-      alert("group successfully deleted");
+      }
+      alert('group successfully deleted');
     }
 
   }
@@ -207,7 +208,7 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  see(){
+  see() {
     this.modalRef = this.modalService.open(this.modalContent, {
       size: 'lg',
       windowClass: 'modal-style'
@@ -219,29 +220,29 @@ export class GroupComponent implements OnInit {
     });
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
   processImage(event) {
     const file = event.target.files[0];
     if (file.size > 2000000) {
       this.filename = 'Max Filesize 2Mb!';
     } else {
       this.filename = 'Edit Banner';
-      console.log("updating banner"+this.filename);
+      console.log('updating banner' + this.filename);
       this.uploadService.pushUpload(file, 'group', this.gid);
     }
   }
 
-addMembers(){
-  this.see();
-}
+  addMembers() {
+    this.see();
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 
 }

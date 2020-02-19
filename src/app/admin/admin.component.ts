@@ -1,13 +1,13 @@
 // eslint-disable-next-line no-unused-vars
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 // eslint-disable-next-line no-unused-vars
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 // eslint-disable-next-line no-unused-vars
-import { AuthService } from './../services/auth.service';
+import {AuthService} from './../services/auth.service';
 // eslint-disable-next-line no-unused-vars
-import { AngularFirestore } from 'angularfire2/firestore';
+import {AngularFirestore} from 'angularfire2/firestore';
 // eslint-disable-next-line no-unused-vars
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-admin',
@@ -21,12 +21,13 @@ export class AdminComponent implements OnInit {
   reports;
 
   // eslint-disable-next-line no-useless-constructor
-  constructor (
+  constructor(
     private afs: AngularFirestore,
     private auth: AuthService,
     private router: Router,
     private titleService: Title
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.titleService.setTitle('Admin Dashboard');

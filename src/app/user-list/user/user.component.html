@@ -1,18 +1,20 @@
 <div *ngIf="type != 'member'; else MemberList">
-  <div id="user-panel" class="bg-white p-2" *ngIf="this.username">
+  <div *ngIf="this.username" class="bg-white p-2" id="user-panel">
     <div class="container-fluid">
       <div class="row">
         <span class="col-2">
-          <img [src]="photoURL" height="60px" width="60px" class="circle">
+          <img [src]="photoURL" class="circle" height="60px" width="60px">
         </span>
         <span class="col-7 col-md-8 align-self-start ml-2 ml-md-1">
           <div class="container-fluid">
             <div class="row justify-content-between">
-              <span class="col-9 col-md-9" id="user-text" routerLink="/user/{{username}}" (click)="close()">
-                <span class="font-weight-bold">{{displayname}}</span><span class="text-muted"> @{{username}}</span> <br> {{status}} <br>
+              <span (click)="close()" class="col-9 col-md-9" id="user-text" routerLink="/user/{{username}}">
+                <span class="font-weight-bold">{{displayname}}</span><span
+                class="text-muted"> @{{username}}</span> <br> {{status}} <br>
               </span>
-              <span class="col-2 col-md-3 align-self-start" *ngIf="!isCurrentUser">
-                <button class="btn bg-primary btn-round text-white font-weight-bold mr-4" (click)="follow()">{{btnFollow}}</button>
+              <span *ngIf="!isCurrentUser" class="col-2 col-md-3 align-self-start">
+                <button (click)="follow()"
+                        class="btn bg-primary btn-round text-white font-weight-bold mr-4">{{btnFollow}}</button>
               </span>
             </div>
           </div>
@@ -23,5 +25,5 @@
 </div>
 
 <ng-template #MemberList>
-    <img [src]="photoURL" height="60px" width="60px" class="rounded" *ngIf="photoURL">
+  <img *ngIf="photoURL" [src]="photoURL" class="rounded" height="60px" width="60px">
 </ng-template>

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GroupEventComponent } from './group-event.component';
+import {GroupEventComponent} from './group-event.component';
 
 describe('GroupEventComponent', () => {
   let component: GroupEventComponent;
@@ -8,9 +8,9 @@ describe('GroupEventComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupEventComponent ]
+      declarations: [GroupEventComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

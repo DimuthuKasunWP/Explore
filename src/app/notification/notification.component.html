@@ -1,8 +1,10 @@
 <div class="container-fluid px-0">
-  <div *ngIf="user" [id]="modalRef ? 'notif-container-large' : 'notif-container'" class="py-2 px-2 text-center pointer" routerLink="/post/{{notif.pid}}">
-    <img [src]="user.photoURL" height="25px" width="25px" class="circle" *ngIf="user.photoURL">
+  <div *ngIf="user" [id]="modalRef ? 'notif-container-large' : 'notif-container'" class="py-2 px-2 text-center pointer"
+       routerLink="/post/{{notif.pid}}">
+    <img *ngIf="user.photoURL" [src]="user.photoURL" class="circle" height="25px" width="25px">
     <div *ngIf="notif.type === 'group' || notif.type === 'event'">
-      <p class="d-inline">{{user.displayName}} {{notif.type === 'group' ? 'add post in your group' : 'add post in your event'}} </p>
+      <p
+        class="d-inline">{{user.displayName}} {{notif.type === 'group' ? 'add post in your group' : 'add post in your event'}} </p>
     </div>
     <div *ngIf="notif.type === 'like' || notif.type === 'comment'">
       <p class="d-inline">{{user.displayName}} {{notif.type === 'comment' ? 'replied to your' : 'liked your'}} post.</p>

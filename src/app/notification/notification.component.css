@@ -1,12 +1,14 @@
 #notif-container:hover {
   background-color: lightgray;
 }
+
 #notif-container {
   border-bottom: 1px solid lightgray;
   word-wrap: break-word;
 }
+
 p, .d-inline {
-  max-width: 300px!important;
+  max-width: 300px !important;
   word-wrap: break-word;
 }
 

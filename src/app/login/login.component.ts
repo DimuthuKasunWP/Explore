@@ -1,11 +1,10 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AngularFireAuth } from 'angularfire2/auth';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AngularFirestore} from 'angularfire2/firestore';
 
 @Component({
@@ -15,19 +14,10 @@ import {AngularFirestore} from 'angularfire2/firestore';
 })
 export class LoginComponent implements OnInit {
 
-  @ViewChild('content',{static: false}) modalContent: ElementRef;
+  @ViewChild('content', {static: false}) modalContent: ElementRef;
 
   error: string;
-  isadmin=false;
-
-  constructor(
-    private auth: AuthService,
-    private afs: AngularFirestore,
-    private router: Router,
-    private titleService: Title,
-    private modalService: NgbModal,
-  ) { }
-
+  isadmin = false;
   emailform = new FormGroup({
     email: new FormControl('', [
       Validators.email,
@@ -39,9 +29,19 @@ export class LoginComponent implements OnInit {
     ])
   });
 
+  constructor(
+    private auth: AuthService,
+    private afs: AngularFirestore,
+    private router: Router,
+    private titleService: Title,
+    private modalService: NgbModal,
+  ) {
+  }
+
   get email() {
     return this.emailform.get('email');
   }
+
   get password() {
     return this.emailform.get('password');
   }
@@ -59,21 +59,22 @@ export class LoginComponent implements OnInit {
     }
     if (mode === 'email') {
       // console.log("entered");
-        this.auth.getAuth().signInWithEmailAndPassword(this.email.value, this.password.value)
+      this.auth.getAuth().signInWithEmailAndPassword(this.email.value, this.password.value)
         .then(() => {
           this.auth.getAuthState().subscribe(user => {
             if (user) {
               if (user.emailVerified) {
-                this.afs.collection("globaladminsadmins/").doc(user.uid).valueChanges().subscribe(admin =>{
-                  if(admin){
+                this.afs.collection('globaladminsadmins/').doc(user.uid).valueChanges().subscribe(admin => {
+                  if (admin) {
                     // @ts-ignore
-                    console.log("this is admin"+ admin.uid);
-                    this.isadmin=true;
-                    console.log("this is admins"+this.isadmin);
-                    if(this.isadmin){
-                      this.router.navigateByUrl("/admin");
-                    }else
+                    console.log('this is admin' + admin.uid);
+                    this.isadmin = true;
+                    console.log('this is admins' + this.isadmin);
+                    if (this.isadmin) {
+                      this.router.navigateByUrl('/admin');
+                    } else {
                       this.router.navigateByUrl('/home');
+                    }
                   }
                 });
 

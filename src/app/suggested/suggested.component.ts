@@ -1,6 +1,6 @@
-import { UserService } from './../services/user.service';
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import {UserService} from './../services/user.service';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
 import {EventsService} from '../services/events.service';
 import {GroupService} from '../services/group.service';
 
@@ -11,10 +11,10 @@ import {GroupService} from '../services/group.service';
 })
 export class SuggestedComponent implements OnInit {
 
-  userDetails=[];
-  users=[];
+  userDetails = [];
+  users = [];
   currentuser;
-  count=0;
+  count = 0;
   photoURL = '../../assets/images/default-profile.jpg';
   events;
   groups;
@@ -22,9 +22,10 @@ export class SuggestedComponent implements OnInit {
   constructor(
     private userService: UserService,
     private auth: AuthService,
-    private eveservice:EventsService,
-    private groupservice:GroupService
-  ) { }
+    private eveservice: EventsService,
+    private groupservice: GroupService
+  ) {
+  }
 
   ngOnInit() {
     this.auth.getAuthState().subscribe(user => {
@@ -34,19 +35,19 @@ export class SuggestedComponent implements OnInit {
         this.currentuser = null;
       }
       // this.users=this.userService.getSuggestedUsers(this.currentuser);
-      var following=[];
-      var userlist=[];
+      var following = [];
+      var userlist = [];
       this.userService.getUsersList().subscribe((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          console.log("users"+doc.id);
+          console.log('users' + doc.id);
           userlist.push(doc.id);
         });
-        this.userService.getFollowingUsers(this.currentuser).subscribe(followinguser=>{
+        this.userService.getFollowingUsers(this.currentuser).subscribe(followinguser => {
 
-          while (this.count<Object.keys(followinguser).length) {
-            if(followinguser) {
+          while (this.count < Object.keys(followinguser).length) {
+            if (followinguser) {
               // @ts-ignore
-              console.log("following" + followinguser[this.count].uid)
+              console.log('following' + followinguser[this.count].uid);
               var user = followinguser[this.count++];
               if (user) {
                 // @ts-ignore
@@ -56,13 +57,13 @@ export class SuggestedComponent implements OnInit {
           }
         });
       });
-      setTimeout(()=>{
-        if(userlist.length>0 && following.length>0) {
-          console.log("accessing data"+userlist[0]);
-          var usercount=0;
-          var followcount=0;
-          while (usercount< userlist.length) {
-            console.log("usercount"+usercount);
+      setTimeout(() => {
+        if (userlist.length > 0 && following.length > 0) {
+          console.log('accessing data' + userlist[0]);
+          var usercount = 0;
+          var followcount = 0;
+          while (usercount < userlist.length) {
+            console.log('usercount' + usercount);
             // while (followcount< following.length) {
             //   console.log("followcount"+followcount);
             //   console.log("user"+userlist[usercount]+"follow"+following[followcount]);
@@ -73,33 +74,36 @@ export class SuggestedComponent implements OnInit {
             //     this.userDetails.push(userlist[usercount]);
             //   }
             // }
-            if(!(userlist[usercount]===this.currentuser))
+            if (!(userlist[usercount] === this.currentuser)) {
               this.userDetails.push(userlist[usercount]);
-            followcount=0;
+            }
+            followcount = 0;
             usercount++;
           }
-        }else{
-          this.userDetails=userlist;
+        } else {
+          this.userDetails = userlist;
         }
-        console.log("count"+this.userDetails.length);
+        console.log('count' + this.userDetails.length);
         this.addUserDetails();
         this.getEventList();
         this.getGroupList();
 
-      },2000);
+      }, 2000);
     });
 
 
   }
-  getEventList(){
-    this.eveservice.getEventList().subscribe(events=>{
-      this.events=events;
+
+  getEventList() {
+    this.eveservice.getEventList().subscribe(events => {
+      this.events = events;
 
     });
   }
-  getGroupList(){
-    this.groupservice.getGroupList().subscribe(group=>{
-      this.groups=group;
+
+  getGroupList() {
+    this.groupservice.getGroupList().subscribe(group => {
+      this.groups = group;
     });
   }
 
@@ -111,20 +115,20 @@ export class SuggestedComponent implements OnInit {
     }
   }
 
-  addUserDetails(){
-    this.count=0;
-    while (this.count<this.userDetails.length){
-      this.userService.retrieveUserDocument(this.userDetails[this.count++]).subscribe(userdoc=>{
-        if(userdoc){
-          var userName=userdoc.userName;
-          var uid=userdoc.uid;
-          var photoURL=userdoc.photoURL;
-          console.log("username"+userName+"uid"+uid);
-          var data={
-            uid:uid,
-            userName:userName,
-            photoURL:photoURL?photoURL:this.photoURL
-          }
+  addUserDetails() {
+    this.count = 0;
+    while (this.count < this.userDetails.length) {
+      this.userService.retrieveUserDocument(this.userDetails[this.count++]).subscribe(userdoc => {
+        if (userdoc) {
+          var userName = userdoc.userName;
+          var uid = userdoc.uid;
+          var photoURL = userdoc.photoURL;
+          console.log('username' + userName + 'uid' + uid);
+          var data = {
+            uid: uid,
+            userName: userName,
+            photoURL: photoURL ? photoURL : this.photoURL
+          };
           this.users.push(data);
         }
       });

@@ -1,8 +1,8 @@
-import { Title } from '@angular/platform-browser';
-import { GroupService } from './../../services/group.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import {Title} from '@angular/platform-browser';
+import {GroupService} from './../../services/group.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-grouplist',
@@ -21,13 +21,14 @@ export class GrouplistComponent implements OnInit {
     private groupService: GroupService,
     private userService: UserService,
     private titleService: Title
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     if (!this.groups) {
       this.route.params.subscribe(router => {
         this.username = router.username;
-        this.titleService.setTitle(this.username + '\'s Groups')
+        this.titleService.setTitle(this.username + '\'s Groups');
         this.userService.retrieveUserDocumentFromUsername(this.username).subscribe(currentuser => {
           const curruser: any = currentuser[0];
           this.userService.getUserGroups(curruser.uid).subscribe(userGroups => {
@@ -36,8 +37,9 @@ export class GrouplistComponent implements OnInit {
               userGroups.forEach((groupData: any) => {
                 this.groupService.getGroup(groupData.gid).subscribe(
                   groupDetails => {
-                    if(groupDetails)
-                    this.groups.push(groupDetails);
+                    if (groupDetails) {
+                      this.groups.push(groupDetails);
+                    }
                   });
               });
             }

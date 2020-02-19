@@ -1,15 +1,13 @@
-import { PlatformLocation } from '@angular/common';
-import { GroupService } from './../services/group.service';
-import { PostsService } from './../services/posts.service';
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { DomSanitizer } from '@angular/platform-browser';
-import { AngularFirestore } from 'angularfire2/firestore';
-import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { CreateGroupComponent } from '../create-group/create-group.component';
+import {PlatformLocation} from '@angular/common';
+import {GroupService} from './../services/group.service';
+import {PostsService} from './../services/posts.service';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from '../services/user.service';
+import {AuthService} from '../services/auth.service';
+import {Router} from '@angular/router';
+import {DomSanitizer, Title} from '@angular/platform-browser';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FollowService} from '../services/follow.service';
 import {EventsService} from '../services/events.service';
 
@@ -37,7 +35,7 @@ export class HomeComponent implements OnInit {
   feedPosts;
 
   groups = [];
-  events= [];
+  events = [];
 
   constructor(
     private auth: AuthService,
@@ -51,12 +49,12 @@ export class HomeComponent implements OnInit {
     private modalService: NgbModal,
     private groupService: GroupService,
     private location: PlatformLocation,
-    private eventService:EventsService
+    private eventService: EventsService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
       if (this.modalRef !== undefined) {
-          this.modalRef.close();
+        this.modalRef.close();
       }
     });
   }
@@ -86,16 +84,17 @@ export class HomeComponent implements OnInit {
     }
     if (path === 'group' && location) {
       this.router.navigateByUrl('group/' + location);
-      localStorage.setItem('gid',location);
+      localStorage.setItem('gid', location);
     }
     if (path === 'custom' && location) {
       this.router.navigateByUrl(location);
     }
-    if(path=='event' && location){
-      this.router.navigateByUrl('groupevent/'+location);
-      localStorage.setItem("geid",location);
+    if (path == 'event' && location) {
+      this.router.navigateByUrl('groupevent/' + location);
+      localStorage.setItem('geid', location);
     }
   }
+
   getCurrentUser() {
     this.auth.getAuthState().subscribe(
       user => {
@@ -132,18 +131,18 @@ export class HomeComponent implements OnInit {
                 //   });
                 //get user's events
                 this.userService.getUserEvents(this.userid).subscribe(
-                  userEvents=>{
+                  userEvents => {
 
 
-                    userEvents.forEach((eventData:any)=>{
+                    userEvents.forEach((eventData: any) => {
 
-                        this.eventService.getEvent(eventData.eid).subscribe(
-                          eventDetails=>{
-                            if(eventDetails) {
-                              console.log("thie is event details" + eventDetails.name);
-                              this.events.push(eventDetails);
-                            }
-                          });
+                      this.eventService.getEvent(eventData.eid).subscribe(
+                        eventDetails => {
+                          if (eventDetails) {
+                            console.log('thie is event details' + eventDetails.name);
+                            this.events.push(eventDetails);
+                          }
+                        });
 
 
                     });
@@ -158,8 +157,9 @@ export class HomeComponent implements OnInit {
                       userGroups.forEach((groupData: any) => {
                         this.groupService.getGroup(groupData.gid).subscribe(
                           groupDetails => {
-                            if(groupDetails)
-                            this.groups.push(groupDetails);
+                            if (groupDetails) {
+                              this.groups.push(groupDetails);
+                            }
                           });
                       });
                     }
@@ -170,20 +170,22 @@ export class HomeComponent implements OnInit {
         } else {
           this.router.navigateByUrl('start');
         }
-    });
+      });
   }
+
   getFollowData() {
     this.follow.getFollowers(this.userid).subscribe(
       followers => {
-        this.totalFollowers=Object.keys(followers).length;
+        this.totalFollowers = Object.keys(followers).length;
 
       });
     this.follow.getFollowing(this.userid).subscribe(
       following => {
-        this.totalFollowing=Object.keys(following).length;
+        this.totalFollowing = Object.keys(following).length;
 
       });
   }
+
   createGroup(content) {
     this.modalRef = this.modalService.open(content, {
       size: 'lg',
@@ -207,6 +209,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  sendToEvent() {
+    this.router.navigateByUrl('event');
+  }
+
   private getDismissReason(reason: any, type?): string {
     if (type === 'grouplist') {
       history.back();
@@ -216,11 +222,7 @@ export class HomeComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
-  }
-
-  sendToEvent(){
-    this.router.navigateByUrl('event' );
   }
 }
