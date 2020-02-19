@@ -1,7 +1,7 @@
 <div #myDrop="ngbDropdown" ngbDropdown placement="bottom">
   <input (keydown)="search($event)" [(ngModel)]="searchterm" class="form-control" id="nav-search" placeholder="Search"
          type="text">
-  <div *ngIf="users" class="text-dark mx-1" id="results-container" ngbDropdownMenu>
+  <div *ngIf="users || groups || events" class="text-dark mx-1" id="results-container" ngbDropdownMenu>
     <div id="user-section">
       <h6 class="p-1 mb-0 align-self-center">Users</h6>
       <hr class="my-0">
