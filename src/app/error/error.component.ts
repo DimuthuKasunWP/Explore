@@ -35,5 +35,9 @@ export class ErrorComponent implements OnInit {
       this.errormsg = 'Group not found';
       this.message = 'The group does not exist or the URL is incorrect.';
     }
+    if (this.error === 'noEvent') {
+      this.errormsg = 'Event not found';
+      this.message = 'The Event does not exist or the URL is incorrect.';
+    }
   }
 }
