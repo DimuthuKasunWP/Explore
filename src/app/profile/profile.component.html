@@ -1,79 +1,91 @@
-<div class="container-fluid" class="p-0" *ngIf="isLoaded; else Loading">
-  <div class="wrapper" *ngIf="!showInvalid; else Invalid">
-    <button class="btn btn-banner" id="edit-btn" *ngIf="isCurrentUser" (click)="inputBanner.click()">{{filename ? filename : 'Edit Banner'}}</button>
-    <input class="d-none" type="file" id="inputBanner" #inputBanner accept="image/*" (change)="processImage($event)">
-    <div id="user-banner" [style]="getStyle()"></div>
-    <div id="top-info" class="d-none d-md-block">
-      <div id="info-container" class="text-center row justify-content-center">
+<div *ngIf="isLoaded; else Loading" class="p-0" class="container-fluid">
+  <div *ngIf="!showInvalid; else Invalid" class="wrapper">
+    <button (click)="inputBanner.click()" *ngIf="isCurrentUser" class="btn btn-banner"
+            id="edit-btn">{{filename ? filename : 'Edit Banner'}}</button>
+    <input #inputBanner (change)="processImage($event)" accept="image/*" class="d-none" id="inputBanner" type="file">
+    <div [style]="getStyle()" id="user-banner"></div>
+    <div class="d-none d-md-block" id="top-info">
+      <div class="text-center row justify-content-center" id="info-container">
         <div class="col-6 offset-md-1 offset-lg-0" id="profile-info-container">
           <div [class]="profileInfoClass" id="profile-info-wrapper">
 
-            <span [class]="getActiveTabStyle('followers')" (click)="showTab('followers')"><h6 class="text-muted m-0 p-0">Followers</h6><h5 class="m-0 p-0">{{totalFollowers}}</h5></span>
-            <span [class]="getActiveTabStyle('following')" (click)="showTab('following')"><h6 class="text-muted m-0 p-0">Following</h6><h5 class="m-0 p-0">{{totalFollowing}}</h5></span>
+            <span (click)="showTab('followers')" [class]="getActiveTabStyle('followers')"><h6
+              class="text-muted m-0 p-0">Followers</h6><h5 class="m-0 p-0">{{totalFollowers}}</h5></span>
+            <span (click)="showTab('following')" [class]="getActiveTabStyle('following')"><h6
+              class="text-muted m-0 p-0">Following</h6><h5 class="m-0 p-0">{{totalFollowing}}</h5></span>
 
           </div>
         </div>
-        <div class="col-2 align-self-center" *ngIf="!isCurrentUser && this.isLoggedIn">
-          <button class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn" (click)="followUser()">{{checkFollowing()}}</button>
+        <div *ngIf="!isCurrentUser && this.isLoggedIn" class="col-2 align-self-center">
+          <button (click)="followUser()"
+                  class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn">{{checkFollowing()}}</button>
         </div>
-        <div class="col-2 align-self-center" *ngIf="isCurrentUser || isadmin">
-          <button class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn" (click)="deleteProfile()">Delete Profile</button>
+        <div *ngIf="isCurrentUser || isadmin" class="col-2 align-self-center">
+          <button (click)="deleteProfile()"
+                  class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn">Delete Profile
+          </button>
         </div>
       </div>
     </div>
-    <div id="profile-content" class="container row mb-5">
-      <div id="user-info" class="col-12 col-md-3">
-        <div class="col-2 align-self-center d-md-none" *ngIf="!isCurrentUser && this.isLoggedIn" id="follow-container">
-          <button class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn" (click)="followUser()">{{checkFollowing()}}</button>
+    <div class="container row mb-5" id="profile-content">
+      <div class="col-12 col-md-3" id="user-info">
+        <div *ngIf="!isCurrentUser && this.isLoggedIn" class="col-2 align-self-center d-md-none" id="follow-container">
+          <button (click)="followUser()"
+                  class="btn btn-round bg-primary text-white px-4 py-2 font-weight-bold align-self-center" id="followBtn">{{checkFollowing()}}</button>
         </div>
-        <img [src]="photoURL" id="profile-photo" class="circle">
-        <div id="user-text" class="ml-2 mb-0">
+        <img [src]="photoURL" class="circle" id="profile-photo">
+        <div class="ml-2 mb-0" id="user-text">
           <h5 class="mb-1">{{displayName}}</h5>
           <p class="text-muted mb-1">@{{userName}}</p>
           <p>{{status}}</p>
-          <p><span class="text-mute"><i class="fa fa-calendar mr-1" aria-hidden="true"></i>Joined</span> {{getJoinDate()}}</p>
-          <div id="mobile-profile-info" class="d-md-none">
-              <span (click)="showTab('posts')"><span class="font-weight-bold">{{totalScribes}}</span> <span>Scribes</span></span>
-              <span (click)="showTab('following')"><span class="font-weight-bold ml-2">{{totalFollowing}}</span> <span>Following</span></span>
-              <span (click)="showTab('followers')"><span class="font-weight-bold ml-2">{{totalFollowers}}</span> <span>Followers</span></span>
+          <p><span class="text-mute"><i aria-hidden="true"
+                                        class="fa fa-calendar mr-1"></i>Joined</span> {{getJoinDate()}}</p>
+          <div class="d-md-none" id="mobile-profile-info">
+            <span (click)="showTab('posts')"><span class="font-weight-bold">{{totalScribes}}</span> <span>Scribes</span></span>
+            <span (click)="showTab('following')"><span class="font-weight-bold ml-2">{{totalFollowing}}</span> <span>Following</span></span>
+            <span (click)="showTab('followers')"><span class="font-weight-bold ml-2">{{totalFollowers}}</span> <span>Followers</span></span>
           </div>
         </div>
         <div class="container-fluid px-0">
           <div class="px-0 mx-0">
-            <button id="scribe-btn" class="btn my-2 bg-primary text-white btn-round px-2 my-0" *ngIf="displayName && !isCurrentUser" (click)="openChatroom()">
+            <button (click)="openChatroom()" *ngIf="displayName && !isCurrentUser"
+                    class="btn my-2 bg-primary text-white btn-round px-2 my-0" id="scribe-btn">
               <span id="scribe-btn-text">Message</span>
             </button>
           </div>
         </div>
       </div>
-      <div id="user-posts" class="col-12 col-md-6 mt-2 mt-md-0 px-0" *ngIf="showPosts">
-        <app-add-post [userURL]="photoURL" *ngIf="isCurrentUser"></app-add-post>
+      <div *ngIf="showPosts" class="col-12 col-md-6 mt-2 mt-md-0 px-0" id="user-posts">
+        <app-add-post *ngIf="isCurrentUser" [userURL]="photoURL"></app-add-post>
         <div *ngFor="let post of posts">
           <app-post [inputPost]="post"></app-post>
         </div>
-        <div class="text-muted text-center py-4" *ngIf="posts && posts.length < 1">
+        <div *ngIf="posts && posts.length < 1" class="text-muted text-center py-4">
           This user has no scribes yet.
         </div>
       </div>
-      <div id="user-followers" class="col-12 col-md-6 mt-2 mt-md-0 px-0" *ngIf="showFollowers">
+      <div *ngIf="showFollowers" class="col-12 col-md-6 mt-2 mt-md-0 px-0" id="user-followers">
         <app-user-list [users]="followers" title="Followers"></app-user-list>
       </div>
-      <div id="user-following" class="col-12 col-md-6 mt-2 mt-md-0 px-0" *ngIf="showFollowing">
+      <div *ngIf="showFollowing" class="col-12 col-md-6 mt-2 mt-md-0 px-0" id="user-following">
         <app-user-list [users]="following" title="Following"></app-user-list>
       </div>
-      <div id="user-likes" class="col-12 col-md-6 mt-2 mt-md-0 px-0" *ngIf="showLikes">
+      <div *ngIf="showLikes" class="col-12 col-md-6 mt-2 mt-md-0 px-0" id="user-likes">
         <h4 class="bg-white px-3 p-2 font-weight-bold mb-0">Posts liked by {{displayName}}</h4>
         <div *ngFor="let like of likes">
-          <app-post [inputPostID]="like.pid" *ngIf="like; else NoPosts"></app-post>
+          <app-post *ngIf="like; else NoPosts" [inputPostID]="like.pid"></app-post>
         </div>
       </div>
-      <div id="right-panel" class="d-none d-md-inline-block col-md-3">
-        <div id="noLoginPanel" class="bg-white mt-1 mb-2 px-3 p-0 pt-3 pb-1" *ngIf="!isLoggedIn">
+      <div class="d-none d-md-inline-block col-md-3" id="right-panel">
+        <div *ngIf="!isLoggedIn" class="bg-white mt-1 mb-2 px-3 p-0 pt-3 pb-1" id="noLoginPanel">
           <h5>New to Scribe?</h5>
           <p class="mb-0">Sign up now to get your own personalized profile!</p>
-          <button id="scribe-btn" class="btn bg-primary text-white btn-round px-3 my-2" routerLink="/signup">Sign Up</button>
+          <button class="btn bg-primary text-white btn-round px-3 my-2" id="scribe-btn" routerLink="/signup">Sign Up
+          </button>
         </div>
-        <div class="mt-1"><app-suggested></app-suggested></div>
+        <div class="mt-1">
+          <app-suggested></app-suggested>
+        </div>
       </div>
     </div>
   </div>
@@ -89,10 +101,10 @@
 
 <ng-template #Loading>
   <div class="text-center py-5">
-    <i class="fa fa-spinner fa-3x fa-spin text-primary" aria-hidden="true"></i>
+    <i aria-hidden="true" class="fa fa-spinner fa-3x fa-spin text-primary"></i>
   </div>
 </ng-template>
 
 <ng-template #modalContainer>
-  <app-chatroom [room]="room" [modalRef]="modalRef" *ngIf="rid; else Loading"></app-chatroom>
+  <app-chatroom *ngIf="rid; else Loading" [modalRef]="modalRef" [room]="room"></app-chatroom>
 </ng-template>

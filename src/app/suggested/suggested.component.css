@@ -2,11 +2,13 @@ span {
   font-size: 1rem;
   word-wrap: break-word;
 }
+
 #user-block:hover {
   cursor: pointer;
   background-color: #48a999;
   color: white;
 }
+
 #user-block:hover .text-muted {
-  color: white!important;
+  color: white !important;
 }

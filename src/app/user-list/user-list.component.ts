@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-user-list',
@@ -11,7 +11,8 @@ export class UserListComponent implements OnInit {
   @Input() title: string;
   @Input() modalRef;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

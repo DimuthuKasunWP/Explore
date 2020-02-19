@@ -1,60 +1,71 @@
 .container-fluid {
   max-width: 1000px;
 }
+
 #side-nav {
   word-wrap: break-word;
 }
+
 #banner-image {
   width: 100%;
   height: 300px;
   background-size: cover;
   background-color: #48a999;
 }
+
 .user-block {
   width: 60px;
   height: 60px;
   display: inline-block;
 }
+
 #joinPanel {
   width: 100%;
 }
+
 .btn:hover {
   cursor: pointer;
 }
+
 @media (max-width: 768px) {
   #banner-image {
     height: 100px;
   }
 }
+
 @media (max-width: 970px) {
   .user-block {
     margin-right: 11px;
   }
 }
+
 small {
   cursor: pointer;
 }
+
 #edit-btn {
   position: relative;
   top: 10px;
   left: 10px;
   z-index: 2;
 }
+
 #user-banner {
   z-index: -1;
 }
+
 .btn-banner {
   background: transparent;
   border: 2px solid white;
   color: white;
 }
+
 .btn-banner:hover {
-  background: #48a999!important;
+  background: #48a999 !important;
 }
 
 .button {
-  background-color:#48a999;
-  ;
+  background-color: #48a999;;
   border: none;
   color: white;
 
@@ -67,8 +78,9 @@ small {
   text-decoration: none;
   cursor: pointer;
 }
+
 .button2 {
-  background-color:rgb(27, 27, 27);
+  background-color: rgb(27, 27, 27);
   border: none;
   color: white;
   text-align: center;
@@ -81,5 +93,10 @@ small {
   cursor: pointer;
 }
 
-.button:hover {opacity: 1}
-.button2:hover{opacity: 1}
+.button:hover {
+  opacity: 1
+}
+
+.button2:hover {
+  opacity: 1
+}

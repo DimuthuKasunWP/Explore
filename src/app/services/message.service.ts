@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AuthService } from './auth.service';
+import {Injectable} from '@angular/core';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
 
 @Injectable()
 export class MessageService {
-room;
+  room;
+
   constructor(
     private afs: AngularFirestore,
     private auth: AuthService
-  ) { }
+  ) {
+  }
 
   getChatrooms(uid) {
     return this.afs.collection('/messaging/' + uid + '/users').valueChanges();
@@ -41,31 +43,31 @@ room;
     return this.afs.doc('users/' + uid + '/messaging/' + rid).valueChanges();
   }
 
-  createChatroom(profileuid,rid) {
+  createChatroom(profileuid, rid) {
     this.auth.getAuthState().subscribe(
       curruser => {
-      console.log("this is in message"+rid);
+        console.log('this is in message' + rid);
 
         const roomData = {
           rid: rid,
           lastUpdate: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.room=roomData;
-        console.log("this is room data dd"+this.room);
+        this.room = roomData;
+        console.log('this is room data dd' + this.room);
         this.afs.doc('messaging/' + profileuid).set(roomData)
-        .then(() => {
-          let data = {
-            uid: profileuid,
-            rid:this.room.rid
-          };
-          this.afs.doc('messaging/' + profileuid + '/users/' + curruser.uid).set(data);
-          data = {
-            uid: curruser.uid,
-            rid:this.room.rid
-          };
-          this.afs.doc('messaging/' + curruser.uid + '/users/' + profileuid).set(data);
-        });
-        console.log("this is end of creating new chatroom"+rid);
+          .then(() => {
+            let data = {
+              uid: profileuid,
+              rid: this.room.rid
+            };
+            this.afs.doc('messaging/' + profileuid + '/users/' + curruser.uid).set(data);
+            data = {
+              uid: curruser.uid,
+              rid: this.room.rid
+            };
+            this.afs.doc('messaging/' + curruser.uid + '/users/' + profileuid).set(data);
+          });
+        console.log('this is end of creating new chatroom' + rid);
         return rid;
       });
 
@@ -80,7 +82,7 @@ room;
   }
 
   sendMessage(msgData) {
-    console.log("send message");
+    console.log('send message');
     this.auth.getAuthState().subscribe(curruser => {
       const mid = this.afs.createId();
       const msg = {
@@ -96,7 +98,7 @@ room;
   }
 
   getChatroom(profileuid, currentuid) {
-    console.log("profile uid and current uid"+profileuid+"helloo"+currentuid);
+    console.log('profile uid and current uid' + profileuid + 'helloo' + currentuid);
     return this.afs.collection('messaging/' + profileuid + '/users', ref => ref.where('uid', '==', profileuid)).valueChanges();
   }
 }

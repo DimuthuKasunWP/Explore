@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import { AngularFirestore } from 'angularfire2/firestore';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 // eslint-disable-next-line no-unused-vars
-import { GroupService } from '../services/group.service';
+import {GroupService} from '../services/group.service';
 // eslint-disable-next-line no-unused-vars
-import { Component, OnInit, Input } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../services/auth.service';
+
 // import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -13,7 +14,7 @@ import {AuthService} from '../services/auth.service';
   templateUrl: './create-group.component.html',
   styleUrls: ['./create-group.component.css']
 })
-export class CreateGroupComponent implements OnInit{
+export class CreateGroupComponent implements OnInit {
 
   @Input() groupDetails;
   @Input() modalRef;
@@ -43,23 +44,25 @@ export class CreateGroupComponent implements OnInit{
     ])
   });
 
+  constructor(
+    private auth: AuthService,
+    private groupService: GroupService,
+    private afs: AngularFirestore
+  ) {
+  }
+
   get Gname() {
     return this.groupForm.get('gname');
   }
+
   get Desc() {
     return this.groupForm.get('desc');
   }
 
-  constructor(
-    private auth:AuthService,
-    private groupService: GroupService,
-    private afs: AngularFirestore
-  ) {}
-
   ngOnInit() {
-    this.auth.getAuthState().subscribe(currUser=>{
-      if(currUser){
-        this.uid=currUser.uid;
+    this.auth.getAuthState().subscribe(currUser => {
+      if (currUser) {
+        this.uid = currUser.uid;
       }
     });
     if (this.groupDetails) {
@@ -76,8 +79,8 @@ export class CreateGroupComponent implements OnInit{
     this.afs.collection('groups', ref => ref.where('gname', '==', name)).valueChanges().subscribe(groupDoc => {
       const searchGroup: any = groupDoc[0];
       if (groupDoc[0] && this.ogname !== searchGroup.gname) {
-          this.gnameExists = true;
-          console.log('Group name exists', this.gnameExists);
+        this.gnameExists = true;
+        console.log('Group name exists', this.gnameExists);
       } else {
         this.gnameExists = false;
       }
@@ -96,10 +99,10 @@ export class CreateGroupComponent implements OnInit{
   createGroup() {
     if (!this.Gname.errors && !this.Desc.errors && !this.gnameExists) {
       const groupData = {
-        admin:this.uid,
+        admin: this.uid,
         gname: this.gname,
         desc: this.description,
-        bannerURL:this.photoURL
+        bannerURL: this.photoURL
       };
       this.groupService.createGroup(groupData);
       this.modalRef.close();

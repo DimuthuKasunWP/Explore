@@ -1,5 +1,5 @@
-<button class="waves-effect waves-light btn col s4" 
-        *ngFor="let item of items" 
-        (click)="deleteMarker(item)">
-{{item}}
+<button (click)="deleteMarker(item)"
+        *ngFor="let item of items"
+        class="waves-effect waves-light btn col s4">
+  {{item}}
 </button>

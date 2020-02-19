@@ -1,59 +1,56 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {MarkersService} from '../services/markers.service';
-import { FormControl,FormGroup, Validators } from '@angular/forms';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { MapsAPILoader } from '@agm/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {MapsAPILoader} from '@agm/core';
+
 @Component({
   selector: 'app-addmarker',
   templateUrl: './addmarker.component.html',
   styleUrls: ['./addmarker.component.css']
 })
 export class AddmarkerComponent implements OnInit {
-  constructor(private markerservice : MarkersService , private afs:AngularFirestore,
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone) {}
-
   addMarker = new FormGroup(
     {
-      markerName: new FormControl('',Validators.required),
+      markerName: new FormControl('', Validators.required),
       eventID: new FormControl('himash1997'),
-      location:new FormControl(''),
-      description:new FormControl(''),
+      location: new FormControl(''),
+      description: new FormControl(''),
     }
   );
-
-  get markerName()
-  {
-    return this.addMarker.get("markerName");
-  }
-  get location()
-  {
-    return this.addMarker.get("location");
-  }
-
   submitted;
-  formcontrols=this.markerservice.form.controls;
+  formcontrols = this.markerservice.form.controls;
   enteraddress;
-
   title: string = 'AGM project';
   latitude: number;
   longitude: number;
   zoom: number;
   address: string;
-  private geoCoder;
-
   // @ts-ignore
   @ViewChild('search')
   public searchElementRef: ElementRef;
+  private geoCoder;
 
+  constructor(private markerservice: MarkersService, private afs: AngularFirestore,
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone) {
+  }
+
+  get markerName() {
+    return this.addMarker.get('markerName');
+  }
+
+  get location() {
+    return this.addMarker.get('location');
+  }
 
   ngOnInit() {
     this.addMarker = new FormGroup(
       {
-        markerName: new FormControl('',Validators.required),
+        markerName: new FormControl('', Validators.required),
         eventID: new FormControl('himash1997'),
-        location:new FormControl('',Validators.required),
-        description:new FormControl(''),
+        location: new FormControl('', Validators.required),
+        description: new FormControl(''),
       }
     );
 
@@ -62,9 +59,9 @@ export class AddmarkerComponent implements OnInit {
       this.geoCoder = new google.maps.Geocoder;
 
       let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+        types: ['address']
       });
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
           //get the place result
           let place: google.maps.places.PlaceResult = autocomplete.getPlace();
@@ -83,23 +80,7 @@ export class AddmarkerComponent implements OnInit {
     });
 
 
-
-
-
   }
-
-
-  private setCurrentLocation() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 8;
-        this.getAddress(this.latitude, this.longitude);
-      });
-    }
-  }
-
 
   markerDragEnd($event: MouseEvent) {
     console.log($event);
@@ -111,7 +92,7 @@ export class AddmarkerComponent implements OnInit {
   }
 
   getAddress(latitude, longitude) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+    this.geoCoder.geocode({'location': {lat: latitude, lng: longitude}}, (results, status) => {
       console.log(results);
       console.log(status);
       if (status === 'OK') {
@@ -128,22 +109,32 @@ export class AddmarkerComponent implements OnInit {
     });
   }
 
+  onSubmit(val) {
+    // this.submitted=true;
+    // if(this.markerservice.form.valid){
+    // if(this.markerservice.form.get('$key').value==null){
+    //   this.markerservice.insertmarker(this.markerservice.form.value)
+    // }
 
-onSubmit(val){
-  // this.submitted=true;
-  // if(this.markerservice.form.valid){
-  // if(this.markerservice.form.get('$key').value==null){
-  //   this.markerservice.insertmarker(this.markerservice.form.value)
-  // }
+    //   this.submitted=false;
+    // }
+    console.log(val);
+    if (!this.markerName.errors) {
+      this.afs.collection('markers').add(
+        val
+      );
+    }
 
-  //   this.submitted=false;
-  // }
-  console.log(val);
-  if(!this.markerName.errors ){
-    this.afs.collection("markers").add(
-      val
-    );
   }
 
-}
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 8;
+        this.getAddress(this.latitude, this.longitude);
+      });
+    }
+  }
 }

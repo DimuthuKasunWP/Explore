@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 // eslint-disable-next-line no-unused-vars
-import { Router } from '@angular/router';
-
+import {Router} from '@angular/router';
 // eslint-disable-next-line no-unused-vars
-import { AngularFireAuth } from 'angularfire2/auth';
+import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 // eslint-disable-next-line no-unused-vars
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable } from 'rxjs/Observable';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {Observable} from 'rxjs/Observable';
 
 interface User {
   uid?: string;
@@ -21,22 +20,19 @@ interface User {
 
 @Injectable()
 export class AuthService {
-  private updateData: User;
-
   user: Observable<User>;
-
   userCollection: AngularFirestoreCollection<User>;
   userObs: Observable<any>;
-
+  private updateData: User;
   private authState: Observable<firebase.User>;
   private currentUser: firebase.User = null;
 
   private profileusername: string;
   private status: string;
 
-  constructor (private afAuth: AngularFireAuth,
-      private afs: AngularFirestore,
-      private router: Router) {
+  constructor(private afAuth: AngularFireAuth,
+              private afs: AngularFirestore,
+              private router: Router) {
     /// Get User and Auth data
     this.authState = this.afAuth.authState;
     this.authState.subscribe(user => {
@@ -58,24 +54,85 @@ export class AuthService {
       });
   }
 
-  getAuth () {
+  getAuth() {
     return this.afAuth.auth;
   }
 
-  getAuthState () {
+  getAuthState() {
     return this.afAuth.authState;
   }
 
-  emailLogin (email, password) {
+  emailLogin(email, password) {
     this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
-  googleLogin () {
+  googleLogin() {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.oAuthLogin(provider);
   }
 
-  private oAuthLogin (provider) {
+  register(userdata) {
+    if (userdata.type === 'google') {
+      this.googleRegister(userdata);
+    }
+    if (userdata.type === 'email') {
+      this.emailRegister(userdata);
+    }
+  }
+
+  logout() {
+    this.afAuth.auth.signOut().then(
+      () => {
+        console.log('User logged out successfully.');
+        this.router.navigateByUrl('/login');
+      });
+  }
+
+  updateUser(displayname, username, status) {
+    const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
+    this.updateData = {
+      userName: username,
+      status: status,
+      displayName: displayname
+    };
+    return updateRef.update(this.updateData).then(() => {
+      this.router.navigateByUrl('home');
+    });
+  }
+
+  updatePhotoURL(photourl) {
+    const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
+    this.updateData = {
+      photoURL: photourl
+    };
+    return updateRef.update(this.updateData);
+  }
+
+  // Check if user is logged in or not
+  checkNotLogin() {
+    this.afAuth.authState.subscribe(
+      user => {
+        if (user) {
+          this.router.navigateByUrl('/home');
+        }
+      });
+  }
+
+  checkLogin() {
+    this.afAuth.authState.subscribe(
+      user => {
+        if (!user) {
+          this.router.navigateByUrl('/start');
+        }
+      });
+  }
+
+  getAllGlobalAdministrators() {
+    console.log('this is global add');
+    return this.afs.collection('globaladminsadmins').valueChanges();
+  }
+
+  private oAuthLogin(provider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.afs.doc('users/' + credential.user.uid).valueChanges().subscribe(
@@ -90,16 +147,7 @@ export class AuthService {
       });
   }
 
-  register (userdata) {
-    if (userdata.type === 'google') {
-      this.googleRegister(userdata);
-    }
-    if (userdata.type === 'email') {
-      this.emailRegister(userdata);
-    }
-  }
-
-  private emailRegister (formdata) {
+  private emailRegister(formdata) {
     this.afAuth.auth.createUserWithEmailAndPassword(formdata.email, formdata.password)
       .then(() => {
         this.getAuthState().subscribe(user => {
@@ -117,7 +165,7 @@ export class AuthService {
       });
   }
 
-  private googleRegister (formdata) {
+  private googleRegister(formdata) {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(credential => {
         const user = credential.user;
@@ -135,7 +183,7 @@ export class AuthService {
       });
   }
 
-  private updateUserData (user) {
+  private updateUserData(user) {
     // check if user already exists
     this.userCollection = this.afs.collection('users', ref => ref.where('uid', '==', user.uid));
     this.userObs = this.userCollection.valueChanges();
@@ -149,7 +197,7 @@ export class AuthService {
       .catch(
         // eslint-disable-next-line handle-callback-err
         (err) => {
-        // setup user data in firestore on login
+          // setup user data in firestore on login
           console.log('New User login.\nSetting up user in database.');
           const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
@@ -169,58 +217,5 @@ export class AuthService {
           }
           return userRef.set(data);
         });
-  }
-
-  logout () {
-    this.afAuth.auth.signOut().then(
-      () => {
-        console.log('User logged out successfully.');
-        this.router.navigateByUrl('/login');
-      });
-  }
-
-  updateUser (displayname, username, status) {
-    const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
-    this.updateData = {
-      userName: username,
-      status: status,
-      displayName: displayname
-    };
-    return updateRef.update(this.updateData).then(()=>{
-      this.router.navigateByUrl("home");
-    });
-  }
-
-  updatePhotoURL (photourl) {
-    const updateRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${this.currentUser.uid}`);
-    this.updateData = {
-      photoURL: photourl
-    };
-    return updateRef.update(this.updateData);
-  }
-
-
-  // Check if user is logged in or not
-  checkNotLogin () {
-    this.afAuth.authState.subscribe(
-      user => {
-        if (user) {
-          this.router.navigateByUrl('/home');
-        }
-      });
-  }
-
-  checkLogin () {
-    this.afAuth.authState.subscribe(
-      user => {
-        if (!user) {
-          this.router.navigateByUrl('/start');
-        }
-      });
-  }
-
-  getAllGlobalAdministrators(){
-    console.log("this is global add");
-    return this.afs.collection("globaladminsadmins").valueChanges();
   }
 }

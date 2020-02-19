@@ -1,19 +1,19 @@
-import { UploadService } from './../services/upload.service';
+import {UploadService} from './../services/upload.service';
 // eslint-disable-next-line no-unused-vars
-import { DateFormatPipe } from './../services/date.pipe';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { FollowService } from './../services/follow.service';
-import { PostsService } from './../services/posts.service';
-import { UserService } from './../services/user.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { DomSanitizer, Title } from '@angular/platform-browser';
-import { AuthService } from '../services/auth.service';
-import { AddPostComponent } from '../add-post/add-post.component';
-import { LikesService } from '../services/likes.service';
-import { MessageService } from '../services/message.service';
-import { PlatformLocation } from '@angular/common';
+import {DateFormatPipe} from './../services/date.pipe';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {FollowService} from './../services/follow.service';
+import {PostsService} from './../services/posts.service';
+import {UserService} from './../services/user.service';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {DomSanitizer, Title} from '@angular/platform-browser';
+import {AuthService} from '../services/auth.service';
+import {LikesService} from '../services/likes.service';
+import {MessageService} from '../services/message.service';
+import {PlatformLocation} from '@angular/common';
 import {AngularFirestore} from 'angularfire2/firestore';
+
 // import { CheckType } from '@angular/core/src/view';
 
 @Component({
@@ -23,7 +23,7 @@ import {AngularFirestore} from 'angularfire2/firestore';
 })
 export class ProfileComponent implements OnInit {
 
-  @ViewChild('modalContainer', { static: false}) modalContent: ElementRef;
+  @ViewChild('modalContainer', {static: false}) modalContent: ElementRef;
   modalRef;
   closeResult;
   room;
@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
 
   showInvalid: boolean;
   isLoaded: boolean;
-  isCurrentUser: boolean=false;
+  isCurrentUser: boolean = false;
   isLoggedIn: boolean;
   isFollowing: boolean;
   showPosts: boolean;
@@ -85,10 +85,10 @@ export class ProfileComponent implements OnInit {
     location.onPopState((event) => {
       // ensure that modal is opened
       if (this.modalRef !== undefined) {
-          this.modalRef.close();
+        this.modalRef.close();
       }
     });
-   }
+  }
 
   ngOnInit() {
 
@@ -106,7 +106,7 @@ export class ProfileComponent implements OnInit {
           this.status = uservar.status;
           this.photoURL = uservar.photoURL;
           this.userid = uservar.uid;
-          console.log("profile user id"+this.userid);
+          console.log('profile user id' + this.userid);
           this.joinDate = uservar.joinDate ? uservar.joinDate.toDate() : this.joinDate;
           this.totalScribes = uservar.totalScribes ? uservar.totalScribes : 0;
           this.totalFollowing = uservar.totalFollowing ? uservar.totalFollowing : 0;
@@ -131,7 +131,7 @@ export class ProfileComponent implements OnInit {
           this.totalFollowing = 0;
           this.totalFollowers = 0;
         }
-    });
+      });
   }
 
   showTab(type) {
@@ -160,18 +160,19 @@ export class ProfileComponent implements OnInit {
       this.showLikes = true;
     }
   }
-  checkGlobalAdministrator(){
+
+  checkGlobalAdministrator() {
 
     this.auth.getAuthState().subscribe(curruser => {
       if (curruser) {
-        console.log("this is current user"+curruser.uid);
+        console.log('this is current user' + curruser.uid);
 
-        this.auth.getAllGlobalAdministrators().subscribe(admin=>{
-          var count =0;
-          while(count<Object.keys(admin).length){
+        this.auth.getAllGlobalAdministrators().subscribe(admin => {
+          var count = 0;
+          while (count < Object.keys(admin).length) {
             // @ts-ignore
-            if(admin[count++].uid === curruser.uid){
-              this.isadmin=true;
+            if (admin[count++].uid === curruser.uid) {
+              this.isadmin = true;
             }
           }
 
@@ -184,13 +185,13 @@ export class ProfileComponent implements OnInit {
   getFollowData() {
     this.follow.getFollowers(this.userid).subscribe(
       followers => {
-        this.totalFollowers=Object.keys(followers).length;
+        this.totalFollowers = Object.keys(followers).length;
         this.followers = followers;
         this.userFollowers = followers;
       });
     this.follow.getFollowing(this.userid).subscribe(
       following => {
-        this.totalFollowing=Object.keys(following).length;
+        this.totalFollowing = Object.keys(following).length;
         this.following = following;
         this.userFollowing = following;
       });
@@ -205,9 +206,10 @@ export class ProfileComponent implements OnInit {
       this.follow.follow(this.userid);
     }
   }
-  deleteProfile(){
+
+  deleteProfile() {
     this.userService.deleteUserProfile(this.userid);
-    alert("profile succefully deleted");
+    alert('profile succefully deleted');
   }
 
   checkFollowing() {
@@ -226,7 +228,7 @@ export class ProfileComponent implements OnInit {
             this.isLoggedIn = true;
             this.currentuid = user.uid;
             if (this.userid === user.uid) {
-              console.log("this is current user");
+              console.log('this is current user');
               this.isCurrentUser = true;
               this.profileInfoClass = 'row justify-content-center ml-md-2 ml-lg-auto';
             }
@@ -235,13 +237,13 @@ export class ProfileComponent implements OnInit {
                 if (followinguser[0]) {
                   this.isFollowing = true;
                 }
-            });
+              });
           }
         } else {
           this.isLoggedIn = false;
           this.profileInfoClass = 'row justify-content-center ml-md-2 ml-lg-auto';
         }
-    });
+      });
   }
 
   getActiveTabStyle(tabName) {
@@ -276,69 +278,69 @@ export class ProfileComponent implements OnInit {
   }
 
   openChatroom() {
-    console.log("entered"+this.currentuid);
-      this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
-        if (chatroom[0]) {
-          console.log("exsisting");
-          this.room = chatroom[0];
-          this.rid=this.room.rid;
-          console.log();
-          this.open();
-        } else {
-          console.log("first");
-          this.rid= this.afs.createId();
-          this.room=this.msgService.createChatroom(this.userid,this.rid);
-          this.room=this.rid;
-          console.log("room id is"+this.userid);
-          console.log("opening"+this.room);
-          this.open();
-        }
-      });
-    }
-
-    getJoinDate() {
-      return this.datePipe.transform((this.joinDate), 'month');
-    }
-
-    open() {
-      this.room={
-        uid:this.userid,
-        rid:this.rid
-      };
-      this.modalRef = this.modalService.open(this.modalContent, {
-        size: 'lg',
-        windowClass: 'modal-style'
-      });
-      console.log("this is the room"+this.rid);
-      if (this.room) {
-        console.log("enter to the chat room;");
-        history.pushState(null, null, 'chatroom/' + this.rid);
-      }
-      this.modalRef.result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      });
-    }
-
-    private getDismissReason(reason: any): string {
-      history.back();
-      if (reason === ModalDismissReasons.ESC) {
-        return 'by pressing ESC';
-      } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-        return 'by clicking on a backdrop';
+    console.log('entered' + this.currentuid);
+    this.msgService.getChatroom(this.userid, this.currentuid).subscribe(chatroom => {
+      if (chatroom[0]) {
+        console.log('exsisting');
+        this.room = chatroom[0];
+        this.rid = this.room.rid;
+        console.log();
+        this.open();
       } else {
-        return  `with: ${reason}`;
+        console.log('first');
+        this.rid = this.afs.createId();
+        this.room = this.msgService.createChatroom(this.userid, this.rid);
+        this.room = this.rid;
+        console.log('room id is' + this.userid);
+        console.log('opening' + this.room);
+        this.open();
       }
-    }
+    });
+  }
 
-    processImage(event) {
-      const file = event.target.files[0];
-      if (file.size > 2000000) {
-        this.filename = 'Max Filesize 2Mb!';
-      } else {
-        this.filename = 'Edit Banner';
-        this.uploadService.pushUpload(file, 'user', this.userid);
-      }
+  getJoinDate() {
+    return this.datePipe.transform((this.joinDate), 'month');
+  }
+
+  open() {
+    this.room = {
+      uid: this.userid,
+      rid: this.rid
+    };
+    this.modalRef = this.modalService.open(this.modalContent, {
+      size: 'lg',
+      windowClass: 'modal-style'
+    });
+    console.log('this is the room' + this.rid);
+    if (this.room) {
+      console.log('enter to the chat room;');
+      history.pushState(null, null, 'chatroom/' + this.rid);
     }
+    this.modalRef.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  processImage(event) {
+    const file = event.target.files[0];
+    if (file.size > 2000000) {
+      this.filename = 'Max Filesize 2Mb!';
+    } else {
+      this.filename = 'Edit Banner';
+      this.uploadService.pushUpload(file, 'user', this.userid);
+    }
+  }
+
+  private getDismissReason(reason: any): string {
+    history.back();
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import {Pipe, PipeTransform} from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 @Pipe({name: 'dateFormatPipe'})
 export class DateFormatPipe implements PipeTransform {
@@ -14,18 +14,18 @@ export class DateFormatPipe implements PipeTransform {
     if (type === 'month') {
       value = datePipe.transform(value, 'MMM yyy');
     }
-    if(type=='date-picker-month'){
-      value=datePipe.transform(value,'M');
+    if (type == 'date-picker-month') {
+      value = datePipe.transform(value, 'M');
     }
-    if(type=='date-picker-day'){
-      value=datePipe.transform(value,'d');
+    if (type == 'date-picker-day') {
+      value = datePipe.transform(value, 'd');
     }
-    if(type=='date-picker-year'){
-      value=datePipe.transform(value,'yyy');
+    if (type == 'date-picker-year') {
+      value = datePipe.transform(value, 'yyy');
     }
-    if(type=='date-picker-full'){
-      value=datePipe.transform(value,'M/d/yyy');
+    if (type == 'date-picker-full') {
+      value = datePipe.transform(value, 'M/d/yyy');
     }
     return value;
- }
+  }
 }

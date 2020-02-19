@@ -1,10 +1,10 @@
-import { Title } from '@angular/platform-browser';
+import {Title} from '@angular/platform-browser';
 // eslint-disable-next-line no-unused-vars
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 // eslint-disable-next-line no-unused-vars
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 // eslint-disable-next-line no-unused-vars
-import { AngularFirestore } from 'angularfire2/firestore';
+import {AngularFirestore} from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -23,7 +23,8 @@ export class FeedbackComponent implements OnInit {
     private afs: AngularFirestore,
     private router: Router,
     private titleService: Title
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.titleService.setTitle('Feeback');
@@ -39,7 +40,7 @@ export class FeedbackComponent implements OnInit {
         feedback: this.text,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       };
-      this.afs.doc('feedback/' + fid).set(feedback).then(()=> {
+      this.afs.doc('feedback/' + fid).set(feedback).then(() => {
         this.showSuccess = 'Feedback successfully submitted';
         setTimeout(() => {
           this.router.navigateByUrl('/home');

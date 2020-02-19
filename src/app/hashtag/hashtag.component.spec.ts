@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HashtagComponent } from './hashtag.component';
+import {HashtagComponent} from './hashtag.component';
 
 describe('HashtagComponent', () => {
   let component: HashtagComponent;
@@ -8,9 +8,9 @@ describe('HashtagComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HashtagComponent ]
+      declarations: [HashtagComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

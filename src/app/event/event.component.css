@@ -49,15 +49,16 @@
   margin: 1em;
 }
 
-.h2{
+.h2 {
   margin-left: 200px;
 }
 
-.matCard{
-  margin: 50px; 
+.matCard {
+  margin: 50px;
   border: 5px solid #4CAF50;
- }
-.carousel-slide{
+}
+
+.carousel-slide {
 
 }
 
@@ -70,6 +71,7 @@
 label, small {
   margin-left: 12px;
 }
+
 label {
   font-weight: 450;
 }
@@ -92,6 +94,7 @@ label {
   position: absolute;
   z-index: -1;
 }
+
 .inputfile + label {
   font-size: 1em;
   font-weight: 700;
@@ -102,14 +105,17 @@ label {
   padding: 10px 20px;
   width: 100%;
 }
+
 .inputfile:focus + label,
 .inputfile + label:hover {
   background-color: #3fc4e8;
 }
+
 #btnUpdate:hover {
-  background-color: #3fc4e8!important;
+  background-color: #3fc4e8 !important;
   cursor: pointer;
 }
+
 .eventlistitem:hover, #alt-footer > a:hover {
   cursor: pointer;
   color: #48a999;

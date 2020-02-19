@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GmapComponent } from './gmap.component';
+import {GmapComponent} from './gmap.component';
 
 describe('GmapComponent', () => {
   let component: GmapComponent;
@@ -8,9 +8,9 @@ describe('GmapComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GmapComponent ]
+      declarations: [GmapComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

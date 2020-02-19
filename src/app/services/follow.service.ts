@@ -1,7 +1,7 @@
-import { UserService } from './user.service';
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { AuthService } from './auth.service';
+import {UserService} from './user.service';
+import {Injectable} from '@angular/core';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {AuthService} from './auth.service';
 
 @Injectable()
 export class FollowService {
@@ -10,7 +10,8 @@ export class FollowService {
     private afs: AngularFirestore,
     private auth: AuthService,
     private userservice: UserService,
-  ) { }
+  ) {
+  }
 
   isFollowing(profileuid, currentuid) {
     return this.afs.collection<any>('/users/' + profileuid + '/followers', ref => ref.where('uid', '==', currentuid)).valueChanges();
@@ -41,7 +42,7 @@ export class FollowService {
           this.afs.collection<any>('/users/' + currentuid + '/following').doc(profileuid).delete();
           this.afs.collection<any>('/users/' + profileuid + '/followers').doc(currentuid).delete();
         }
-    });
+      });
   }
 
   getFollowing(uid) {

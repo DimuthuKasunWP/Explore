@@ -1,20 +1,19 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AngularFirestore} from 'angularfire2/firestore';
 import {Router} from '@angular/router';
 import {AuthService} from './auth.service';
 import * as firebase from 'firebase';
-import { GmapComponent } from '../gmap/gmap.component';
 
 interface Event {
   createDate;
   eid: string;
-  admin?:string,
+  admin?: string,
   latitude;
   longitude;
   address;
-  name:string;
-  gid:string;
-  description:string;
+  name: string;
+  gid: string;
+  description: string;
   startdate;
   enddate;
   starttime;
@@ -31,24 +30,24 @@ export class EventsService {
   }
 
 
-  createEvent(data){
-    console.log("entered to the event service createevent method");
-    const  eid=this.afs.createId();
-    const edata={
+  createEvent(data) {
+    console.log('entered to the event service createevent method');
+    const eid = this.afs.createId();
+    const edata = {
       createDate: firebase.firestore.FieldValue.serverTimestamp(),
       eid: eid,
-      admin:data.admin,
-      latitude:data.latitude,
-      longitude:data.longitude,
-      address:data.address,
-      name:data.name,
-      gid:data.gid,
-      description:data.description,
-      startdate:data.startdate,
-      enddate:data.enddate,
-      starttime:data.starttime,
-      photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
-    }
+      admin: data.admin,
+      latitude: data.latitude,
+      longitude: data.longitude,
+      address: data.address,
+      name: data.name,
+      gid: data.gid,
+      description: data.description,
+      startdate: data.startdate,
+      enddate: data.enddate,
+      starttime: data.starttime,
+      photoURL: 'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+    };
     this.afs.doc('events/' + eid).set(edata).then(() => {
       this.auth.getAuthState().subscribe(user => {
         const euserdata = {
@@ -60,36 +59,37 @@ export class EventsService {
           uid: data.admin,
           date: firebase.firestore.FieldValue.serverTimestamp()
         };
-        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(()=>{//subcribe or unsubcribe
+        this.afs.doc('events/' + eid + '/members/' + data.admin).set(ueventdata).then(() => {//subcribe or unsubcribe
           this.router.navigateByUrl('home');
         });
-        console.log("event created");
+        console.log('event created');
       });
     });
 
   }
 
-  removeEvent(eid){
+  removeEvent(eid) {
     this.afs.doc<any>('events/' + eid).delete();
   }
 
-  updateEventData(data){
-    console.log("this is inside update event data"+data.name);
+  updateEventData(data) {
+    console.log('this is inside update event data' + data.name);
     const EData = {
-      latitude:data.latitude,
-      longitude:data.longitude,
-      address:data.address,
-      name:data.name,
-      gid:data.gid,
-      description:data.description,
-      startdate:firebase.firestore.Timestamp.fromDate(new Date(data.startdate)),
-      enddate:firebase.firestore.Timestamp.fromDate(new Date(data.enddate)),
-      starttime:data.starttime
+      latitude: data.latitude,
+      longitude: data.longitude,
+      address: data.address,
+      name: data.name,
+      gid: data.gid,
+      description: data.description,
+      startdate: firebase.firestore.Timestamp.fromDate(new Date(data.startdate)),
+      enddate: firebase.firestore.Timestamp.fromDate(new Date(data.enddate)),
+      starttime: data.starttime
     };
-    return this.afs.doc('events/' + data.eid).update(EData).then(()=>{
+    return this.afs.doc('events/' + data.eid).update(EData).then(() => {
       this.router.navigateByUrl('home');
     });
   }
+
   editEvent(data) {
     const EData = {
       name: data.gname,
@@ -97,6 +97,7 @@ export class EventsService {
     };
     return this.afs.doc('events/' + data.eid).update(EData);
   }
+
   subscribe(eid) {
     this.auth.getAuthState().subscribe(currentuser => {
       if (currentuser) {
@@ -109,6 +110,7 @@ export class EventsService {
       }
     });
   }
+
   unsubscribe(eid) {
     this.auth.getAuthState().subscribe(currentuser => {
       if (currentuser) {
@@ -118,14 +120,15 @@ export class EventsService {
     });
   }
 
-  getEvent(eid){
+  getEvent(eid) {
     return this.afs.doc<Event>('events/' + eid).valueChanges();
   }
-  getEventList(){
-    return this.afs.collection("events").valueChanges();
+
+  getEventList() {
+    return this.afs.collection('events').valueChanges();
   }
 
-  getmembers(eid){
+  getmembers(eid) {
     return this.afs.collection('groups/' + eid + '/members', ref => ref.orderBy('date')).valueChanges();
   }
 
@@ -139,7 +142,7 @@ export class EventsService {
 
 
   getFeed(eid) {
-    return this.afs.collection('posts/' , ref => ref.where('to', '==', eid)).valueChanges();
+    return this.afs.collection('posts/', ref => ref.where('to', '==', eid)).valueChanges();
   }
 
   getMembers(eid) {
@@ -149,8 +152,9 @@ export class EventsService {
   getMostSubbed() {
     return this.afs.collection('events', ref => ref.orderBy('totalMembers', 'desc')).valueChanges();
   }
-  deleteEvent(eid){
-    this.afs.doc('events/'+eid).delete();
+
+  deleteEvent(eid) {
+    this.afs.doc('events/' + eid).delete();
   }
 
   // getUserLocations(eid){
@@ -159,17 +163,17 @@ export class EventsService {
   //   this.afs.collection("events/"+eid+"/members").valueChanges().subscribe(members=>{
   //     if(members){
   //       while(count<Object.keys(members).length){
-  //       //@ts-ignore 
+  //       //@ts-ignore
   //       console.log("current location"+members[count].currlat);
 
   //       let data={
-  //         //@ts-ignore 
+  //         //@ts-ignore
   //           currlat:members[count].currlat,
-  //           //@ts-ignore 
+  //           //@ts-ignore
   //           currlng:members[count].currlng,
-  //           //@ts-ignore 
+  //           //@ts-ignore
   //           originlat:members[count].originlat,
-  //           //@ts-ignore 
+  //           //@ts-ignore
   //           originlng:members[count].originlng
 
   //       };

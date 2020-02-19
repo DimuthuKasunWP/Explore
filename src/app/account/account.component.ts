@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { UploadService } from '../services/upload.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UsernameValidators } from '../validators/username.validators';
-import { AngularFirestore } from 'angularfire2/firestore';
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../services/auth.service';
+import {UserService} from '../services/user.service';
+import {Router} from '@angular/router';
+import {Title} from '@angular/platform-browser';
+import {UploadService} from '../services/upload.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UsernameValidators} from '../validators/username.validators';
+import {AngularFirestore} from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-account',
@@ -27,16 +27,6 @@ export class AccountComponent implements OnInit {
   inputFile;
 
   isTaken = false;
-
-  constructor(
-    private auth: AuthService,
-    private userService: UserService,
-    private router: Router,
-    private titleService: Title,
-    private uploadService: UploadService,
-    private afs: AngularFirestore
-  ) { }
-
   accountForm = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -56,12 +46,24 @@ export class AccountComponent implements OnInit {
     ])
   });
 
+  constructor(
+    private auth: AuthService,
+    private userService: UserService,
+    private router: Router,
+    private titleService: Title,
+    private uploadService: UploadService,
+    private afs: AngularFirestore
+  ) {
+  }
+
   get username() {
     return this.accountForm.get('username');
   }
+
   get displayname() {
     return this.accountForm.get('displayname');
   }
+
   get inputstatus() {
     return this.accountForm.get('inputstatus');
   }
@@ -97,7 +99,7 @@ export class AccountComponent implements OnInit {
     this.afs.collection('users', ref => ref.where('userName', '==', q)).valueChanges().subscribe(user => {
       const searchuser: any = user[0];
       if (user[0] && this.currentusername !== searchuser.userName) {
-          this.isTaken = true;
+        this.isTaken = true;
       } else {
         this.isTaken = false;
       }
