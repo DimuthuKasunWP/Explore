@@ -1,34 +1,35 @@
 <div class="row">
-<div class="col-8">
-<div class="container" *ngIf="adminDetails; else Loading">
-  <div class="container-fluid pt-md-3">
-    <div class="row justify-content-between">
-      <div class="col-12 col-md-6 py-2 px-0" *ngIf="reports; else NoReports">
-        <h3><u>Reported Posts</u>- {{reports.length}}</h3>
-        <div *ngFor="let report of reports">
-          <app-post [inputPostID]="report.pid"></app-post>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 py-2 px-0" *ngIf="feedbacks; else NoFeedback">
-        <div id="feeback-panel" class="ml-md-1">
-          <h3><u>User Feedback</u></h3>
-          <div *ngFor="let feedback of feedbacks">
-            <div id="feedback-container" class="bg-white px-3 py-2">
-              <h6>{{feedback.subject}}</h6><hr class="my-1">
-              <p>{{feedback.feedback}}</p>
-              <small>{{feedback.timestamp*1000 | dateFormatPipe}}</small>
+  <div class="col-8">
+    <div *ngIf="adminDetails; else Loading" class="container">
+      <div class="container-fluid pt-md-3">
+        <div class="row justify-content-between">
+          <div *ngIf="reports; else NoReports" class="col-12 col-md-6 py-2 px-0">
+            <h3><u>Reported Posts</u>- {{reports.length}}</h3>
+            <div *ngFor="let report of reports">
+              <app-post [inputPostID]="report.pid"></app-post>
+            </div>
+          </div>
+          <div *ngIf="feedbacks; else NoFeedback" class="col-12 col-md-6 py-2 px-0">
+            <div class="ml-md-1" id="feeback-panel">
+              <h3><u>User Feedback</u></h3>
+              <div *ngFor="let feedback of feedbacks">
+                <div class="bg-white px-3 py-2" id="feedback-container">
+                  <h6>{{feedback.subject}}</h6>
+                  <hr class="my-1">
+                  <p>{{feedback.feedback}}</p>
+                  <small>{{feedback.timestamp * 1000 | dateFormatPipe}}</small>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
-<div class="col-3">
-  <app-suggested></app-suggested>
+  <div class="col-3">
+    <app-suggested></app-suggested>
 
-</div>
+  </div>
 </div>
 <ng-template #NoReports>
   <h3>No Reports yet.</h3>
@@ -40,7 +41,7 @@
 
 <ng-template #Loading>
   <div class="text-center pt-5">
-    <i class="fa fa-spinner fa-3x fa-spin text-primary" aria-hidden="true"></i>
+    <i aria-hidden="true" class="fa fa-spinner fa-3x fa-spin text-primary"></i>
     <h3 class="text-primary mt-2">Checking Privileges</h3>
   </div>
 </ng-template>
