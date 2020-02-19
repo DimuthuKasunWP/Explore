@@ -1,6 +1,7 @@
-<div id="search-container" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" *ngIf="isUser">
-    <app-groupsearch></app-groupsearch>
-  </div>
-  <div id="search-container" class="col-9 col-sm-auto col-md-5 col-lg-4 order-2 offset-sm-3 offset-md-4 offset-lg-5" *ngIf="!isUser">
-    <app-groupsearch></app-groupsearch>
-  </div>
+<div *ngIf="isUser" class="col-10 col-sm-6 offset-sm-3 offset-md-0 col-md-4 col-lg-4 order-2" id="search-container">
+  <app-groupsearch></app-groupsearch>
+</div>
+<div *ngIf="!isUser" class="col-9 col-sm-auto col-md-5 col-lg-4 order-2 offset-sm-3 offset-md-4 offset-lg-5"
+     id="search-container">
+  <app-groupsearch></app-groupsearch>
+</div>
