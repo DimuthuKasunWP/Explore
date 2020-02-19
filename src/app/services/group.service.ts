@@ -1,8 +1,8 @@
-import { Router } from '@angular/router';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { Injectable } from '@angular/core';
+import {Router} from '@angular/router';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
-import { AuthService } from './auth.service';
+import {AuthService} from './auth.service';
 
 interface Group {
   gname: string;
@@ -22,7 +22,8 @@ export class GroupService {
     private afs: AngularFirestore,
     private router: Router,
     private auth: AuthService
-  ) { }
+  ) {
+  }
 
   createGroup(data) {
     const gid = this.afs.createId();
@@ -33,21 +34,21 @@ export class GroupService {
       gid: gid,
     };
     this.afs.doc('groups/' + gid).set(GData).then(() => {
-     this.auth.getAuthState().subscribe(user => {
-      this.currentuser = user;
-      const adminData = {admin: this.currentuser.uid};
-      this.afs.doc('groups/' + GData.gid).update(adminData);
-      const guserdata = {
-        gid: gid,
-        last: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      this.afs.doc('users/' + this.currentuser.uid + '/groups/' + gid).set(guserdata).then(() => this.router.navigateByUrl('group/' + gid));
-      const ugroupdata = {
-        uid: this.currentuser.uid,
-        date: firebase.firestore.FieldValue.serverTimestamp()
-      };
-      this.afs.doc('groups/' + gid + '/members/' + this.currentuser.uid).set(ugroupdata);
-     });
+      this.auth.getAuthState().subscribe(user => {
+        this.currentuser = user;
+        const adminData = {admin: this.currentuser.uid};
+        this.afs.doc('groups/' + GData.gid).update(adminData);
+        const guserdata = {
+          gid: gid,
+          last: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        this.afs.doc('users/' + this.currentuser.uid + '/groups/' + gid).set(guserdata).then(() => this.router.navigateByUrl('group/' + gid));
+        const ugroupdata = {
+          uid: this.currentuser.uid,
+          date: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        this.afs.doc('groups/' + gid + '/members/' + this.currentuser.uid).set(ugroupdata);
+      });
     });
   }
 
@@ -71,6 +72,7 @@ export class GroupService {
       }
     });
   }
+
   unsubscribe(gid) {
     this.auth.getAuthState().subscribe(currentuser => {
       if (currentuser) {
@@ -79,15 +81,17 @@ export class GroupService {
       }
     });
   }
-  deleteGroup(gid){
-    this.afs.doc('groups/'+gid).delete();
+
+  deleteGroup(gid) {
+    this.afs.doc('groups/' + gid).delete();
   }
+
   getGroup(gid) {
     return this.afs.doc<Group>('groups/' + gid).valueChanges();
   }
 
   getFeed(gid) {
-    return this.afs.collection('posts/' , ref => ref.where('to', '==', gid)).valueChanges();
+    return this.afs.collection('posts/', ref => ref.where('to', '==', gid)).valueChanges();
   }
 
   getMembers(gid) {
@@ -103,11 +107,11 @@ export class GroupService {
       bannerURL: url
     };
     this.afs.doc('groups/' + gid).update(data)
-    .then(() => console.log('Group banner updated'));
+      .then(() => console.log('Group banner updated'));
   }
 
-  getGroupList(){
-    return this.afs.collection("groups").valueChanges();
+  getGroupList() {
+    return this.afs.collection('groups').valueChanges();
   }
 
 }

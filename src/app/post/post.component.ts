@@ -1,15 +1,14 @@
-import { AngularFirestore } from 'angularfire2/firestore';
-import { GroupService } from './../services/group.service';
-import { LikesService } from './../services/likes.service';
-import { PostsService } from './../services/posts.service';
-import { DateFormatPipe } from './../services/date.pipe';
-import { UserService } from './../services/user.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {DatePipe, PlatformLocation} from '@angular/common';
-import { ViewEncapsulation } from '@angular/core';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {GroupService} from './../services/group.service';
+import {LikesService} from './../services/likes.service';
+import {PostsService} from './../services/posts.service';
+import {DateFormatPipe} from './../services/date.pipe';
+import {UserService} from './../services/user.service';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthService} from '../services/auth.service';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {PlatformLocation} from '@angular/common';
 import {HashtagService} from '../services/hashtag.service';
 import {NotificationService} from '../services/notification.service';
 
@@ -32,7 +31,7 @@ export class PostComponent implements OnInit {
   currentuser;
   currentuid;
   showContext = true;
-  showhashtag=false;
+  showhashtag = false;
   isLoggedIn = false;
   isSingle = false;
   isCurrentUser = false;
@@ -61,8 +60,8 @@ export class PostComponent implements OnInit {
 
   gname;
   gid;
-  count=0;
-  hashtag=[];
+  count = 0;
+  hashtag = [];
 
 
   constructor(
@@ -76,13 +75,13 @@ export class PostComponent implements OnInit {
     private likeService: LikesService,
     private groupService: GroupService,
     private afs: AngularFirestore,
-    private hashtagservice:HashtagService,
-    private notifyservice:NotificationService
+    private hashtagservice: HashtagService,
+    private notifyservice: NotificationService
   ) {
     location.onPopState((event) => {
       // ensure that modal is opened
       if (this.modalRef !== undefined) {
-          this.modalRef.close();
+        this.modalRef.close();
       }
     });
   }
@@ -104,22 +103,22 @@ export class PostComponent implements OnInit {
       this.body = this.inputPost.body;
       this.date = this.inputPost.date;
       this.pid = this.inputPost.pid;
-      var hashtags=[];
-      this.hashtagservice.gethashtagByPID(this.pid).subscribe(hashtag=>{
+      var hashtags = [];
+      this.hashtagservice.gethashtagByPID(this.pid).subscribe(hashtag => {
 
-        this.count=0;
-        while (this.count<Object.keys(hashtag).length) {
+        this.count = 0;
+        while (this.count < Object.keys(hashtag).length) {
           // @ts-ignore
           // console.log("hashtag "+hashtag[this.count].hid);
           // @ts-ignore
           hashtags.push(hashtag[this.count].hid);
           this.count++;
         }
-        if(hashtags.length>0){
-          var count=0;
-          this.body=this.body+"<br/>";
-          while(count<hashtags.length) {
-            this.showhashtag=true;
+        if (hashtags.length > 0) {
+          var count = 0;
+          this.body = this.body + '<br/>';
+          while (count < hashtags.length) {
+            this.showhashtag = true;
             // this.body = this.body + "" + hashtags[count];
             // this.hashtag = this.hashtag + hashtags[count];
             this.hashtag.push(hashtags[count++]);
@@ -142,7 +141,7 @@ export class PostComponent implements OnInit {
                 }
               });
             }
-        });
+          });
       }
       if (this.type === 'group') {
         if (this.router.url.slice(1, 6) === 'group') {
@@ -174,8 +173,8 @@ export class PostComponent implements OnInit {
             }
           }
         });
-        this.getLikes(this.inputPost.pid);
-        this.getComments(this.inputPost.pid);
+      this.getLikes(this.inputPost.pid);
+      this.getComments(this.inputPost.pid);
     }
     // If the postID comes from the parent component
     if (this.inputPostID) {
@@ -268,7 +267,7 @@ export class PostComponent implements OnInit {
   }
 
   delete() {
-    console.log("this is pid"+this.pid);
+    console.log('this is pid' + this.pid);
     this.postService.deletePost(this.pid);
   }
 
@@ -313,9 +312,9 @@ export class PostComponent implements OnInit {
     if (this.ParentModalRef) {
       this.ParentModalRef.close();
     }
-    if(type==='hashtag'){
-      this.router.navigateByUrl("hashtag/"+id);
-      localStorage.setItem("hid",id);
+    if (type === 'hashtag') {
+      this.router.navigateByUrl('hashtag/' + id);
+      localStorage.setItem('hid', id);
     }
     if (type === 'landing') {
       this.router.navigateByUrl('start');
@@ -355,6 +354,14 @@ export class PostComponent implements OnInit {
     });
   }
 
+  checkAdmin() {
+    this.afs.doc('globaladminsadmins/' + this.currentuid).valueChanges().subscribe(admin => {
+      if (admin) {
+        this.isCurrentUser = true;
+      }
+    });
+  }
+
   private getDismissReason(reason: any): string {
     history.back();
     if (reason === ModalDismissReasons.ESC) {
@@ -362,16 +369,8 @@ export class PostComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
-  }
-
-  checkAdmin() {
-    this.afs.doc('globaladminsadmins/' + this.currentuid).valueChanges().subscribe(admin => {
-      if (admin) {
-        this.isCurrentUser = true;
-      }
-    });
   }
 
 }

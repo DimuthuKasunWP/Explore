@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../services/user.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-notification',
@@ -14,7 +14,8 @@ export class NotificationComponent implements OnInit {
 
   constructor(
     private userService: UserService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userService.retrieveUserDocumentFromID(this.notif.uid).subscribe(userDoc => this.user = userDoc);

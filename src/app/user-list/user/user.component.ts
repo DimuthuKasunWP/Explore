@@ -1,7 +1,7 @@
-import { FollowService } from './../../services/follow.service';
-import { UserService } from './../../services/user.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import {FollowService} from './../../services/follow.service';
+import {UserService} from './../../services/user.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-user',
@@ -27,7 +27,8 @@ export class UserComponent implements OnInit {
     private userService: UserService,
     private auth: AuthService,
     private followService: FollowService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.userService.retrieveUserDocumentFromID(this.uid).subscribe(
@@ -39,7 +40,7 @@ export class UserComponent implements OnInit {
           this.photoURL = user.photoURL;
           this.checkFollowing();
         }
-    });
+      });
   }
 
   checkFollowing() {

@@ -1,9 +1,9 @@
-import { AngularFirestore } from 'angularfire2/firestore';
-import { AuthService } from './../services/auth.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UsernameValidators } from '../validators/username.validators';
-import { Title } from '@angular/platform-browser';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {AuthService} from './../services/auth.service';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UsernameValidators} from '../validators/username.validators';
+import {Title} from '@angular/platform-browser';
 // import { AbstractControl } from '@angular/forms/src/model';
 // import { ValidationErrors } from '@angular/forms/src/directives/validators';
 
@@ -14,14 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(
-    private title: Title,
-    private auth: AuthService,
-    private afs: AngularFirestore
-  ) {}
-
   isTaken = false;
-
   emailform = new FormGroup({
     username: new FormControl('', [
       Validators.required,
@@ -44,7 +37,6 @@ export class RegisterComponent implements OnInit {
       Validators.required
     )
   }, this.passwordMatchValidator);
-
   googleform = new FormGroup({
     googleusername: new FormControl('', [
       Validators.required,
@@ -53,28 +45,38 @@ export class RegisterComponent implements OnInit {
     ])
   });
 
-  passwordMatchValidator(g: FormGroup) {
-    if (g.get('password').value && g.get('passwordConfirm').value) {
-      return g.get('passwordConfirm').value === g.get('password').value
-       ? null : {'mismatch': true};
-    }
- }
-
+  constructor(
+    private title: Title,
+    private auth: AuthService,
+    private afs: AngularFirestore
+  ) {
+  }
 
   get googleusername() {
     return this.googleform.get('googleusername');
   }
+
   get username() {
     return this.emailform.get('username');
   }
+
   get displayname() {
     return this.emailform.get('displayname');
   }
+
   get email() {
     return this.emailform.get('email');
   }
+
   get password() {
     return this.emailform.get('password');
+  }
+
+  passwordMatchValidator(g: FormGroup) {
+    if (g.get('password').value && g.get('passwordConfirm').value) {
+      return g.get('passwordConfirm').value === g.get('password').value
+        ? null : {'mismatch': true};
+    }
   }
 
   ngOnInit() {

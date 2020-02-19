@@ -1,7 +1,9 @@
-<div id="EventListContainer" class="container" class="py-2 px-3 text-white bg-white" *ngIf="modalRef; else EventListPage">
-  <h3>Events</h3><hr class="my-2">
-  <div id="eventList" *ngFor="let event of events" class="py-2">
-    <div class="container-fluid" routerLink="/event/{{event.eid}}" (click)="close()">
+<div *ngIf="modalRef; else EventListPage" class="py-2 px-3 text-white bg-white" class="container"
+     id="EventListContainer">
+  <h3>Events</h3>
+  <hr class="my-2">
+  <div *ngFor="let event of events" class="py-2" id="eventList">
+    <div (click)="close()" class="container-fluid" routerLink="/event/{{event.eid}}">
       <h6 class="mx-2">{{event.name}}</h6><small>{{event.description}}</small>
     </div>
   </div>
@@ -9,10 +11,11 @@
 
 <ng-template #EventListPage>
   <div class="container pt-md-3">
-    <div id="EventListPageContainer" class="jumbotron" class="py-2 px-3 text-white bg-white">
-      <h3>Events</h3><hr class="my-2">
-      <div id="eventList" *ngFor="let event of events" class="py-2">
-        <div class="container-fluid" routerLink="/event/{{event.eid}}" (click)="close()">
+    <div class="jumbotron" class="py-2 px-3 text-white bg-white" id="EventListPageContainer">
+      <h3>Events</h3>
+      <hr class="my-2">
+      <div *ngFor="let event of events" class="py-2" id="eventList">
+        <div (click)="close()" class="container-fluid" routerLink="/event/{{event.eid}}">
           <h6 class="mx-2">{{event.name}}</h6><small>{{event.description}}</small>
         </div>
       </div>

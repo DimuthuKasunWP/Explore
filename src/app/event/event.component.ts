@@ -1,23 +1,22 @@
-import {Component, OnInit, Inject, ViewChild, ElementRef, NgZone, NgModule} from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {MapsAPILoader} from '@agm/core';
 import {UploadService} from '../services/upload.service';
 import {AuthService} from '../services/auth.service';
 import {UserService} from '../services/user.service';
-import{EventsService} from '../services/events.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {EventsService} from '../services/events.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 // import {google} from '@agm/core/services/google-maps-types';
 // import {} from 'googlemaps';
 import * as _moment from 'moment';
 import {DateFormatPipe} from '../services/date.pipe';
 // tslint:disable-next-line:no-duplicate-imports
-import {NgbModal,ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import { PlatformLocation } from '@angular/common';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {PlatformLocation} from '@angular/common';
 import {GroupService} from '../services/group.service';
-const moment =  _moment;
+
+const moment = _moment;
+
 @Component({
   selector: 'app-event',
   templateUrl: './event.component.html',
@@ -34,7 +33,7 @@ export class EventComponent implements OnInit {
   eventid;
   enteraddress;
   startd;
-  isexists=false;
+  isexists = false;
   eid;
   gid;
   admin;
@@ -42,8 +41,8 @@ export class EventComponent implements OnInit {
   isLoaded;
   modalRef;
   closeResult;
-  groupname=this.gid;
-  isfirst=true;
+  groupname = this.gid;
+  isfirst = true;
   // displayName;
   // userName;
   userid;
@@ -52,18 +51,15 @@ export class EventComponent implements OnInit {
   date = new Date();
 
   inputFile;
-  filename='Add New Event Photo';
+  filename = 'Add New Event Photo';
   uid;
   photoURL = '../../assets/images/default-profile.jpg';
-
 
 
   latitude: number;
   longitude: number;
   zoom: number;
-  address='';
-  private geoCoder;
-
+  address = '';
   eventForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -93,40 +89,38 @@ export class EventComponent implements OnInit {
     starttime: new FormControl('', [
       Validators.required
     ]),
-    startd:new FormControl('', [
+    startd: new FormControl('', [
       Validators.required
     ])
   });
-
-  @ViewChild('search',{static:false})
+  @ViewChild('search', {static: false})
   public searchElementRef: ElementRef;
+  events = [];
+  private geoCoder;
 
-  events=[];
-
-  constructor (
-
+  constructor(
     private datePipe: DateFormatPipe,
-    private route:ActivatedRoute,
-    private eventsService:EventsService,
-    private userService:UserService,
+    private route: ActivatedRoute,
+    private eventsService: EventsService,
+    private userService: UserService,
     private auth: AuthService,
     private modalService: NgbModal,
-    private location:PlatformLocation,
-    private groupservice:GroupService,
+    private location: PlatformLocation,
+    private groupservice: GroupService,
     private mapsAPILoader: MapsAPILoader,
-    private router:Router,
-                private ngZone: NgZone,
-                private uploadService:UploadService) {
-                  location.onPopState((event) => {
-                    // ensure that modal is opened
-                    if (this.modalRef !== undefined) {
-                        this.modalRef.close();
-                    }
-                  });
-                 }
+    private router: Router,
+    private ngZone: NgZone,
+    private uploadService: UploadService) {
+    location.onPopState((event) => {
+      // ensure that modal is opened
+      if (this.modalRef !== undefined) {
+        this.modalRef.close();
+      }
+    });
+  }
 
-  openDialog () {
-  console.log('The dialog was closed')
+  get Name() {
+    return this.eventForm.get('name');
   }
 
 
@@ -143,61 +137,85 @@ export class EventComponent implements OnInit {
   //   });
   // }
 
-  ngOnInit () {
+  get Description() {
+    return this.eventForm.get('description');
+
+  }
+
+  get Location() {
+    return this.eventForm.get('enteraddress');
+  }
+
+  get StartDate() {
+    return this.eventForm.get('startdate');
+  }
+
+  get EndDate() {
+    return this.eventForm.get('enddate');
+  }
+
+  get StartTime() {
+    return this.eventForm.get('starttime');
+  }
+
+  openDialog() {
+    console.log('The dialog was closed');
+  }
+
+  ngOnInit() {
     this.route.params.subscribe(
       routeurl => {
         this.eid = routeurl.eid;
       });
-    var gid=localStorage.getItem("gid");
-    if(gid){
-      this.groupservice.getGroup(gid).subscribe(group=>{
-        if(group){
-          this.groupname=group.gname;
+    var gid = localStorage.getItem('gid');
+    if (gid) {
+      this.groupservice.getGroup(gid).subscribe(group => {
+        if (group) {
+          this.groupname = group.gname;
         }
       });
     }
-    console.log("this is router eid"+this.eid);
-    if(this.eid!=null){
-      console.log("true");
-      this.eid=localStorage.getItem("eid");
-        console.log("this is real eid"+this.eid);
-      this.auth.getAuthState().subscribe(currUser=>{
-        if(currUser){
-          this.uid=currUser.uid;
+    console.log('this is router eid' + this.eid);
+    if (this.eid != null) {
+      console.log('true');
+      this.eid = localStorage.getItem('eid');
+      console.log('this is real eid' + this.eid);
+      this.auth.getAuthState().subscribe(currUser => {
+        if (currUser) {
+          this.uid = currUser.uid;
           this.eventsService.getEvent(this.eid).subscribe(
-            eventdoc=>{
-                if(eventdoc){
-                  this.photoURL=eventdoc.photoURL?eventdoc.photoURL:this.photoURL;
-                    this.latitude=eventdoc.latitude;
-                    this.longitude=eventdoc.longitude;
-                    this.enteraddress=eventdoc.address;
-                    this.ad=this.enteraddress;
-                    console.log("this is enter address in sid doc"+this.enteraddress);
-                    this.name=eventdoc.name;
-                    this.admin= eventdoc.admin ? eventdoc.admin : null;
-                    this.gid= eventdoc.gid ? eventdoc.gid :null;
-                    this.description=eventdoc.description;
-                    this.startdate=eventdoc.startdate;
-                    console.log("start date value"+this.startdate);
-                    this.enddate=eventdoc.enddate;
-                    this.starttime=eventdoc.starttime;
-                    this.startd=this.startdate;
-                    this.isexists=true;
-                    this.startdate=this.datePipe.transform(this.startdate.toDate(),'date-picker-full');
-                    this.enddate=this.datePipe.transform(this.enddate.toDate(),'date-picker-full');
-                    // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
-                    // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
-                    // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
-                    // this.startd= new FormControl(moment[this.startdate.toDate().getFullYear(),this.startdate.toDate().getMonth(),this.startdate.toDate().getDate()]);
+            eventdoc => {
+              if (eventdoc) {
+                this.photoURL = eventdoc.photoURL ? eventdoc.photoURL : this.photoURL;
+                this.latitude = eventdoc.latitude;
+                this.longitude = eventdoc.longitude;
+                this.enteraddress = eventdoc.address;
+                this.ad = this.enteraddress;
+                console.log('this is enter address in sid doc' + this.enteraddress);
+                this.name = eventdoc.name;
+                this.admin = eventdoc.admin ? eventdoc.admin : null;
+                this.gid = eventdoc.gid ? eventdoc.gid : null;
+                this.description = eventdoc.description;
+                this.startdate = eventdoc.startdate;
+                console.log('start date value' + this.startdate);
+                this.enddate = eventdoc.enddate;
+                this.starttime = eventdoc.starttime;
+                this.startd = this.startdate;
+                this.isexists = true;
+                this.startdate = this.datePipe.transform(this.startdate.toDate(), 'date-picker-full');
+                this.enddate = this.datePipe.transform(this.enddate.toDate(), 'date-picker-full');
+                // var day=this.datePipe.transform(this.startd.toDate(),'date-picker-day');
+                // var month=this.datePipe.transform(this.startd.toDate(),'date-picker-month');
+                // var year=this.datePipe.transform(this.startd.toDate(),'date-picker-year');
+                // this.startd= new FormControl(moment[this.startdate.toDate().getFullYear(),this.startdate.toDate().getMonth(),this.startdate.toDate().getDate()]);
 
 
-
-                }else {
-                  console.log('invalid');
-                  this.isInvalid = true;
-                  this.isLoaded = true;
-                }
-                this.groupname=this.gid;
+              } else {
+                console.log('invalid');
+                this.isInvalid = true;
+                this.isLoaded = true;
+              }
+              this.groupname = this.gid;
             }
           );
           // this.userService.getus
@@ -207,13 +225,13 @@ export class EventComponent implements OnInit {
           this.geoCoder = new google.maps.Geocoder;
 
           let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-            types: ["address"]
+            types: ['address']
           });
-          autocomplete.addListener("place_changed", () => {
+          autocomplete.addListener('place_changed', () => {
             this.ngZone.run(() => {
               //get the place result
               let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-              console.log("place when listning"+place);
+              console.log('place when listning' + place);
               // console.log("place"+place.geometry.location);
 
               //verify result
@@ -224,7 +242,7 @@ export class EventComponent implements OnInit {
               //set latitude, longitude and zoom
               this.latitude = place.geometry.location.lat();
               this.longitude = place.geometry.location.lng();
-              this.getAddress(this.latitude,this.longitude);
+              this.getAddress(this.latitude, this.longitude);
               this.zoom = 12;
             });
           });
@@ -232,11 +250,11 @@ export class EventComponent implements OnInit {
       });
 
 
-    }else{
-      console.log("false");
-      this.auth.getAuthState().subscribe(currUser=>{
-        if(currUser){
-          this.uid=currUser.uid;
+    } else {
+      console.log('false');
+      this.auth.getAuthState().subscribe(currUser => {
+        if (currUser) {
+          this.uid = currUser.uid;
         }
       });
       this.mapsAPILoader.load().then(() => {
@@ -244,13 +262,13 @@ export class EventComponent implements OnInit {
         this.geoCoder = new google.maps.Geocoder;
 
         let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-          types: ["address"]
+          types: ['address']
         });
-        autocomplete.addListener("place_changed", () => {
+        autocomplete.addListener('place_changed', () => {
           this.ngZone.run(() => {
             //get the place result
             let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-            console.log("place when listning"+place);
+            console.log('place when listning' + place);
             // console.log("place"+place.geometry.location);
 
             //verify result
@@ -261,7 +279,7 @@ export class EventComponent implements OnInit {
             //set latitude, longitude and zoom
             this.latitude = place.geometry.location.lat();
             this.longitude = place.geometry.location.lng();
-            this.getAddress(this.latitude,this.longitude);
+            this.getAddress(this.latitude, this.longitude);
             this.zoom = 12;
           });
         });
@@ -271,29 +289,37 @@ export class EventComponent implements OnInit {
 
 
   }
-  
-  tomorrow(){
+
+
+  // markerDragEnd($event: MouseEvent) {
+  //   console.log($event);
+  //   this.latitude = $event.coords.lat;
+  //   this.longitude = $event.coords.lng;
+  //   this.getAddress(this.latitude, this.longitude);
+  // }
+
+  tomorrow() {
     var tomorrow = new Date();
-    tomorrow.setDate(this.date.getDate()+1);
+    tomorrow.setDate(this.date.getDate() + 1);
     return tomorrow = tomorrow;
   }
 
-  getAllEvents(){
-                this.eventsService.getEventList().subscribe(
-                  userEvents=>{
+  getAllEvents() {
+    this.eventsService.getEventList().subscribe(
+      userEvents => {
 
-                    this.events=[];
-                    userEvents.forEach((eventData:any)=>{
+        this.events = [];
+        userEvents.forEach((eventData: any) => {
 
-                      this.events.push(eventData);
+          this.events.push(eventData);
 
-                    });
-                  }
-                );
+        });
+      }
+    );
   }
 
   open(content, type?) {
-    console.log("events");
+    console.log('events');
     this.modalRef = this.modalService.open(content, {
       size: 'sm',
       windowClass: 'modal-style'
@@ -305,61 +331,28 @@ export class EventComponent implements OnInit {
     });
   }
 
-  eventDeatils(eid){
-    this.router.navigateByUrl('groupevent/'+eid);
-    localStorage.setItem("geid",eid);
+  eventDeatils(eid) {
+    this.router.navigateByUrl('groupevent/' + eid);
+    localStorage.setItem('geid', eid);
 
   }
-
-  private getDismissReason(reason: any, type?): string {
-    if (type === 'grouplist') {
-      history.back();
-    }
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
-    }
-  }
-
-
-  private setCurrentLocation() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 8;
-        this.getAddress(this.latitude, this.longitude);
-      });
-    }
-  }
-
-
-  // markerDragEnd($event: MouseEvent) {
-  //   console.log($event);
-  //   this.latitude = $event.coords.lat;
-  //   this.longitude = $event.coords.lng;
-  //   this.getAddress(this.latitude, this.longitude);
-  // }
 
   getAddress(latitude, longitude) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+    this.geoCoder.geocode({'location': {lat: latitude, lng: longitude}}, (results, status) => {
       console.log(results);
       console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          if(this.address=''){
-            this.address='';
-          }else{
+          if (this.address = '') {
+            this.address = '';
+          } else {
 
             this.address = results[0].formatted_address;
-            if(this.isfirst && !this.enteraddress){
-              this.enteraddress=this.address;
-              console.log("entered new address"+this.enteraddress);
-              this.isfirst=false;
+            if (this.isfirst && !this.enteraddress) {
+              this.enteraddress = this.address;
+              console.log('entered new address' + this.enteraddress);
+              this.isfirst = false;
             }
 
           }
@@ -373,16 +366,17 @@ export class EventComponent implements OnInit {
 
     });
   }
-   getLatLngByAddress(loc){
-    this.geoCoder.geocode({ 'address': loc }, (results, status) => {
+
+  getLatLngByAddress(loc) {
+    this.geoCoder.geocode({'address': loc}, (results, status) => {
       console.log(results);
       console.log(status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          this.latitude=results[0].geometry.location.latitude;
-          this.longitude=results[0].geometry.location.longitude;
-            this.address = results[0].formatted_address;
+          this.latitude = results[0].geometry.location.latitude;
+          this.longitude = results[0].geometry.location.longitude;
+          this.address = results[0].formatted_address;
         } else {
           window.alert('No results found');
         }
@@ -392,72 +386,55 @@ export class EventComponent implements OnInit {
 
     });
   }
-  get Name(){
-   return this.eventForm.get('name');
-  }
-  get Description(){
-    return this.eventForm.get('description');
 
-  }
-  get Location(){
-    return this.eventForm.get('enteraddress');
-  }
-  get StartDate(){
-    return this.eventForm.get('startdate');
-  }
-  get EndDate(){
-    return this.eventForm.get('enddate');
-  }
-  get StartTime(){
-    return this.eventForm.get('starttime');
-  }
-
-  saveEvent(){
-    console.log("event saving");
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-     console.log("this is enter address ddddd"+this.ad);
-      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
-      const data={
-        admin:this.uid,
-          latitude:this.latitude,
-          longitude:this.longitude,
-          address:this.enteraddress?this.enteraddress:this.ad,
-          name:this.name,
-          gid:this.groupname,
-          description:this.description,
-          startdate:this.startdate,
-          enddate:this.enddate,
-          starttime:this.starttime,
-          photoURL:'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
+  saveEvent() {
+    console.log('event saving');
+    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.EndDate.errors && !this.StartTime.errors) {
+      console.log('this is enter address ddddd' + this.ad);
+      this.getLatLngByAddress(this.enteraddress ? this.enteraddress : this.ad);
+      const data = {
+        admin: this.uid,
+        latitude: this.latitude,
+        longitude: this.longitude,
+        address: this.enteraddress ? this.enteraddress : this.ad,
+        name: this.name,
+        gid: this.groupname,
+        description: this.description,
+        startdate: this.startdate,
+        enddate: this.enddate,
+        starttime: this.starttime,
+        photoURL: 'https://xplore-1.firebaseapp.com/assets/images/default-profile.jpg'
       };
       this.eventsService.createEvent(data);
     }
 
 
   }
-  updateEvent(){
-    console.log("this is update event"+this.enteraddress);
-    if(!this.Name.errors &&!this.Description.errors &&!this.Location.errors &&!this.StartDate.errors &&!this.EndDate.errors &&!this.StartTime.errors){
-      console.log("this is enter address ddddd"+this.ad?this.ad:this.enteraddress);
-      this.getLatLngByAddress(this.enteraddress?this.enteraddress:this.ad);
-      const data={
-        admin:this.admin,
-        latitude:this.latitude,
-        longitude:this.longitude,
-        address:this.enteraddress?this.enteraddress:this.ad,
-        name:this.name,
-        eid:this.eid,
-        gid:this.groupname,
-        description:this.description,
-        startdate:this.startdate,
-        enddate:this.enddate,
-        starttime:this.starttime
+
+  updateEvent() {
+    console.log('this is update event' + this.enteraddress);
+    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.EndDate.errors && !this.StartTime.errors) {
+      console.log('this is enter address ddddd' + this.ad ? this.ad : this.enteraddress);
+      this.getLatLngByAddress(this.enteraddress ? this.enteraddress : this.ad);
+      const data = {
+        admin: this.admin,
+        latitude: this.latitude,
+        longitude: this.longitude,
+        address: this.enteraddress ? this.enteraddress : this.ad,
+        name: this.name,
+        eid: this.eid,
+        gid: this.groupname,
+        description: this.description,
+        startdate: this.startdate,
+        enddate: this.enddate,
+        starttime: this.starttime
 
       };
       this.eventsService.updateEventData(data);
     }
 
   }
+
   processImage(event) {
     this.inputFile = event.target.files[0];
     this.filename = this.inputFile.name;
@@ -469,6 +446,30 @@ export class EventComponent implements OnInit {
       }
       console.log('pid is the ' + this.eid);
       this.uploadService.pushUpload(this.inputFile, 'event', this.eid);
+    }
+  }
+
+  private getDismissReason(reason: any, type?): string {
+    if (type === 'grouplist') {
+      history.back();
+    }
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  private setCurrentLocation() {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.zoom = 8;
+        this.getAddress(this.latitude, this.longitude);
+      });
     }
   }
 

@@ -1,9 +1,8 @@
-import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Observable } from 'rxjs/Rx';
-import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
+import {AngularFirestore} from 'angularfire2/firestore';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs/Rx';
+import {Subject} from 'rxjs/Subject';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class EventsearchComponent implements OnInit {
 
-  @ViewChild('myDrop', { static: true }) searchDrop;
+  @ViewChild('myDrop', {static: true}) searchDrop;
 
   searchterm;
   users;
@@ -30,10 +29,11 @@ export class EventsearchComponent implements OnInit {
   constructor(
     private afs: AngularFirestore,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
     Observable.combineLatest(this.startObs, this.endAtObs).subscribe(
@@ -45,12 +45,12 @@ export class EventsearchComponent implements OnInit {
               this.searchDrop.open();
             }
           });
-          this.doGroupQuery(value[0], value[1]).subscribe(
-            groups => {
-              if (groups) {
-                this.groups = groups;
-              }
-            });
+        this.doGroupQuery(value[0], value[1]).subscribe(
+          groups => {
+            if (groups) {
+              this.groups = groups;
+            }
+          });
       });
   }
 
@@ -72,28 +72,29 @@ export class EventsearchComponent implements OnInit {
     this.searchterm = null;
     this.router.navigateByUrl('user/' + username);
   }
-  async sendRequest(username,uid){
-    let isuser=false;
-    var geid=localStorage.getItem("geid");
-    await this.afs.collection("events").doc(geid.toString()).collection('/members', ref => ref.where('uid', '==', uid)).valueChanges().subscribe(val=>{
-      if(val){
-         isuser=true;
-         
+
+  async sendRequest(username, uid) {
+    let isuser = false;
+    var geid = localStorage.getItem('geid');
+    await this.afs.collection('events').doc(geid.toString()).collection('/members', ref => ref.where('uid', '==', uid)).valueChanges().subscribe(val => {
+      if (val) {
+        isuser = true;
+
       }
     });
-    
-     if(!isuser){
-      
-      this.afs.collection("events").doc(geid.toString()).collection("members").doc(uid).set(
-       {
-        uid : uid,
-        date : new Date()
-       }
 
-      );}
+    if (!isuser) {
+
+      this.afs.collection('events').doc(geid.toString()).collection('members').doc(uid).set(
+        {
+          uid: uid,
+          date: new Date()
+        }
+      );
+    }
     console.log(username);
     console.log(uid);
-    localStorage.getItem("geid");
-  
+    localStorage.getItem('geid');
+
   }
 }

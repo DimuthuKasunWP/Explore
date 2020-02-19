@@ -7,12 +7,15 @@
   width: 19em;
   margin: 0 auto;
 }
+
 #login-form > form > h2 {
   color: #794BC4;
 }
+
 #login-form {
   color: #794BC4;
 }
+
 .jumbotron {
   background-color: #48a999;
   color: white;
@@ -20,11 +23,13 @@
   margin-bottom: 0px;
   min-height: calc(100vh - 108px);
 }
+
 #login-form > form > input {
   margin-bottom: 5px;
   border-radius: 20px;
   border: #794BC4 1px solid;
 }
+
 #login-btn {
   width: 100%;
   font-weight: 600;
@@ -33,6 +38,7 @@
   color: white;
   border: none;
 }
+
 #google-btn {
   width: 100%;
   font-weight: 600;
@@ -41,21 +47,26 @@
   border: none;
   margin-bottom: 7px;
 }
+
 #login-form > .btn {
   border-radius: 20px;
 }
+
 h6 {
   border: 10px;
 }
+
 hr {
   background-color: lightyellow;
   margin: 7px;
 }
+
 @media (max-width: 640px) {
   #login-form {
     width: 90%;
   }
 }
+
 button {
   cursor: pointer;
 }
