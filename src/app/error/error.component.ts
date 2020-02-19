@@ -15,9 +15,9 @@ export class ErrorComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.error === 'nogroup') {
-      this.errormsg = 'Group not found';
-      this.message = 'The group does not exist or the URL is incorrect.';
+    if (this.error === 'noevent') {
+      this.errormsg = 'event not found';
+      this.message = 'The event does not exist or the URL is incorrect.';
     }
     if (this.error === 'nouser') {
       this.errormsg = 'User not found';
