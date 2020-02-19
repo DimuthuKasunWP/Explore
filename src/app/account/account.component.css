@@ -1,48 +1,55 @@
 #account-card {
-    max-width: 700px;
-    margin: 0 auto;
-    margin-bottom: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  margin-bottom: 20px;
 }
+
 #btnUpdate, .form-control {
-    border-radius: 100px;
+  border-radius: 100px;
 }
+
 #displayPhoto {
-    height: 150px;
-    width: 150px;
-    max-width: 150px;
-    max-height: 150px
+  height: 150px;
+  width: 150px;
+  max-width: 150px;
+  max-height: 150px
 }
 
 /* File Input */
 label, small {
-    margin-left: 12px;
+  margin-left: 12px;
 }
+
 label {
-    font-weight: 450;
+  font-weight: 450;
 }
+
 .inputfile {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
+
 .inputfile + label {
-    font-size: 1em;
-    font-weight: 700;
-    color: white;
-    background-color: #48a999;
-    display: inline-block;
-    cursor: pointer;
-    padding: 10px 20px;
-    width: 100%;
+  font-size: 1em;
+  font-weight: 700;
+  color: white;
+  background-color: #48a999;
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px 20px;
+  width: 100%;
 }
+
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: #3fc4e8;
+  background-color: #3fc4e8;
 }
+
 #btnUpdate:hover {
-    background-color: #3fc4e8!important;
-    cursor: pointer;
+  background-color: #3fc4e8 !important;
+  cursor: pointer;
 }
