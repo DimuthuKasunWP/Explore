@@ -84,7 +84,7 @@ export class EventComponent implements OnInit {
     ]),
 
     enddate: new FormControl('', [
-      Validators.required
+      Validators.minLength(5),
     ]),
     starttime: new FormControl('', [
       Validators.required
@@ -389,7 +389,7 @@ export class EventComponent implements OnInit {
 
   saveEvent() {
     console.log('event saving');
-    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.EndDate.errors && !this.StartTime.errors) {
+    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.StartTime.errors) {
       console.log('this is enter address ddddd' + this.ad);
       this.getLatLngByAddress(this.enteraddress ? this.enteraddress : this.ad);
       const data = {
@@ -413,7 +413,7 @@ export class EventComponent implements OnInit {
 
   updateEvent() {
     console.log('this is update event' + this.enteraddress);
-    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.EndDate.errors && !this.StartTime.errors) {
+    if (!this.Name.errors && !this.Description.errors && !this.Location.errors && !this.StartDate.errors && !this.StartTime.errors) {
       console.log('this is enter address ddddd' + this.ad ? this.ad : this.enteraddress);
       this.getLatLngByAddress(this.enteraddress ? this.enteraddress : this.ad);
       const data = {

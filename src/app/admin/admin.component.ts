@@ -49,7 +49,10 @@ export class AdminComponent implements OnInit {
 
   getData() {
     this.afs.collection('feedback/', ref => ref.orderBy('timestamp')).valueChanges().subscribe(feedbacks => this.feedbacks = feedbacks);
-    this.afs.collection('reports/', ref => ref.orderBy('timestamp')).valueChanges().subscribe(reports => this.reports = reports);
+    this.afs.collection('reports/', ref => ref.orderBy('timestamp')).valueChanges().subscribe(reports => {
+      if(reports)
+      this.reports = reports;
+    });
   }
 
 }
